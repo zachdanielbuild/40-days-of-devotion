@@ -1,6 +1,6 @@
-# 40DayJourneys.com
+# 40 Days of Devotion
 
-The redesigned 40DayJourneys.com, a resource from Antioch Waco: 40 Days of Devotion and 40 Days of Discipleship.
+The redesigned 40 Days of Devotion site, a resource from Antioch Waco.
 
 Plain static HTML, one stylesheet (`style.css`) and one small script (`site.js`). Cloudflare Pages serves the files in the repo root.
 
@@ -12,8 +12,8 @@ Plain static HTML, one stylesheet (`style.css`) and one small script (`site.js`)
 Pushing to `main` redeploys in about a minute.
 
 ## Addresses
-- `/` home, `/devotion` and `/40-days-of-discipleship` landing pages
-- `/devos/<day>` the 40 devotion days, `/discipleship/<day>` Orientation plus the 40 discipleship days
+- `/` and `/devotion`: the landing page with all 40 days
+- `/devos/<day>`: the 40 days
 - Old Squarespace day addresses are kept, so links in emails already sent still work. Retired addresses redirect (see `_redirects`).
 
 ## Making changes

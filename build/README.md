@@ -1,4 +1,4 @@
-# 40 Day Journeys build kit
+# 40 Days of Devotion build kit
 
 Everything needed to rebuild the whole site.
 
@@ -14,8 +14,7 @@ git add -A && git commit -m "..." && git push
 | File | What it is |
 | --- | --- |
 | `content/devotion/NN.md` | The 40 devotion days, one file each. Text follows the book draft (the Google Doc) and matches the Notion pages. The gray note block at the top of each file holds the old address (kept as the page address) and the banner photo; it is not shown on the site. |
-| `content/discipleship/NN.md` | Orientation (`00.md`) and the 40 discipleship days, copied from the old site unchanged. |
-| `buildsite.py` | Builds every page, the landing pages, the home page and `_redirects`, `robots.txt`, `sitemap.xml`. |
+| `buildsite.py` | Builds the 40 day pages, the landing page (also used as the home page), the sign-up and not-found pages, and `_redirects`, `robots.txt`, `sitemap.xml`. |
 | `site/style.css` | All styles, including phone and print. Edited by hand. |
 | `site/site.js` | Video play button, copy-link button, two-minute timer, journal box (saved in the reader's browser only). |
 | `site/favicon.svg` | Browser tab icon. |

@@ -9,7 +9,6 @@ D = os.path.dirname(os.path.abspath(__file__))
 C, OUT = D + '/content', D + '/site'
 DOMAIN = 'https://www.40dayjourneys.com'
 KIT_DEVOTION = 'https://passionandpurpose.kit.com/40-days-of-devotion'
-KIT_DISCIPLESHIP = 'https://passionandpurpose.kit.com/discipleship'
 CDN = 'https://images.squarespace-cdn.com/content/v1/6765a61dee5146683ca33b13/'
 SECTIONS = [('Drawing Near', 1, 7), ('Worship', 8, 14), ('The Word', 15, 21), ('Prayer', 22, 33), ('Listening', 34, 40)]
 NEW_SLUGS = {36: 'he-calls-his-sheep'}          # days that never existed on the old site
@@ -41,7 +40,7 @@ def parse(path):
 
 def fixhref(h):
     h = h.replace('https://www.40dayjourneys.com', '')
-    return '/40-days-of-discipleship' if h.rstrip('/') == '/discipleship' else h
+    return h
 
 def inline(s):
     s = html.escape(s, quote=False)
@@ -187,7 +186,7 @@ LOGO = ('<svg viewBox="0 0 52 52" role="img" aria-label="40 Day Journeys"><circl
         '<text x="26" y="35" text-anchor="middle" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="26" font-weight="600" fill="#FFFFFF">A</text></svg>')
 
 def shell(title, desc, path, body, image='', signup=None, script=False):
-    nav = ['<a href="/devotion">Devotion</a>', '<a href="/40-days-of-discipleship">Discipleship</a>']
+    nav = ['<a href="/devotion#days">All 40 Days</a>']
     if signup: nav.append(f'<a class="signup" href="{signup}">Sign up</a>')
     og = f'<meta property="og:image" content="{esc(image)}">\n<meta name="twitter:card" content="summary_large_image">\n' if image else ''
     return f'''<!doctype html>
@@ -243,14 +242,9 @@ def section_of(n):
 
 # ---------- day pages ----------
 def day_page(d, n, series, prev, nxt, total=40):
-    if series == 'devotion':
-        name = d['title'].split(': ', 1)[1]
-        eyebrow = f'Day {n} of {total} · {section_of(n)[0]}'
-        signup, base, home, home_t = KIT_DEVOTION, '/devos/', '/devotion', '40 Days of Devotion'
-    else:
-        name = d['title'].split(': ', 1)[1] if ': ' in d['title'] else d['title']
-        eyebrow = f'Day {n} of {total}' if n else 'Before Day 1'
-        signup, base, home, home_t = KIT_DISCIPLESHIP, '/discipleship/', '/40-days-of-discipleship', '40 Days of Discipleship'
+    name = d['title'].split(': ', 1)[1]
+    eyebrow = f'Day {n} of {total} · {section_of(n)[0]}'
+    signup, base, home, home_t = KIT_DEVOTION, '/devos/', '/devotion', '40 Days of Devotion'
     pct = max(n, 0) / total * 100
     banner = f'<div class="banner"><img src="{photo(d["photo"])}" alt="" width="1500" height="1071"></div>' if d['photo'] else ''
     def link(item, cls, k):
@@ -290,7 +284,6 @@ def build_series(series, files, numbering):
 
 num = lambda f: int(os.path.basename(f)[:2])
 DEV = build_series('devotion', sorted(glob.glob(C + '/devotion/*.md')), num)
-DISC = build_series('discipleship', sorted(glob.glob(C + '/discipleship/*.md')), num)
 
 # ---------- landing pages ----------
 def day_rows(items, base):
@@ -318,86 +311,21 @@ def devotion_landing():
 </section>
 <section class="days" id="days"><h2>The 40 Days</h2><p>Five movements, one day at a time.</p>{groups}</section>
 <section class="closing"><blockquote>“Abide in Me, and I in you. As the branch cannot bear fruit of itself unless it abides in the vine, so neither can you unless you abide in Me.”</blockquote><p class="ref">John 15:4</p></section>'''
-    write('devotion.html', shell('40 Days of Devotion', 'A daily devotional to help you start, strengthen or reignite the daily habit of spending time with the Lord.', '/devotion', body,
-                                 photo(CDN + '63458635-21e6-4dcd-a98b-581bacd3b86e/yusron-el-jihan-pc4OfudfwOo-unsplash.jpg', 1200), KIT_DEVOTION))
-
-def discipleship_landing():
-    orient = [x for x in DISC if x[0] == 0]
-    rest = [x for x in DISC if x[0] > 0]
-    body = f'''<section class="hero">
-<p class="eyebrow">A 40 Day Journey</p>
-<h1>40 Days of Discipleship</h1>
-<p class="lede">A series of teachings, daily devotionals and discipleship lessons designed to help build good foundations in being and making disciples of Jesus.</p>
-<div class="actions"><a class="btn" href="{KIT_DISCIPLESHIP}">Sign up for the daily email</a><a class="btn btn-outline" href="/discipleship/{orient[0][1]["slug"]}">Start with Orientation</a></div>
-</section>
-<div class="wide-photo"><img src="{photo(CDN + 'd00abda0-39cc-41f8-a24c-11babb10b349/dawid-tkocz-l0BtQcG5300-unsplash.jpg')}" alt=""></div>
-<section class="cards" aria-label="Resources">
-{card(CDN + '9616aa73-1205-4ac3-bb97-6338912fabfe/Square+Thumbnail.png', 'Teaching Series', 'Life on Life Discipleship', 'A teaching series to help you build or rebuild good foundations for being and making disciples of Jesus.', '', '')}
-{card(CDN + '612915b0-0366-42a3-9ac0-795ef5ce80e2/daiga-ellaby-pBLEn9Vc5jo-unsplash.jpg', 'Daily Devotional', '40 Days in Your Inbox', 'A 40 day email devotional on the joy of being a disciple of Jesus and our calling to make disciples.', KIT_DISCIPLESHIP, 'Sign up')}
-{card(CDN + 'fc14b84a-94e2-42f6-87b8-befd81b5451e/ChatGPT+Image+May+29%2C+2025%2C+01_59_15+PM.png', 'Discipleship Lessons', 'DiscipleshipLessons.com', 'Simple, Biblical, powerful lessons to help you make disciples in your sphere of influence.', 'https://www.discipleshiplessons.com', 'Get the lessons')}
-</section>
-<section class="days" id="days"><h2>The 40 Days</h2><p>Being and making disciples of Jesus, one day at a time.</p>
-<div class="group"><div class="group-head"><h3>Start Here</h3></div><ol class="day-list">{day_rows(orient, "/discipleship/")}</ol></div>
-<div class="group"><div class="group-head"><h3>The Journey</h3><span>Days 1 to 40</span></div><ol class="day-list">{day_rows(rest, "/discipleship/")}</ol></div>
-</section>
-<section class="closing"><blockquote>“Go therefore and make disciples of all the nations, baptizing them in the name of the Father and the Son and the Holy Spirit, teaching them to observe all that I commanded you; and lo, I am with you always, even to the end of the age.”</blockquote><p class="ref">Matthew 28:19-20</p></section>'''
-    write('40-days-of-discipleship.html', shell('40 Days of Discipleship', 'Teachings, daily devotionals and discipleship lessons to help build good foundations in being and making disciples of Jesus.', '/40-days-of-discipleship', body,
-                                                photo(CDN + 'd00abda0-39cc-41f8-a24c-11babb10b349/dawid-tkocz-l0BtQcG5300-unsplash.jpg', 1200), KIT_DISCIPLESHIP))
-
-def home():
-    body = f'''<section class="hero">
-<h1>40 Day Journeys</h1>
-<p class="lede">A series of teachings, devotional guides, discipleship lessons and recommended resources designed to help you and your friends grow in Jesus.</p>
-</section>
-<div class="wide-photo"><img src="{photo(CDN + 'd72eede5-3430-466e-9a31-2e201f4b2385/andrii-solok-eC-Bcw3pGbg-unsplash.jpg')}" alt=""></div>
-<section class="cards two" aria-label="Journeys">
-{card(CDN + '63458635-21e6-4dcd-a98b-581bacd3b86e/yusron-el-jihan-pc4OfudfwOo-unsplash.jpg', 'A 40 Day Journey', '<a href="/devotion" style="color:inherit;text-decoration:none">40 Days of Devotion</a>', 'Designed to help you start, strengthen or reignite the daily habit of spending time with the Lord.', '/devotion', 'Begin')}
-{card(CDN + 'd00abda0-39cc-41f8-a24c-11babb10b349/dawid-tkocz-l0BtQcG5300-unsplash.jpg', 'A 40 Day Journey', '<a href="/40-days-of-discipleship" style="color:inherit;text-decoration:none">40 Days of Discipleship</a>', 'Designed to build good foundations in being and making disciples of Jesus.', '/40-days-of-discipleship', 'Begin')}
-</section>
-<section class="closing"><p class="ref">Made with love from <a href="https://antiochwaco.com/">Antioch Waco</a></p></section>'''
-    write('index.html', shell('40 Day Journeys', 'Teachings, devotional guides, discipleship lessons and resources designed to help you and your friends grow in Jesus. From Antioch Waco.', '/', body,
-                              photo(CDN + 'd72eede5-3430-466e-9a31-2e201f4b2385/andrii-solok-eC-Bcw3pGbg-unsplash.jpg', 1200)))
-
-FREEDOM_SERMONS = [
- ('You Can Be Free', 'In this sermon introducing the "Journey to Freedom" sermon series, Pastor Jimmy Seibert emphasizes that true freedom from sin is not only possible, but biblically promised through Christ\'s sacrifice and the Holy Spirit\'s power. He explores the process of sanctification, involving spirit, soul, and body, while emphasizing the crucial role of surrendering our will to God and the importance of community in our journey to freedom.'),
- ('Healing The Brokenhearted', 'The journey to freedom is a love story — one where God\'s unconditional love for us drives out fear, anxiety and brokenness. In this sermon, Jimmy Seibert teaches on how to work out our salvation, heal our broken hearts and find true freedom in Christ.'),
- ('The Framework of Freedom', 'In this message, Pastor Jimmy explored the process of sanctification and the renewal of our minds — key elements in experiencing the fullness of God’s love and purpose for our lives.'),
- ('Freedom From Idolatry', 'In this message, Pastor Mick explored the concept of idolatry and our journey to freedom from it. He emphasized how idolatry arises from our fears and insecurities, and how redirecting our worship to God is key to experiencing true freedom.'),
- ('Freedom From Bitterness', 'In this sermon, Pastor Jason Ramos explores the challenging topic of freedom from bitterness. Drawing from personal experiences and Scripture, he guides us through the process of identifying unforgiveness in our lives and embracing the transformative power of God’s grace.'),
- ('Freedom From Rebellion', 'Pastor Zach contrasts modern culture\'s view of freedom with Jesus\'s vision of true freedom. While our culture’s view of freedom leads to bondage, submission to Jesus leads to true and lasting freedom and and joy.'),
- ('Freedom From Pride', 'Through personal stories and Biblical wisdom, Joe Ewen illustrates how pride can imprison us while humility opens the door to God’s transformative grace. The sermon challenges us to examine our hearts, recognize areas of pride — both obvious and subtle — and embrace the freedom that comes through practicing genuine humility.'),
- ('Freedom From Lies', 'In this powerful message about freedom from lies and deception, Pastor Vincent Carpenter explores how deception can subtly influence our lives and relationships. Through Biblical examples and personal stories, he reveals how identifying lies and embracing God’s truth can lead to genuine freedom.'),
- ('The Freedom of Walking In The Spirit', 'The sermon explores the biblical concept of walking in the freedom of the Spirit. The speaker unpacks the contrast between the "flesh" and the "Spirit" and how we can align our minds, yield our will, and bring our emotions to God in order to experience the fruit of the Spirit - love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, and self-control.'),
- ('Freedom From Generational Bondage', 'Understanding the impact of generational patterns — both blessings and curses — is vital for our spiritual growth and family legacy. In this powerful message, Pastor Jimmy Seibert explores how God\'s design for blessing can overcome generational struggles through Jesus Christ.'),
-]
-
-def freedom():
-    sermons = ''.join(f'<h3>Pt {i} · {esc(t)}</h3><p>{esc(x)}</p>' for i, (t, x) in enumerate(FREEDOM_SERMONS, 1))
-    body = f'''<section class="hero">
-<p class="eyebrow">A 40 Day Journey</p>
-<h1>40 Days of Freedom</h1>
-<p class="lede">Designed to help you grow in the freedom and healing that Jesus died to give you.</p>
-</section>
-<div class="wide-photo"><img src="{photo(CDN + '81206524-64b1-41f4-9951-e1a2289c68a0/33521628-10A7-483B-BF08-6D3377ADB886.JPG')}" alt=""></div>
-<div class="prose" style="padding-top:72px">
-<p>We believe freedom and healing are for all God’s people and learning to walk in them is a key part of the abundant life Jesus desires for all of us.</p>
-<h2>Journey to Freedom</h2>
-<p>Our Journey To Freedom teaching series from the Fall of 2024 provides inspiration and practical, biblical foundations for walking in freedom and healing in Jesus. We encourage you to watch or listen to each one.</p>
-{sermons}
-</div>
-<section class="closing"><blockquote>“Now may the God of peace himself sanctify you completely, and may your whole spirit and soul and body be kept blameless at the coming of our Lord Jesus Christ. He who calls you is faithful; he will surely do it.”</blockquote><p class="ref">1 Thessalonians 5:23-24</p></section>'''
-    write('40-days-of-freedom.html', shell('40 Days of Freedom', 'Grow in the freedom and healing that Jesus died to give you.', '/40-days-of-freedom', body))
+    page = shell('40 Days of Devotion', 'A daily devotional to help you start, strengthen or reignite the daily habit of spending time with the Lord.', '/devotion', body,
+                 photo(CDN + '63458635-21e6-4dcd-a98b-581bacd3b86e/yusron-el-jihan-pc4OfudfwOo-unsplash.jpg', 1200), KIT_DEVOTION)
+    write('devotion.html', page)
+    write('index.html', page)   # the home page is the devotion landing page
 
 def notices():
     write('whats-next.html', shell('You are all signed up! · 40 Day Journeys', 'You are signed up for a 40 Day Journey.', '/whats-next',
-        '<section class="notice"><h1>You are all signed up!</h1><p>Each morning at 3am (starting tomorrow morning) you will receive a link in your inbox to the devotional for that day!</p><a class="btn" href="/">Back to 40 Day Journeys</a></section>'))
+        '<section class="notice"><h1>You are all signed up!</h1><p>Each morning at 3am (starting tomorrow morning) you will receive a link in your inbox to the devotional for that day!</p><a class="btn" href="/devotion#days">See all 40 days</a></section>'))
     write('404.html', shell('Page not found · 40 Day Journeys', 'Page not found.', '/404',
-        '<section class="notice"><h1>This page has moved</h1><p>The page you were looking for isn’t here anymore. Every day of both journeys is still on the site.</p><a class="btn" href="/devotion#days">40 Days of Devotion</a> <a class="btn btn-outline" href="/40-days-of-discipleship#days">40 Days of Discipleship</a></section>'))
+        '<section class="notice"><h1>This page has moved</h1><p>The page you were looking for isn’t here anymore. All 40 days of the devotional are still on the site.</p><a class="btn" href="/devotion#days">See all 40 days</a></section>'))
 
-devotion_landing(); discipleship_landing(); home(); freedom(); notices()
+devotion_landing(); notices()
 
 # ---------- launch files ----------
-paths = ['/', '/devotion', '/40-days-of-discipleship', '/40-days-of-freedom'] + ['/devos/' + d['slug'] for _, d in DEV] + ['/discipleship/' + d['slug'] for _, d in DISC]
+paths = ['/devotion'] + ['/devos/' + d['slug'] for _, d in DEV]
 write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{DOMAIN}{p}</loc></url>\n' for p in paths) + '</urlset>\n')
 write('robots.txt', f'User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n')
 write('_redirects', '''# Old Squarespace addresses
@@ -405,10 +333,7 @@ write('_redirects', '''# Old Squarespace addresses
 /home                     /                          301
 /devos                    /devotion#days             301
 /devos/pass-it-on         /devos/peter-and-john      301
-/discipleship             /40-days-of-discipleship   301
 /group-events             /                          301
 /cart                     /                          301
-# Not built yet (the old page was mostly placeholder text)
-/40-days-in-the-spirit    /                          302
 ''')
-print(f'Built {len(DEV)} devotion days, {len(DISC)} discipleship pages, landing pages and launch files.')
+print(f'Built {len(DEV)} devotion days, the landing page and launch files.')
