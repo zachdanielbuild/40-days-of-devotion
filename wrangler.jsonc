@@ -1,0 +1,10 @@
+// Cloudflare Workers settings: serve the static files in this folder.
+{
+  "name": "40-days-of-devotion",
+  "compatibility_date": "2025-10-01",
+  "assets": {
+    "directory": "./",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}
