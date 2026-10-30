@@ -1,0 +1,162 @@
+/* 40 Day Journeys. One stylesheet for every page. Edited by hand. */
+:root{
+  --ground:#F9F9F9;
+  --ink:#141414;
+  --muted:#5C5C5C;
+  --soft:#4A4A4A;
+  --line:#E4E4E4;
+  --panel:#F0F0EE;
+  --accent:#3F5A47;
+  --accent-dark:#26372B;
+  --sans:"Helvetica Neue",Helvetica,Inter,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.75;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:var(--accent)}
+a:hover{color:var(--accent-dark)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.skip{position:absolute;left:-9999px;top:0;background:var(--ink);color:#fff;padding:10px 16px;z-index:10}
+.skip:focus{left:16px;top:16px}
+
+/* header and footer */
+.site-header{max-width:1240px;margin:0 auto;padding:40px 48px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+.logo{display:block;width:52px;height:52px}
+.logo svg{width:52px;height:52px;display:block}
+.site-nav{display:flex;flex-wrap:wrap;gap:8px 32px;align-items:center;font-size:17px}
+.site-nav a{color:var(--ink);text-decoration:none}
+.site-nav a:hover{color:var(--accent)}
+.site-nav a.signup{color:var(--accent)}
+.site-footer{max-width:1240px;margin:0 auto;padding:48px 32px 64px;text-align:center;font-size:14px;color:var(--muted)}
+.site-footer a{color:var(--muted)}
+
+/* shared type */
+.eyebrow{margin:0;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.progress{width:180px;height:2px;background:#E2E2E2}
+.progress span{display:block;height:2px;background:var(--accent)}
+.ref{margin:0;font-size:15px;letter-spacing:.04em;color:var(--muted)}
+.rule{margin:72px 0;height:1px;background:var(--line);border:0}
+
+/* day page */
+.day-head{max-width:960px;margin:0 auto;padding:56px 32px 0;display:flex;flex-direction:column;gap:18px;align-items:center;text-align:center}
+.day-head h1{margin:28px 0 0;font-weight:500;font-size:66px;line-height:1.08;letter-spacing:-.02em}
+.banner{max-width:1020px;margin:0 auto;padding:72px 32px 0}
+.banner img{width:100%;height:auto;aspect-ratio:1.4;object-fit:cover;background:#E9E9E9}
+.day{max-width:720px;margin:0 auto;padding:88px 32px 40px}
+.day section{display:flex;flex-direction:column;gap:20px}
+.day h2{margin:0;font-size:28px;font-weight:600;letter-spacing:-.01em;line-height:1.3}
+.day h3{margin:0;font-size:15px;font-weight:600;line-height:1.5}
+.day p,.day ul,.day ol{margin:0}
+.day ul,.day ol{padding-left:22px;display:flex;flex-direction:column;gap:10px}
+.word blockquote{margin:0;font-style:italic;font-weight:300;font-size:28px;line-height:1.5}
+.passage{display:flex;flex-direction:column;gap:6px}
+.passage p{font-style:italic}
+.intro{color:var(--soft)}
+.prayer-panel{background:var(--panel);padding:40px 44px}
+.prayer-panel p{font-style:italic;font-weight:300;font-size:22px;line-height:1.6}
+.prayer-panel p+p{margin-top:16px}
+.song{font-size:15px;color:var(--muted)}
+.video{position:relative;aspect-ratio:16/9;background:#1E1E1E;overflow:hidden}
+.video img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+.video button{position:absolute;inset:0;margin:auto;width:72px;height:72px;border-radius:999px;border:1px solid rgba(255,255,255,.75);background:rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.video button:hover{background:rgba(0,0,0,.35)}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.btn{align-self:flex-start;min-height:48px;padding:0 24px;border-radius:999px;border:none;background:var(--accent);color:#fff;font:inherit;font-size:15px;line-height:1;display:inline-flex;gap:10px;align-items:center;cursor:pointer;text-decoration:none}
+.btn:hover{background:var(--accent-dark);color:#fff}
+.btn-outline{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.btn-outline:hover{background:var(--ink);color:#fff}
+.btn-outline:hover svg{stroke:#fff}
+.share-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.share-row .url{font-size:15px;color:var(--muted);word-break:break-all}
+.timer[data-running] {background:var(--ink)}
+.journal{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.journal label{font-size:15px;color:var(--soft)}
+.journal textarea{font:inherit;font-size:17px;line-height:1.6;padding:16px;border:1px solid #D6D6D6;background:#fff;color:var(--ink);resize:vertical;min-height:140px}
+.journal .note{font-size:13px;color:var(--muted)}
+.day-nav{margin-top:96px;padding-top:32px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between}
+.day-nav a{display:flex;flex-direction:column;gap:4px;color:var(--ink);text-decoration:none;max-width:48%}
+.day-nav a:hover .t{color:var(--accent)}
+.day-nav .next{align-items:flex-end;text-align:right;margin-left:auto}
+.day-nav .k{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.day-nav .t{font-size:20px;font-weight:500;line-height:1.35}
+
+/* landing pages */
+.hero{max-width:760px;margin:0 auto;padding:72px 32px 72px;text-align:center;display:flex;flex-direction:column;gap:22px;align-items:center}
+.hero h1{margin:0;font-weight:500;font-size:72px;line-height:1.05;letter-spacing:-.02em}
+.hero .lede{margin:0;max-width:560px;font-size:20px;color:var(--soft)}
+.hero .actions{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:12px}
+.hero .eyebrow{color:var(--accent)}
+.wide-photo{max-width:1120px;margin:0 auto;padding:0 32px}
+.wide-photo img{width:100%;height:420px;object-fit:cover;background:#E9E9E9}
+.cards{max-width:1120px;margin:0 auto;padding:96px 32px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px 32px}
+.card{display:flex;flex-direction:column;gap:12px}
+.card .ph{aspect-ratio:4/3;width:100%;object-fit:cover;background:#E9E9E9}
+.card .eyebrow{margin-top:8px;color:var(--accent)}
+.card h2{margin:0;font-weight:600;font-size:26px;line-height:1.2}
+.card p{margin:0;font-size:17px;color:var(--soft)}
+.card a.more{font-size:15px;text-decoration:none}
+.cards.two{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.cards.two .ph{aspect-ratio:3/2}
+.cards.two h2{font-size:30px}
+.days{max-width:760px;margin:0 auto;padding:96px 32px 24px}
+.days>h2{margin:0 0 8px;font-weight:600;font-size:36px;letter-spacing:-.01em;text-align:center}
+.days>p{margin:0 0 48px;text-align:center;color:var(--muted);font-size:17px}
+.group{margin-bottom:44px}
+.group-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;padding-bottom:12px;border-bottom:1px solid #D9D9D9}
+.group-head h3{margin:0;font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.group-head span{font-size:14px;color:var(--muted)}
+.day-list{margin:0;padding:0;list-style:none}
+.day-list li{border-bottom:1px solid #EAEAEA}
+.day-list a{display:flex;gap:24px;align-items:baseline;padding:14px 0;color:var(--ink);text-decoration:none}
+.day-list a:hover .t{color:var(--accent)}
+.day-list .n{width:28px;flex:none;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.day-list .t{font-size:19px;font-weight:500}
+.closing{max-width:760px;margin:0 auto;padding:72px 32px 40px;text-align:center}
+.closing blockquote{margin:0;font-style:italic;font-weight:300;font-size:26px;line-height:1.5}
+.closing .ref{margin-top:16px}
+.prose{max-width:720px;margin:0 auto;padding:0 32px 40px}
+.prose h2{font-size:28px;font-weight:600;margin:64px 0 16px;letter-spacing:-.01em}
+.prose h3{font-size:20px;font-weight:600;margin:40px 0 8px}
+.prose p{margin:0 0 16px}
+.notice{max-width:640px;margin:0 auto;padding:120px 32px;text-align:center}
+.notice h1{margin:0 0 16px;font-weight:500;font-size:48px;line-height:1.1;letter-spacing:-.02em}
+.notice p{margin:0 0 28px;color:var(--soft)}
+
+/* phones */
+@media (max-width:700px){
+  body{font-size:17px;line-height:1.7}
+  .site-header{padding:20px}
+  .logo,.logo svg{width:44px;height:44px}
+  .site-nav{gap:6px 18px;font-size:15px}
+  .day-head{padding-top:28px}
+  .day-head h1{font-size:44px;margin-top:16px}
+  .progress{width:140px}
+  .banner{padding:36px 0 0}
+  .day{padding:48px 24px 32px}
+  .day h2{font-size:22px}
+  .word blockquote{font-size:22px}
+  .rule{margin:48px 0}
+  .prayer-panel{padding:28px 24px}
+  .prayer-panel p{font-size:19px}
+  .day-nav a{max-width:100%}
+  .day-nav .next{margin-left:0}
+  .hero{padding:40px 24px 48px}
+  .hero h1{font-size:46px}
+  .hero .lede{font-size:18px}
+  .wide-photo{padding:0}
+  .wide-photo img{height:260px}
+  .cards{padding:64px 24px 16px}
+  .days{padding:64px 24px 16px}
+  .days>h2{font-size:30px}
+  .day-list a{gap:16px}
+  .closing blockquote{font-size:22px}
+}
+
+/* print a day */
+@media print{
+  body{background:#fff;font-size:12pt}
+  .site-header,.site-footer,.day-nav,.video,.btn,.journal,.banner{display:none}
+  .day{padding:0}
+  .rule{margin:24px 0}
+}
