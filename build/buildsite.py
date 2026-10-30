@@ -15,7 +15,42 @@ NEW_SLUGS = {36: 'he-calls-his-sheep'}          # days that never existed on the
 SONG_LINKS = {29: ('O Come to the Altar by Elevation Worship',
                    'https://www.youtube.com/results?search_query=O+Come+to+the+Altar+Elevation+Worship')}
 
-def photo(u, w=1500):
+# Photos live in /photos at the repo root (uploaded Oct 30, 2026). A photo not found there
+# still loads from Squarespace. Days whose photo isn't the old site's banner:
+PHOTOS = os.path.join(os.path.dirname(D), 'photos')
+DAY_PHOTOS = {1: '1.webp', 2: '2.webp', 36: 'tim-mossholder-4VkGIl-2z18-unsplash.webp'}
+DAY_FOCUS = {36: '50% 12%'}   # where to crop a tall photo (default: the middle)
+
+def local_photo(u):
+    """The uploaded file for a photo address (or a 'local:<file>' name), if there is one."""
+    if not u: return None
+    if u.startswith('local:'): return u[6:]
+    stem = os.path.splitext(u.rsplit('/', 1)[1])[0]
+    for f in os.listdir(PHOTOS) if os.path.isdir(PHOTOS) else []:
+        if os.path.splitext(f)[0] == stem: return f
+    return None
+
+def share_image(f):
+    """A 1200x630 JPG copy for link previews (texts, social media), made once."""
+    out = os.path.join(PHOTOS, 'share', os.path.splitext(f)[0] + '.jpg')
+    if not os.path.exists(out):
+        try:
+            from PIL import Image
+        except ImportError:
+            return f'/photos/{f}'
+        im = Image.open(os.path.join(PHOTOS, f)).convert('RGB')
+        r = 1200 / 630
+        if im.width / im.height > r:
+            w = int(im.height * r); im = im.crop(((im.width - w) // 2, 0, (im.width - w) // 2 + w, im.height))
+        else:
+            h = int(im.width / r); im = im.crop((0, (im.height - h) // 2, im.width, (im.height - h) // 2 + h))
+        os.makedirs(os.path.dirname(out), exist_ok=True)
+        im.resize((1200, 630), Image.LANCZOS).save(out, quality=85, optimize=True)
+    return f'/photos/share/{os.path.basename(out)}'
+
+def photo(u, w=1500, share=False):
+    f = local_photo(u)
+    if f: return share_image(f) if share else f'/photos/{f}'
     return f'{u}?format={w}w' if u else ''
 
 def esc(s):
@@ -188,6 +223,7 @@ LOGO = ('<svg viewBox="0 0 52 52" role="img" aria-label="40 Day Journeys"><circl
 def shell(title, desc, path, body, image='', signup=None, script=False):
     nav = ['<a href="/devotion#days">All 40 Days</a>']
     if signup: nav.append(f'<a class="signup" href="{signup}">Sign up</a>')
+    if image.startswith('/'): image = DOMAIN + image
     og = f'<meta property="og:image" content="{esc(image)}">\n<meta name="twitter:card" content="summary_large_image">\n' if image else ''
     return f'''<!doctype html>
 <html lang="en">
@@ -246,7 +282,8 @@ def day_page(d, n, series, prev, nxt, total=40):
     eyebrow = f'Day {n} of {total} · {section_of(n)[0]}'
     signup, base, home, home_t = KIT_DEVOTION, '/devos/', '/devotion', '40 Days of Devotion'
     pct = max(n, 0) / total * 100
-    banner = f'<div class="banner"><img src="{photo(d["photo"])}" alt="" width="1500" height="1071"></div>' if d['photo'] else ''
+    focus = f' style="object-position:{DAY_FOCUS[n]}"' if n in DAY_FOCUS else ''
+    banner = f'<div class="banner"><img src="{photo(d["photo"])}" alt="" width="1500" height="1071"{focus}></div>' if d['photo'] else ''
     def link(item, cls, k):
         if not item:
             return f'<a class="{cls}" href="{home}#days"><span class="k">{"← Back" if cls == "prev" else "Finished →"}</span><span class="t">{"All 40 Days" if cls == "prev" else home_t}</span></a>'
@@ -266,7 +303,7 @@ def day_page(d, n, series, prev, nxt, total=40):
 <nav class="day-nav" aria-label="Days">{link(prev, "prev", 0)}{link(nxt, "next", 1)}</nav>
 </article>'''
     title = f'{"Day " + str(n) + ": " if n else ""}{plain(name)} · {home_t}'
-    return shell(title, first_sentence(d), base + d['slug'], body, photo(d['photo'], 1200), signup, script=True)
+    return shell(title, first_sentence(d), base + d['slug'], body, photo(d['photo'], 1200, share=True), signup, script=True)
 
 def build_series(series, files, numbering):
     items = []
@@ -274,6 +311,7 @@ def build_series(series, files, numbering):
         d = parse(f)
         n = numbering(f)
         if not d['slug']: d['slug'] = NEW_SLUGS[n]
+        if n in DAY_PHOTOS: d['photo'] = 'local:' + DAY_PHOTOS[n]
         items.append((n, d))
     for i, (n, d) in enumerate(items):
         prev = items[i - 1] if i else None
@@ -312,7 +350,7 @@ def devotion_landing():
 <section class="days" id="days"><h2>The 40 Days</h2><p>Five movements, one day at a time.</p>{groups}</section>
 <section class="closing"><blockquote>“Abide in Me, and I in you. As the branch cannot bear fruit of itself unless it abides in the vine, so neither can you unless you abide in Me.”</blockquote><p class="ref">John 15:4</p></section>'''
     page = shell('40 Days of Devotion', 'A daily devotional to help you start, strengthen or reignite the daily habit of spending time with the Lord.', '/devotion', body,
-                 photo(CDN + '63458635-21e6-4dcd-a98b-581bacd3b86e/yusron-el-jihan-pc4OfudfwOo-unsplash.jpg', 1200), KIT_DEVOTION)
+                 photo(CDN + '63458635-21e6-4dcd-a98b-581bacd3b86e/yusron-el-jihan-pc4OfudfwOo-unsplash.jpg', 1200, share=True), KIT_DEVOTION)
     write('devotion.html', page)
     write('index.html', page)   # the home page is the devotion landing page
 

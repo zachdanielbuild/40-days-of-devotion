@@ -29,4 +29,8 @@ git add -A && git commit -m "..." && git push
 
 ## Photos
 
-Photos still load from Squarespace's image servers. Before the Squarespace site is cancelled, download them into `site/photos/` and point `photo()` in `buildsite.py` at the local copies.
+Photos live in `/photos` at the repo root (WebP, uploaded Oct 30, 2026). The build matches each day to its photo by the original file name from the old site; `DAY_PHOTOS` in `buildsite.py` covers the exceptions (Days 1, 2 and 36). `DAY_FOCUS` sets where a tall photo is cropped. Link-preview copies (1200x630 JPG) are made into `photos/share/` the first time the build sees a photo.
+
+To change a day's photo, upload the new file to `photos/`, add the day to `DAY_PHOTOS`, and rebuild.
+
+Still loading from Squarespace, so upload them before Squarespace is cancelled: the landing page banner (`yusron-el-jihan-pc4OfudfwOo-unsplash`), the Face to Face card (`Face+to+Face+Square`) and the Alone With God card (`Untitled+design+(3)`). Keep those names and the build picks them up.
