@@ -220,7 +220,7 @@ LOGO = ('<svg viewBox="0 0 52 52" role="img" aria-label="40 Day Journeys"><circl
         '<text x="26" y="35" text-anchor="middle" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="26" font-weight="600" fill="#FFFFFF">A</text></svg>')
 
 def shell(title, desc, path, body, image='', signup=None, script=False):
-    nav = ['<a href="/devotion#days">All 40 Days</a>']
+    nav = ['<a href="/devotion#days">All 40 Days</a>', '<a href="/resources">Resources</a>']
     if signup: nav.append(f'<a class="signup" href="{signup}">Sign up</a>')
     if image.startswith('/'): image = DOMAIN + image
     og = f'<meta property="og:image" content="{esc(image)}">\n<meta name="twitter:card" content="summary_large_image">\n' if image else ''
@@ -331,22 +331,73 @@ def card(img, eyebrow, title, text, href, more):
     im = f'<img class="ph" src="{photo(img, 1000)}" alt="" loading="lazy">' if img else ''
     return f'<article class="card">{im}<p class="eyebrow">{eyebrow}</p><h2>{title}</h2><p>{text}</p>{a}</article>'
 
+BOOK_URL = ''   # link for the printed book; leave empty to show "Link coming soon"
+
+# Each "way" card is topped with a small topographic map: soft contour rings around two
+# hills and a dotted trail from a trailhead (open dot) to a destination (filled dot).
+MAPS = [
+    ([(90, 120, 0.4, 1.5), (300, 30, 1.6, 1.3)], 'M30,140 C90,120 120,80 180,95 S270,70 300,52', (30, 140), (300, 52)),
+    ([(200, 70, 2.1, 1.6), (20, 160, 0.9, 1.2)], 'M40,60 C100,40 140,130 200,120 S280,60 320,110', (40, 60), (320, 110)),
+    ([(110, 40, 1.3, 1.4), (320, 150, 2.6, 1.5)], 'M30,100 C80,150 150,150 190,100 S260,30 330,45', (30, 100), (330, 45)),
+]
+
+def topo_svg(i):
+    import math
+    hills, trail, start, end = MAPS[i]
+    rings = []
+    for cx, cy, ph, sx in hills:
+        for k in range(1, 8):
+            r, p = 20 * k, ph + k * 0.3
+            pts = []
+            for j in range(40):
+                t = 2 * math.pi * j / 40
+                rr = r * (1 + 0.18 * math.sin(3 * t + p) + 0.11 * math.sin(5 * t + p * 1.7))
+                pts.append(f'{cx + rr * math.cos(t) * sx:.0f},{cy + rr * math.sin(t):.0f}')
+            rings.append(f'<path class="{"c2" if k % 4 == 0 else "c1"}" d="M{" L".join(pts)}Z"/>')
+    return (f'<svg viewBox="0 0 360 170" preserveAspectRatio="xMidYMid slice" aria-hidden="true">{"".join(rings)}'
+            f'<path class="trail" d="{trail}"/><circle class="start" cx="{start[0]}" cy="{start[1]}" r="5"/>'
+            f'<circle class="end" cx="{end[0]}" cy="{end[1]}" r="6"/></svg>')
+
+def way(i, label, title, text, action):
+    return (f'<article class="way"><div class="map">{topo_svg(i)}<span>{label}</span></div>'
+            f'<div class="way-body"><h3>{title}</h3><p>{text}</p>{action}</div></article>')
+
+def resources():
+    body = f'''<section class="hero">
+<p class="eyebrow">Go deeper</p>
+<h1>Resources</h1>
+<p class="lede">Companions for the 40 days, and for the daily rhythm that continues after them.</p>
+</section>
+<section class="cards two resources" aria-label="Resources">
+{card(CDN + 'd4b62a2c-ca5a-4f28-8d46-4e23169885a1/Face+to+Face+Square.png', 'Teaching Series', 'Face to Face', 'A six-part series on Scripture, worship, prayer, listening, obeying, and abiding in Jesus.', 'https://www.youtube.com/playlist?list=PLoXSy2HiYN4uEu-SuVRHI5QVy5RowVX_E', 'Watch the series')}
+{card(CDN + 'cff63a66-5bf8-4b1c-9498-c259fe20fe99/Untitled+design+%283%29.png', 'Guidebook', 'Alone With God', 'Practical tools and examples for prayer, worship, and Bible study, for a more intimate connection with God through daily devotions.', 'https://antiochwaco.com/alone-with-god-page', 'Get the guidebook')}
+</section>'''
+    write('resources.html', shell('Resources · 40 Days of Devotion', 'The Face to Face teaching series and the Alone With God guidebook.', '/resources', body, '', KIT_DEVOTION))
+
 def devotion_landing():
     groups = ''.join(f'''<div class="group"><div class="group-head"><h3>{s}</h3><span>Days {a} to {b}</span></div>
 <ol class="day-list">{day_rows([x for x in DEV if a <= x[0] <= b], "/devos/")}</ol></div>''' for s, a, b in SECTIONS)
+    day1 = f'/devos/{DEV[0][1]["slug"]}'
+    book = (f'<a class="btn btn-outline" href="{BOOK_URL}">Get the book</a>' if BOOK_URL
+            else '<p class="soon">Link coming soon</p>')
     body = f'''<section class="hero">
 <p class="eyebrow">A 40 Day Journey</p>
 <h1>40 Days of Devotion</h1>
-<p class="lede">A series of teachings and a daily devotional designed to help you start, strengthen or reignite the daily habit of spending time with the Lord.</p>
-<div class="actions"><a class="btn" href="{KIT_DEVOTION}">Sign up for the daily email</a><a class="btn btn-outline" href="/devos/{DEV[0][1]["slug"]}">Start with Day 1</a></div>
+<p class="lede">A daily devotional to help you start, strengthen or reignite the daily habit of spending time with the Lord.</p>
+<div class="actions"><a class="btn" href="{day1}">Start with Day 1</a></div>
 </section>
-<div class="wide-photo"><img src="{photo(CDN + '63458635-21e6-4dcd-a98b-581bacd3b86e/yusron-el-jihan-pc4OfudfwOo-unsplash.jpg')}" alt=""></div>
-<section class="cards" aria-label="Resources">
-{card(CDN + 'd4b62a2c-ca5a-4f28-8d46-4e23169885a1/Face+to+Face+Square.png', 'Teaching Series', 'Face to Face', 'A six-part series on Scripture, worship, prayer, listening, obeying, and abiding in Jesus.', 'https://www.youtube.com/playlist?list=PLoXSy2HiYN4uEu-SuVRHI5QVy5RowVX_E', 'Watch the series')}
-{card(CDN + 'd5151301-02f3-4cb8-b699-02086d9fd987/daiga-ellaby-zdCLnTwD52Q-unsplash.jpg', 'Daily Devotional', '40 Days in Your Inbox', 'A free email each morning for forty days to help you build the habit of spending daily time with the Lord.', KIT_DEVOTION, 'Sign up')}
-{card(CDN + 'cff63a66-5bf8-4b1c-9498-c259fe20fe99/Untitled+design+%283%29.png', 'Guidebook', 'Alone With God', 'Practical tools and examples for prayer, worship, and Bible study, for a more intimate connection with God through daily devotions.', 'https://antiochwaco.com/alone-with-god-page', 'Get the guidebook')}
+<div class="wide-photo tree"><img src="{photo(CDN + '63458635-21e6-4dcd-a98b-581bacd3b86e/yusron-el-jihan-pc4OfudfwOo-unsplash.jpg')}" alt=""></div>
+<section class="ways" id="ways">
+<h2>Three ways to take the journey</h2>
+<p class="sub">Same forty days. Choose the one that fits your mornings.</p>
+<div class="ways-track">
+{way(0, 'Trail 1 · Free', 'Read it here', 'All forty days are on this site. Start whenever you like and walk at your own pace.', f'<a class="btn btn-outline" href="{day1}">Start with Day 1</a>')}
+{way(1, 'Trail 2 · Free', 'Get it by email', 'One devotional in your inbox each morning, forty days in a row.', f'<a class="btn" href="{KIT_DEVOTION}">Sign up for the daily email</a>')}
+{way(2, 'Trail 3 · Print', 'Get the book', 'The printed edition, for a quiet morning with a pen in hand.', book)}
+</div>
 </section>
 <section class="days" id="days"><h2>The 40 Days</h2><p>Five movements, one day at a time.</p>{groups}</section>
+<p class="deeper">Want to go deeper? The Face to Face teaching series and the Alone With God guidebook are on the <a href="/resources">Resources page</a>.</p>
 <section class="closing"><blockquote>“Abide in Me, and I in you. As the branch cannot bear fruit of itself unless it abides in the vine, so neither can you unless you abide in Me.”</blockquote><p class="ref">John 15:4</p></section>'''
     page = shell('40 Days of Devotion', 'A daily devotional to help you start, strengthen or reignite the daily habit of spending time with the Lord.', '/devotion', body,
                  photo(CDN + '63458635-21e6-4dcd-a98b-581bacd3b86e/yusron-el-jihan-pc4OfudfwOo-unsplash.jpg', 1200, share=True), KIT_DEVOTION)
@@ -359,10 +410,10 @@ def notices():
     write('404.html', shell('Page not found · 40 Day Journeys', 'Page not found.', '/404',
         '<section class="notice"><h1>This page has moved</h1><p>The page you were looking for isn’t here anymore. All 40 days of the devotional are still on the site.</p><a class="btn" href="/devotion#days">See all 40 days</a></section>'))
 
-devotion_landing(); notices()
+devotion_landing(); resources(); notices()
 
 # ---------- launch files ----------
-paths = ['/devotion'] + ['/devos/' + d['slug'] for _, d in DEV]
+paths = ['/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]
 write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{DOMAIN}{p}</loc></url>\n' for p in paths) + '</urlset>\n')
 write('robots.txt', f'User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n')
 write('_redirects', '''# Old Squarespace addresses

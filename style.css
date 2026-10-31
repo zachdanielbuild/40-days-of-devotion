@@ -99,6 +99,29 @@ a:hover{color:var(--accent-dark)}
 .cards.two{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
 .cards.two .ph{aspect-ratio:3/2}
 .cards.two h2{font-size:30px}
+/* home: three ways to take the journey (map cards; swipe cards on phones) */
+.wide-photo.tree img{object-position:50% 45%}
+.ways{max-width:1120px;margin:0 auto;padding:112px 32px 24px}
+.ways>h2{margin:0 0 8px;font-weight:600;font-size:36px;line-height:1.2;letter-spacing:-.01em;text-align:center}
+.ways>.sub{margin:0 0 48px;text-align:center;color:var(--muted);font-size:17px}
+.ways-track{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:32px}
+.way{display:flex;flex-direction:column;background:#FBFBF8;border:1px solid #DCE1D6}
+.way .map{position:relative;height:170px;background:#EEF0E9;border-bottom:1px solid #DCE1D6;overflow:hidden}
+.way .map svg{position:absolute;inset:0;width:100%;height:100%}
+.way .map .c1{fill:none;stroke:#CDD6C6;stroke-width:1}
+.way .map .c2{fill:none;stroke:#B7C3AF;stroke-width:1}
+.way .map .trail{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-dasharray:2 8;stroke-linecap:round;opacity:.8}
+.way .map .start{fill:#FBFBF8;stroke:var(--accent);stroke-width:2}
+.way .map .end{fill:var(--accent)}
+.way .map span{position:absolute;left:20px;top:16px;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.way-body{flex:1;padding:28px 28px 32px;display:flex;flex-direction:column;gap:12px}
+.way-body h3{margin:0;font-weight:600;font-size:26px;line-height:1.2}
+.way-body p{margin:0;font-size:17px;color:var(--soft);flex:1}
+.way-body .btn{margin-top:8px}
+.way-body p.soon{flex:0;margin-top:8px;font-size:15px;color:var(--muted)}
+.deeper{max-width:760px;margin:0 auto;padding:24px 32px 0;text-align:center;font-size:17px;color:var(--soft)}
+.cards.resources .ph{object-fit:contain;padding:32px;background:var(--panel)}
+
 .days{max-width:760px;margin:0 auto;padding:96px 32px 24px}
 .days>h2{margin:0 0 8px;font-weight:600;font-size:36px;letter-spacing:-.01em;text-align:center}
 .days>p{margin:0 0 48px;text-align:center;color:var(--muted);font-size:17px}
@@ -147,6 +170,15 @@ a:hover{color:var(--accent-dark)}
   .wide-photo{padding:0}
   .wide-photo img{height:260px}
   .cards{padding:64px 24px 16px}
+  .ways{padding:72px 0 16px}
+  .ways>h2{font-size:30px;padding:0 24px}
+  .ways>.sub{margin-bottom:32px;padding:0 24px}
+  .ways-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 24px 8px;scroll-padding:0 24px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .ways-track::-webkit-scrollbar{display:none}
+  .way{flex:0 0 84%;scroll-snap-align:start}
+  .way .map{height:140px}
+  .way-body{padding:24px 22px 28px}
+  .deeper{padding:16px 24px 0}
   .days{padding:64px 24px 16px}
   .days>h2{font-size:30px}
   .day-list a{gap:16px}
