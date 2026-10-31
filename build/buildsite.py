@@ -219,7 +219,7 @@ def render_sections(d, n, series):
 LOGO = ('<svg viewBox="0 0 52 52" role="img" aria-label="40 Day Journeys"><circle cx="26" cy="26" r="26" fill="#CFCFCF"/>'
         '<text x="26" y="35" text-anchor="middle" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="26" font-weight="600" fill="#FFFFFF">A</text></svg>')
 
-def shell(title, desc, path, body, image='', signup=None, script=False):
+def shell(title, desc, path, body, image='', signup=None, script=False, overlay=False):
     nav = ['<a href="/devotion#days">All 40 Days</a>', '<a href="/resources">Resources</a>']
     if signup: nav.append(f'<a class="signup" href="{signup}">Sign up</a>')
     if image.startswith('/'): image = DOMAIN + image
@@ -243,7 +243,7 @@ def shell(title, desc, path, body, image='', signup=None, script=False):
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&amp;display=swap">
 <link rel="stylesheet" href="/style.css">
 </head>
-<body>
+<body{' class="overlay"' if overlay else ''}>
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
 <a class="logo" href="/">{LOGO}</a>
@@ -332,6 +332,7 @@ def card(img, eyebrow, title, text, href, more):
     return f'<article class="card">{im}<p class="eyebrow">{eyebrow}</p><h2>{title}</h2><p>{text}</p>{a}</article>'
 
 BOOK_URL = ''   # link for the printed book; leave empty to show "Link coming soon"
+HERO_PHOTO = 'local:2.webp'   # the misty valley photo behind the home page title
 
 # Each "way" card is topped with a small topographic map: soft contour rings around two
 # hills and a dotted trail from a trailhead (open dot) to a destination (filled dot).
@@ -380,13 +381,13 @@ def devotion_landing():
     day1 = f'/devos/{DEV[0][1]["slug"]}'
     book = (f'<a class="btn btn-outline" href="{BOOK_URL}">Get the book</a>' if BOOK_URL
             else '<p class="soon">Link coming soon</p>')
-    body = f'''<section class="hero">
+    body = f'''<section class="photo-hero" style="background-image:url('{photo(HERO_PHOTO)}')">
+<div class="photo-hero-inner">
 <p class="eyebrow">A 40 Day Journey</p>
 <h1>40 Days of Devotion</h1>
 <p class="lede">A daily devotional to help you start, strengthen or reignite the daily habit of spending time with the Lord.</p>
-<div class="actions"><a class="btn" href="{day1}">Start with Day 1</a></div>
+</div>
 </section>
-<div class="wide-photo tree"><img src="{photo(CDN + '63458635-21e6-4dcd-a98b-581bacd3b86e/yusron-el-jihan-pc4OfudfwOo-unsplash.jpg')}" alt=""></div>
 <section class="ways" id="ways">
 <h2>Three ways to take the journey</h2>
 <p class="sub">Same forty days. Choose the one that fits your mornings.</p>
@@ -400,7 +401,7 @@ def devotion_landing():
 <p class="deeper">Want to go deeper? The Face to Face teaching series and the Alone With God guidebook are on the <a href="/resources">Resources page</a>.</p>
 <section class="closing"><blockquote>“Abide in Me, and I in you. As the branch cannot bear fruit of itself unless it abides in the vine, so neither can you unless you abide in Me.”</blockquote><p class="ref">John 15:4</p></section>'''
     page = shell('40 Days of Devotion', 'A daily devotional to help you start, strengthen or reignite the daily habit of spending time with the Lord.', '/devotion', body,
-                 photo(CDN + '63458635-21e6-4dcd-a98b-581bacd3b86e/yusron-el-jihan-pc4OfudfwOo-unsplash.jpg', 1200, share=True), KIT_DEVOTION)
+                 photo(HERO_PHOTO, 1200, share=True), KIT_DEVOTION, overlay=True)
     write('devotion.html', page)
     write('index.html', page)   # the home page is the devotion landing page
 

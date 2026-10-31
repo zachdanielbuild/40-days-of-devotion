@@ -99,6 +99,17 @@ a:hover{color:var(--accent-dark)}
 .cards.two{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
 .cards.two .ph{aspect-ratio:3/2}
 .cards.two h2{font-size:30px}
+/* home: photo behind the title, with the menu sitting on top of it */
+body.overlay .site-header{position:absolute;top:0;left:0;right:0;z-index:2}
+body.overlay .site-nav a,body.overlay .site-nav a.signup{color:#fff}
+body.overlay .site-nav a:hover{color:#fff;text-decoration:underline;text-underline-offset:6px}
+.photo-hero{position:relative;min-height:720px;display:flex;align-items:center;justify-content:center;background-color:#4F5E52;background-size:cover;background-position:center}
+.photo-hero::before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(20,26,22,.45),rgba(20,26,22,.55))}
+.photo-hero-inner{position:relative;max-width:780px;padding:140px 32px 96px;text-align:center;display:flex;flex-direction:column;gap:22px;align-items:center;color:#fff}
+.photo-hero .eyebrow{color:#fff}
+.photo-hero h1{margin:0;font-weight:500;font-size:76px;line-height:1.05;letter-spacing:-.02em}
+.photo-hero .lede{margin:0;max-width:560px;font-size:20px;color:#fff}
+
 /* home: three ways to take the journey (map cards; swipe cards on phones) */
 .wide-photo.tree img{object-position:50% 45%}
 .ways{max-width:1120px;margin:0 auto;padding:112px 32px 24px}
@@ -170,6 +181,10 @@ a:hover{color:var(--accent-dark)}
   .wide-photo{padding:0}
   .wide-photo img{height:260px}
   .cards{padding:64px 24px 16px}
+  .photo-hero{min-height:560px}
+  .photo-hero-inner{padding:112px 24px 64px}
+  .photo-hero h1{font-size:46px}
+  .photo-hero .lede{font-size:18px}
   .ways{padding:72px 0 16px}
   .ways>h2{font-size:30px;padding:0 24px}
   .ways>.sub{margin-bottom:32px;padding:0 24px}
