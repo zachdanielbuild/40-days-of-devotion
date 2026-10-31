@@ -12,8 +12,7 @@ KIT_DEVOTION = 'https://passionandpurpose.kit.com/40-days-of-devotion'
 CDN = 'https://images.squarespace-cdn.com/content/v1/6765a61dee5146683ca33b13/'
 SECTIONS = [('Drawing Near', 1, 7), ('Worship', 8, 14), ('The Word', 15, 21), ('Prayer', 22, 33), ('Listening', 34, 40)]
 NEW_SLUGS = {36: 'he-calls-his-sheep'}          # days that never existed on the old site
-SONG_LINKS = {29: ('O Come to the Altar by Elevation Worship',
-                   'https://www.youtube.com/results?search_query=O+Come+to+the+Altar+Elevation+Worship')}
+SONG_LINKS = {}   # day -> (song name, YouTube search URL), for a day whose video link is wrong or missing
 
 # Photos live in /photos at the repo root (uploaded Oct 30, 2026). A photo not found there
 # still loads from Squarespace. Days whose photo isn't the old site's banner:
