@@ -331,7 +331,7 @@ def card(img, eyebrow, title, text, href, more):
     im = f'<img class="ph" src="{photo(img, 1000)}" alt="" loading="lazy">' if img else ''
     return f'<article class="card">{im}<p class="eyebrow">{eyebrow}</p><h2>{title}</h2><p>{text}</p>{a}</article>'
 
-BOOK_URL = ''   # link for the printed book; leave empty to show "Link coming soon"
+BOOK_URL = 'https://www.store.antiochcc.net/collections/books/products/40-day-devotional-book'   # link for the printed book; leave empty to show "Link coming soon"
 HERO_PHOTO = 'local:2.webp'   # the misty valley photo behind the home page title
 
 # Each "way" card is topped with a small topographic map: soft contour rings around two
