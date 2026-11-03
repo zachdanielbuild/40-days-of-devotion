@@ -254,6 +254,7 @@ def shell(title, desc, path, body, image='', signup=None, script=False, overlay=
 </main>
 <footer class="site-footer">Made with love from <a href="https://antiochwaco.com/">Antioch Waco</a></footer>
 {'<script src="/site.js" defer></script>' if script else ''}
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{{"token": "60f7bffc099e494d968954bbf6b5bca0"}}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
 '''
