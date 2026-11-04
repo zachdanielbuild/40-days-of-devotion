@@ -7,7 +7,7 @@ import glob, html, os, re
 
 D = os.path.dirname(os.path.abspath(__file__))
 C, OUT = D + '/content', D + '/site'
-DOMAIN = 'https://www.40dayjourneys.com'
+DOMAIN = 'https://www.40daysofdevotion.com'
 KIT_DEVOTION = 'https://passionandpurpose.kit.com/40-days-of-devotion'
 CDN = 'https://images.squarespace-cdn.com/content/v1/6765a61dee5146683ca33b13/'
 SECTIONS = [('Drawing Near', 1, 7), ('Worship', 8, 14), ('The Word', 15, 21), ('Prayer', 22, 33), ('Listening', 34, 40)]
@@ -233,7 +233,7 @@ def shell(title, desc, path, body, image='', signup=None, script=False, overlay=
 <meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{DOMAIN}{path}">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="40 Day Journeys">
+<meta property="og:site_name" content="40 Days of Devotion">
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:url" content="{DOMAIN}{path}">
