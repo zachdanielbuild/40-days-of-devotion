@@ -197,6 +197,42 @@ def sec_listen(blocks):
                  '<span class="note">Saved on this device only.</span></div>')
     return ''.join(parts)
 
+# ---------- TEST: four-movement layout (Word, Worship, Pray, Listen & Obey) ----------
+def sec_scriptures_v2(blocks):
+    # Each passage: the text in italics, then its reference in small capitals underneath (like the Word verse).
+    out, cur = [], None
+    def close():
+        nonlocal cur
+        if cur: out.append(f'<div class="passage">{"".join(cur[1])}<p class="ref">{esc(ref_colon(cur[0]))}</p></div>')
+        cur = None
+    for i, b in enumerate(blocks):
+        if is_placeholder(b): continue
+        m = REF.match(plain(b)) if i or is_italic(b) else None
+        if m:
+            close(); cur = (m.group(1), [f'<p>{inline(m.group(2))}</p>'])
+        elif cur and is_italic(b):
+            cur[1].append(f'<p>{inline(plain(b))}</p>')
+        else:
+            close(); out.append(f'<p class="intro">{inline(b)}</p>' if i == 0 else block(b))
+    close()
+    return ''.join(out)
+
+def render_sections_v2(d, n, series):
+    secs = dict(d['sections'])
+    def body(name): return ''.join(block(b) for b in secs.get(name, []) if not is_placeholder(b))
+    word = (sec_word_verse(secs['Word'])
+            + f'<div class="devo">{body("Daily Devotional")}</div>'
+            + f'<div class="today"><h3 class="label">Scriptures for Today</h3>{sec_scriptures_v2(secs["Scriptures For Today"])}</div>')
+    out = [f'<section class="word"><h2>Word</h2>{word}</section>']
+    w = sec_worship(secs.get('Worship', []), n, series)
+    if w: out.append(f'<section><h2>Worship</h2>{w}</section>')
+    pr = sec_prayer(secs.get('Prayer', []))
+    if pr: out.append(f'<section><h2>Pray</h2>{pr}</section>')
+    out.append(f'<section><h2>Listen &amp; Obey</h2>{sec_listen(secs.get("Listen & Obey", []))}</section>')
+    if 'Invite a Friend' in secs:
+        out.append(f'<section class="invite"><h3 class="label">Invite a Friend</h3>{sec_invite(secs["Invite a Friend"])}</section>')
+    return ''.join(out)
+
 def render_sections(d, n, series):
     out = []
     for name, blocks in d['sections']:
@@ -307,7 +343,7 @@ def day_page(d, n, series, prev, nxt, total=40, variant=''):
 </div>
 {banner}
 <article class="day{' ' + variant if variant else ''}">
-{render_sections(d, n, series)}
+{render_sections_v2(d, n, series) if variant == 'v2' else render_sections(d, n, series)}
 <nav class="day-nav" aria-label="Days">{link(prev, "prev", 0)}{link(nxt, "next", 1)}</nav>
 </article>'''
     title = f'{"Day " + str(n) + ": " if n else ""}{plain(name)} · {home_t}'
@@ -326,8 +362,11 @@ def build_series(series, files, numbering):
         nxt = items[i + 1] if i + 1 < len(items) else None
         folder = 'devos' if series == 'devotion' else 'discipleship'
         write(f'{folder}/{d["slug"]}.html', day_page(d, n, series, prev, nxt))
+        if n in LAYOUT_TEST_DAYS:
+            write(f'{folder}/{d["slug"]}-layout-test.html', day_page(d, n, series, prev, nxt, variant='v2'))
     return items
 
+LAYOUT_TEST_DAYS = {1}  # TEST: /devos/<slug>-layout-test shows the four-movement layout (hidden, noindex)
 num = lambda f: int(os.path.basename(f)[:2])
 DEV = build_series('devotion', sorted(glob.glob(C + '/devotion/*.md')), num)
 
