@@ -127,21 +127,6 @@ def sec_word_verse(blocks):
     if ref: out += f'<p class="ref">{esc(ref_colon(ref))}</p>'
     return f'<div class="verse">{out}</div>'
 
-def sec_scriptures(blocks):
-    out, opened = [], False
-    for i, b in enumerate(blocks):
-        if is_placeholder(b): continue
-        m = REF.match(plain(b)) if i or is_italic(b) else None
-        if m:
-            if opened: out.append('</div>')
-            out.append(f'<div class="passage"><h3>{esc(ref_colon(m.group(1)))}</h3><p>{inline(m.group(2))}</p>'); opened = True
-        elif opened and is_italic(b):
-            out.append(f'<p>{inline(plain(b))}</p>')
-        else:
-            if opened: out.append('</div>'); opened = False
-            out.append(f'<p class="intro">{inline(b)}</p>' if i == 0 else block(b))
-    if opened: out.append('</div>')
-    return ''.join(out)
 
 def video(vid, title):
     return (f'<div class="video" data-id="{vid}" data-title="{esc(title)}">'
@@ -197,8 +182,8 @@ def sec_listen(blocks):
                  '<span class="note">Saved on this device only.</span></div>')
     return ''.join(parts)
 
-# ---------- TEST: four-movement layout (Word, Worship, Pray, Listen & Obey) ----------
-def sec_scriptures_v2(blocks):
+# ---------- day layout: four movements (Word, Worship, Pray, Listen & Obey); Invite a Friend last, only where a day has it ----------
+def sec_scriptures(blocks):
     # Each passage: the text in italics, then its reference in small capitals underneath (like the Word verse).
     out, cur = [], None
     def close():
@@ -217,12 +202,12 @@ def sec_scriptures_v2(blocks):
     close()
     return ''.join(out)
 
-def render_sections_v2(d, n, series):
+def render_sections(d, n, series):
     secs = dict(d['sections'])
     def body(name): return ''.join(block(b) for b in secs.get(name, []) if not is_placeholder(b))
     word = (sec_word_verse(secs['Word'])
             + f'<div class="devo">{body("Daily Devotional")}</div>'
-            + f'<div class="today"><h3 class="label">Scriptures for Today</h3>{sec_scriptures_v2(secs["Scriptures For Today"])}</div>')
+            + f'<div class="today"><h3 class="label">Scriptures for Today</h3>{sec_scriptures(secs["Scriptures For Today"])}</div>')
     out = [f'<section class="word"><h2>Word</h2>{word}</section>']
     w = sec_worship(secs.get('Worship', []), n, series)
     if w: out.append(f'<section><h2>Worship</h2>{w}</section>')
@@ -233,23 +218,6 @@ def render_sections_v2(d, n, series):
         out.append(f'<section class="invite"><h3 class="label">Invite a Friend</h3>{sec_invite(secs["Invite a Friend"])}</section>')
     return ''.join(out)
 
-def render_sections(d, n, series):
-    out = []
-    for name, blocks in d['sections']:
-        label = {'Scriptures For Today': 'Scriptures for Today', 'Vision for This Week': 'Vision for This Week'}.get(name, name)
-        if name == 'Word' and series == 'devotion': inner, cls = sec_word_verse(blocks), 'word'
-        elif name == 'Scriptures For Today': inner, cls = sec_scriptures(blocks), ''
-        elif name == 'Worship' or (name == 'Wrap Up' and any('youtube' in b for b in blocks)):
-            inner, cls = (sec_worship(blocks, n, series) if name == 'Worship' else
-                          ''.join(video(re.search(r'v=([\w-]+)', b).group(1), 'Worship video') if 'youtube.com/watch' in b else block(b) for b in blocks)), ''
-        elif name == 'Prayer': inner, cls = sec_prayer(blocks), ''
-        elif name == 'Invite a Friend': inner, cls = sec_invite(blocks), ''
-        elif name == 'Listen & Obey': inner, cls = sec_listen(blocks), ''
-        else: inner, cls = ''.join(block(b) for b in blocks if not is_placeholder(b)), ''
-        if not inner: continue
-        c = f' class="{cls}"' if cls else ''
-        out.append(f'<section{c}><h2>{esc(label)}</h2>{inner}</section>')
-    return ''.join(out)
 
 # ---------- page shell ----------
 # Antioch logo (traced from the black PNG). It takes its color from CSS: black, or white on the home page photo.
@@ -343,7 +311,7 @@ def day_page(d, n, series, prev, nxt, total=40, variant=''):
 </div>
 {banner}
 <article class="day{' ' + variant if variant else ''}">
-{render_sections_v2(d, n, series) if variant == 'v2' else render_sections(d, n, series)}
+{render_sections(d, n, series)}
 <nav class="day-nav" aria-label="Days">{link(prev, "prev", 0)}{link(nxt, "next", 1)}</nav>
 </article>'''
     title = f'{"Day " + str(n) + ": " if n else ""}{plain(name)} · {home_t}'
@@ -362,11 +330,8 @@ def build_series(series, files, numbering):
         nxt = items[i + 1] if i + 1 < len(items) else None
         folder = 'devos' if series == 'devotion' else 'discipleship'
         write(f'{folder}/{d["slug"]}.html', day_page(d, n, series, prev, nxt))
-        if n in LAYOUT_TEST_DAYS:
-            write(f'{folder}/{d["slug"]}-layout-test.html', day_page(d, n, series, prev, nxt, variant='v2'))
     return items
 
-LAYOUT_TEST_DAYS = {1}  # TEST: /devos/<slug>-layout-test shows the four-movement layout (hidden, noindex)
 num = lambda f: int(os.path.basename(f)[:2])
 DEV = build_series('devotion', sorted(glob.glob(C + '/devotion/*.md')), num)
 
@@ -476,5 +441,6 @@ write('_redirects', '''# Old Squarespace addresses
 /devos/bread-of-life-test /devos/bread-of-life       301
 /devos/bread-of-life-word-line /devos/bread-of-life  301
 /devos/bread-of-life-word-card /devos/bread-of-life  301
+/devos/bread-of-life-layout-test /devos/bread-of-life 301
 ''')
 print(f'Built {len(DEV)} devotion days, the landing page and launch files.')

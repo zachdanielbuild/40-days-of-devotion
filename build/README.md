@@ -26,6 +26,7 @@ git add -A && git commit -m "..." && git push
 - **Add a missing worship song or prayer (Day 36):** add a `**Song:**` line and a `[Watch on YouTube](https://www.youtube.com/watch?v=...)` line under `## Worship`, and the prayer as an italic paragraph (`*...*`) under `## Prayer`. Bracketed placeholders like `[Prayer still to be written]` are skipped on the site.
 - **Day 29 video:** the book draft changed the song to "O Come to the Altar", so the page links to a YouTube search for now. When you have the right video, put it in `content/devotion/29.md` and remove day 29 from `SONG_LINKS` in `buildsite.py`.
 - **Change styles:** edit `site/style.css`, then rebuild. The stylesheet link carries a version tag, so changes show up right away.
+- **Day page layout:** four movements, each with a big heading: Word (the main verse, then the devotional, then "Scriptures for Today" under a small label), Worship, Pray, Listen & Obey. A day's `## Invite a Friend` section (only Day 1 has one) shows last, under a small label. Built by `render_sections` in `buildsite.py`.
 - **Day page reading type:** matched to Substack posts (Spectral 19px, line height 1.6, 20px between paragraphs, 728px column; 17px on phones). Sections are 48px apart with no divider lines. The Word verse has a thin green line down its left side (`.word .verse`). Set by `.day` and the `--serif` and `--read` variables in `site/style.css`.
 
 ## Photos
