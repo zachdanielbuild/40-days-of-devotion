@@ -25,7 +25,8 @@ git add -A && git commit -m "..." && git push
 - **Fix wording on a day:** edit that day's file in `content/`, then rebuild. Keep the Notion page in step.
 - **Add a missing worship song or prayer (Day 36):** add a `**Song:**` line and a `[Watch on YouTube](https://www.youtube.com/watch?v=...)` line under `## Worship`, and the prayer as an italic paragraph (`*...*`) under `## Prayer`. Bracketed placeholders like `[Prayer still to be written]` are skipped on the site.
 - **Day 29 video:** the book draft changed the song to "O Come to the Altar", so the page links to a YouTube search for now. When you have the right video, put it in `content/devotion/29.md` and remove day 29 from `SONG_LINKS` in `buildsite.py`.
-- **Change styles:** edit `site/style.css`.
+- **Change styles:** edit `site/style.css`, then rebuild. The stylesheet link carries a version tag, so changes show up right away.
+- **Day page reading type:** matched to Substack posts (Spectral 19px, line height 1.6, 20px between paragraphs, 728px column; 17px on phones). Sections are 48px apart with no divider lines. Set by `.day` and the `--serif` and `--read` variables in `site/style.css`.
 
 ## Photos
 
