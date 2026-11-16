@@ -197,7 +197,7 @@ def sec_listen(blocks):
                  '<span class="note">Saved on this device only.</span></div>')
     return ''.join(parts)
 
-def render_sections(d, n, series):
+def render_sections(d, n, series, rules=True):
     out = []
     for name, blocks in d['sections']:
         label = {'Scriptures For Today': 'Scriptures for Today', 'Vision for This Week': 'Vision for This Week'}.get(name, name)
@@ -213,7 +213,7 @@ def render_sections(d, n, series):
         if not inner: continue
         c = f' class="{cls}"' if cls else ''
         out.append(f'<section{c}><h2>{esc(label)}</h2>{inner}</section>')
-    return '<hr class="rule">'.join(out)
+    return ('<hr class="rule">' if rules else '').join(out)
 
 # ---------- page shell ----------
 # Antioch logo (traced from the black PNG). It takes its color from CSS: black, or white on the home page photo.
@@ -221,7 +221,7 @@ LOGO = ('<svg viewBox="0 0 500 500" role="img" aria-label="40 Days of Devotion h
 
 GA_ID = 'G-4K89PV3SRJ'  # Google Analytics 4 (40 Days of Devotion property)
 
-def shell(title, desc, path, body, image='', signup=None, script=False, overlay=False):
+def shell(title, desc, path, body, image='', signup=None, script=False, overlay=False, extra_head=''):
     nav = ['<a href="/devotion#days">All 40 Days</a>', '<a href="/resources">Resources</a>']
     if signup: nav.append(f'<a class="signup" href="{signup}">Sign up</a>')
     if image.startswith('/'): image = DOMAIN + image
@@ -245,7 +245,7 @@ def shell(title, desc, path, body, image='', signup=None, script=False, overlay=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&amp;display=swap">
-<link rel="stylesheet" href="/style.css">
+{extra_head}<link rel="stylesheet" href="/style.css">
 </head>
 <body{' class="overlay"' if overlay else ''}>
 <a class="skip" href="#main">Skip to content</a>
@@ -281,7 +281,7 @@ def section_of(n):
     return next(s for s in SECTIONS if s[1] <= n <= s[2])
 
 # ---------- day pages ----------
-def day_page(d, n, series, prev, nxt, total=40):
+def day_page(d, n, series, prev, nxt, total=40, test=False):
     name = d['title'].split(': ', 1)[1]
     eyebrow = f'Day {n} of {total} · {section_of(n)[0]}'
     signup, base, home, home_t = KIT_DEVOTION, '/devos/', '/devotion', '40 Days of Devotion'
@@ -302,12 +302,15 @@ def day_page(d, n, series, prev, nxt, total=40):
 <h1>{inline(name)}</h1>
 </div>
 {banner}
-<article class="day">
-{render_sections(d, n, series)}
+<article class="day{' st' if test else ''}">
+{render_sections(d, n, series, rules=not test)}
 <nav class="day-nav" aria-label="Days">{link(prev, "prev", 0)}{link(nxt, "next", 1)}</nav>
 </article>'''
     title = f'{"Day " + str(n) + ": " if n else ""}{plain(name)} · {home_t}'
-    return shell(title, first_sentence(d), base + d['slug'], body, photo(d['photo'], 1200, share=True), signup, script=True)
+    # Test version: Substack-style reading type (Spectral 19px / 1.6, 20px between paragraphs), no divider lines.
+    # Canonical points at the real day; noindex keeps it out of search.
+    head = ('<meta name="robots" content="noindex">\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&amp;display=swap">\n') if test else ''
+    return shell(title, first_sentence(d), base + d['slug'], body, photo(d['photo'], 1200, share=True), signup, script=True, extra_head=head)
 
 def build_series(series, files, numbering):
     items = []
@@ -322,8 +325,11 @@ def build_series(series, files, numbering):
         nxt = items[i + 1] if i + 1 < len(items) else None
         folder = 'devos' if series == 'devotion' else 'discipleship'
         write(f'{folder}/{d["slug"]}.html', day_page(d, n, series, prev, nxt))
+        if n in TYPE_TEST_DAYS:
+            write(f'{folder}/{d["slug"]}-test.html', day_page(d, n, series, prev, nxt, test=True))
     return items
 
+TYPE_TEST_DAYS = {1}  # days that also get a /devos/<slug>-test page with the Substack-style type (see .day.st in style.css)
 num = lambda f: int(os.path.basename(f)[:2])
 DEV = build_series('devotion', sorted(glob.glob(C + '/devotion/*.md')), num)
 

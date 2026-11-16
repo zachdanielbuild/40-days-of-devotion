@@ -207,3 +207,20 @@ body.overlay .site-nav a:hover{color:#fff;text-decoration:underline;text-underli
   .day{padding:0}
   .rule{margin:24px 0}
 }
+
+/* TEST: Substack-style reading type, used only on /devos/<slug>-test pages (TYPE_TEST_DAYS in buildsite.py).
+   Matches Substack posts: Spectral 19px, line height 1.6, 20px between paragraphs, #363737 text, 728px column.
+   Sections sit 48px apart with no divider lines. */
+.day.st{max-width:792px;font-family:Spectral,Georgia,serif;font-size:19px;line-height:1.6;color:#363737}
+.day.st section+section{margin-top:48px}
+.day.st h2{font-family:var(--sans);color:#363737}
+.day.st .word blockquote{font-weight:400;font-size:24px;line-height:1.5}
+.day.st .prayer-panel p{font-weight:400;font-size:20px;line-height:1.6}
+.day.st .song,.day.st .share-row,.day.st .btn,.day.st .journal,.day.st .day-nav{font-family:var(--sans)}
+.day.st .journal textarea{font-family:Spectral,Georgia,serif;font-size:18px}
+@media (max-width:700px){
+  .day.st{font-size:17px}
+  .day.st section+section{margin-top:40px}
+  .day.st .word blockquote{font-size:21px}
+  .day.st .prayer-panel p{font-size:18px}
+}
