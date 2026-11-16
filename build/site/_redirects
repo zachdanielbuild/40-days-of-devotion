@@ -5,5 +5,7 @@
 /devos/pass-it-on         /devos/peter-and-john      301
 /group-events             /                          301
 /cart                     /                          301
-# Retired type test page
+# Retired test pages
 /devos/bread-of-life-test /devos/bread-of-life       301
+/devos/bread-of-life-word-line /devos/bread-of-life  301
+/devos/bread-of-life-word-card /devos/bread-of-life  301

@@ -326,12 +326,8 @@ def build_series(series, files, numbering):
         nxt = items[i + 1] if i + 1 < len(items) else None
         folder = 'devos' if series == 'devotion' else 'discipleship'
         write(f'{folder}/{d["slug"]}.html', day_page(d, n, series, prev, nxt))
-        if n in WORD_TEST_DAYS:
-            for v in ('word-line', 'word-card'):
-                write(f'{folder}/{d["slug"]}-{v}.html', day_page(d, n, series, prev, nxt, variant=v))
     return items
 
-WORD_TEST_DAYS = {1}  # TEST: /devos/<slug>-word-line and -word-card pages showing two styles for the Word verse (hidden, noindex)
 num = lambda f: int(os.path.basename(f)[:2])
 DEV = build_series('devotion', sorted(glob.glob(C + '/devotion/*.md')), num)
 
@@ -437,7 +433,9 @@ write('_redirects', '''# Old Squarespace addresses
 /devos/pass-it-on         /devos/peter-and-john      301
 /group-events             /                          301
 /cart                     /                          301
-# Retired type test page
+# Retired test pages
 /devos/bread-of-life-test /devos/bread-of-life       301
+/devos/bread-of-life-word-line /devos/bread-of-life  301
+/devos/bread-of-life-word-card /devos/bread-of-life  301
 ''')
 print(f'Built {len(DEV)} devotion days, the landing page and launch files.')

@@ -216,14 +216,7 @@ body.overlay .site-nav a:hover{color:#fff;text-decoration:underline;text-underli
 
 .verse{display:flex;flex-direction:column;gap:20px}
 
-/* TEST: two styles for the Word verse, only on /devos/<slug>-word-line and -word-card pages */
-.word-line .verse,.word-card .verse{gap:14px}
-.word-line .verse .ref,.word-card .verse .ref{font-family:var(--sans);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
-/* A: thin green line down the left, like a Substack pull quote */
-.word-line .verse{border-left:3px solid var(--accent);padding:4px 0 4px 28px}
-/* B: soft card, lighter than the prayer panel and tinted toward the green */
-.word-card .verse{background:#F2F4EF;border:1px solid #E1E6DC;padding:40px 44px;border-radius:2px}
-@media (max-width:700px){
-  .word-line .verse{padding-left:20px}
-  .word-card .verse{padding:28px 24px}
-}
+/* The Word verse: thin green line down the left, reference in small green capitals */
+.word .verse{gap:14px;border-left:3px solid var(--accent);padding:4px 0 4px 28px}
+.word .verse .ref{font-family:var(--sans);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+@media (max-width:700px){.word .verse{padding-left:20px}}
