@@ -125,7 +125,7 @@ def sec_word_verse(blocks):
         if m: text, ref = m.group(1), m.group(2)
     out = f'<blockquote>{inline(text)}</blockquote>'
     if ref: out += f'<p class="ref">{esc(ref_colon(ref))}</p>'
-    return out
+    return f'<div class="verse">{out}</div>'
 
 def sec_scriptures(blocks):
     out, opened = [], False
@@ -225,7 +225,7 @@ CSS_V = hashlib.md5(open(os.path.join(os.path.dirname(os.path.abspath(__file__))
 
 GA_ID = 'G-4K89PV3SRJ'  # Google Analytics 4 (40 Days of Devotion property)
 
-def shell(title, desc, path, body, image='', signup=None, script=False, overlay=False):
+def shell(title, desc, path, body, image='', signup=None, script=False, overlay=False, noindex=False):
     nav = ['<a href="/devotion#days">All 40 Days</a>', '<a href="/resources">Resources</a>']
     if signup: nav.append(f'<a class="signup" href="{signup}">Sign up</a>')
     if image.startswith('/'): image = DOMAIN + image
@@ -238,7 +238,7 @@ def shell(title, desc, path, body, image='', signup=None, script=False, overlay=
 <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{esc(title)}</title>
-<meta name="description" content="{esc(desc)}">
+<meta name="description" content="{esc(desc)}">{chr(10) + '<meta name="robots" content="noindex">' if noindex else ''}
 <link rel="canonical" href="{DOMAIN}{path}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="40 Days of Devotion">
@@ -285,7 +285,7 @@ def section_of(n):
     return next(s for s in SECTIONS if s[1] <= n <= s[2])
 
 # ---------- day pages ----------
-def day_page(d, n, series, prev, nxt, total=40):
+def day_page(d, n, series, prev, nxt, total=40, variant=''):
     name = d['title'].split(': ', 1)[1]
     eyebrow = f'Day {n} of {total} · {section_of(n)[0]}'
     signup, base, home, home_t = KIT_DEVOTION, '/devos/', '/devotion', '40 Days of Devotion'
@@ -306,12 +306,12 @@ def day_page(d, n, series, prev, nxt, total=40):
 <h1>{inline(name)}</h1>
 </div>
 {banner}
-<article class="day">
+<article class="day{' ' + variant if variant else ''}">
 {render_sections(d, n, series)}
 <nav class="day-nav" aria-label="Days">{link(prev, "prev", 0)}{link(nxt, "next", 1)}</nav>
 </article>'''
     title = f'{"Day " + str(n) + ": " if n else ""}{plain(name)} · {home_t}'
-    return shell(title, first_sentence(d), base + d['slug'], body, photo(d['photo'], 1200, share=True), signup, script=True)
+    return shell(title, first_sentence(d), base + d['slug'], body, photo(d['photo'], 1200, share=True), signup, script=True, noindex=bool(variant))
 
 def build_series(series, files, numbering):
     items = []
@@ -326,8 +326,12 @@ def build_series(series, files, numbering):
         nxt = items[i + 1] if i + 1 < len(items) else None
         folder = 'devos' if series == 'devotion' else 'discipleship'
         write(f'{folder}/{d["slug"]}.html', day_page(d, n, series, prev, nxt))
+        if n in WORD_TEST_DAYS:
+            for v in ('word-line', 'word-card'):
+                write(f'{folder}/{d["slug"]}-{v}.html', day_page(d, n, series, prev, nxt, variant=v))
     return items
 
+WORD_TEST_DAYS = {1}  # TEST: /devos/<slug>-word-line and -word-card pages showing two styles for the Word verse (hidden, noindex)
 num = lambda f: int(os.path.basename(f)[:2])
 DEV = build_series('devotion', sorted(glob.glob(C + '/devotion/*.md')), num)
 
