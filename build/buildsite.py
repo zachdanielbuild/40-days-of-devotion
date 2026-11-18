@@ -399,7 +399,7 @@ DMJ_WEEKS = [('Thanksgiving', 1, 7, 'Nov 23 to 29'), ('Hope', 8, 14, 'Nov 30 to 
 def dots(n): return '<div class="dots" aria-hidden="true">' + ''.join('<span class="on"></span>' if i == 0 else '<span></span>' for i in range(n)) + '</div>'
 
 def dmj_home():
-    desc = "A 40 day devotional to help you experience Jesus this Holiday season."
+    desc = "Sign up for a free 40 day devotional to help you experience Jesus this Holiday season."
     weeks = ''.join(f'''<li class="week"><div class="candy"></div><div class="week-body"><div class="meta"><span>WEEK {i+1}</span><span>DAYS {a}–{b}</span></div><h3>{t}</h3><span class="when">{w}</span></div></li>''' for i, (t, a, b, w) in enumerate(DMJ_WEEKS))
     body = f'''<section class="hero"><div class="hero-box"><div class="hero-inner">
 <div class="hero-copy">
