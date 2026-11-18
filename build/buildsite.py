@@ -439,9 +439,10 @@ def dmj_family():
     desc = "A simple way to start each day with God at the center as a family: give thanks, read and talk, then pray."
     body = """<article class="guide">
 <header class="guide-head"><p class="eyebrow">For families</p><h1><span class="script">How to do</span><span class="slab">Family Devotions</span></h1>
+<p class="byline">From Jimmy and Laura Seibert</p>
 <p class="lede">“The family that prays together stays together.” This simple phrase really is a truth.</p></header>
 <div class="guide-body">
-<p>We have tried to create an environment where, consistently in the mornings, we gather for what we call family devotions. It is a very simple process for us. As a general rule, the outline looks something like this:</p>
+<p>When we were raising our kids, the Lord gave us a vision to build a family of love, honor, and purpose. Family devotions were a key part of creating that environment in our home. For us it was a very simple process that looked something like this:</p>
 <ol class="guide-steps">
 <li><span class="n">01</span><div><h2>Give thanks</h2><p>We pray for breakfast, and then everyone describes one thing they are thankful for. “In everything give thanks; for this is God’s will for you in Christ Jesus.” We want to create thankful hearts and thankful attitudes, and there is always something to be thankful for.</p></div></li>
 <li><span class="n">02</span><div><h2>Read and talk</h2><p>Then we share a passage of Scripture or a thought from a devotion, and we discuss it for about five minutes.</p></div></li>

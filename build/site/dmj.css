@@ -161,6 +161,7 @@ a.playlist:hover{background:var(--red-ink)}
 .guide-head h1{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--red);font-weight:400}
 .guide-head .script{font-family:var(--script);font-size:clamp(44px,6vw,64px);line-height:1.15}
 .guide-head .slab{font-family:var(--slab);font-weight:900;font-size:clamp(36px,6vw,64px);line-height:1.05;text-transform:uppercase}
+.guide-head .byline{margin:0;font-size:15px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .guide-head .lede{margin:8px 0 0;font-family:var(--slab);font-weight:700;font-size:24px;line-height:1.35;color:var(--red-ink);max-width:560px}
 .guide-body p{margin:0 0 20px}
 .guide-steps{list-style:none;margin:32px 0 40px;padding:0;display:flex;flex-direction:column;gap:16px}
