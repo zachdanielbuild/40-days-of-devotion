@@ -423,10 +423,6 @@ def dmj_home():
 <p class="dot-note">This season is full. In all of it, there is one thing not to miss.</p></section>
 <section class="sec weeks" id="weeks"><div class="sec-head"><p class="eyebrow">Six weeks, one King</p><h2 class="script">The weeks</h2><p>Each week of the season has its own theme, from Thanksgiving to the new year.</p></div>
 <ol class="rail">{weeks}</ol>{dots(6)}</section>
-<section class="sec" id="how"><div class="sec-head"><p class="eyebrow">How it works</p><h2 class="slab">Simple by design</h2></div>
-<ol class="rail"><li class="step"><span class="n">01</span><h3>Sign up</h3><p>Add your name and email. That is all.</p></li>
-<li class="step"><span class="n">02</span><h3>Open it each morning</h3><p>A short devotional lands at 6:00 AM: a word from Scripture, a worship song, a prayer.</p></li>
-<li class="step"><span class="n">03</span><h3>Listen and obey</h3><p>Each day ends with one simple step to walk out with Jesus that day.</p></li></ol>{dots(3)}</section>
 <section class="signup grid-bg" id="signup"><div class="signup-box">
 <div class="signup-side"><div><p class="eyebrow">Starts Monday, Nov 23</p><h2>One email.<br>Every morning.<br>Forty days.</h2></div><p>Thanksgiving week to New Year's Day</p></div>
 <form action="{DMJ_FORM}" method="post">
@@ -468,7 +464,7 @@ def dmj_home():
 <body class="dmj">
 <a class="skip" href="#main">Skip to content</a>
 <header class="dmj-header"><a class="dmj-brand" href="/"><span class="dmj-logo">{LOGO}</span>DON'T MISS JESUS</a>
-<nav class="dmj-nav" aria-label="Main"><a href="#how">How it works</a><a href="#weeks">The weeks</a><a href="/devotion">40 Days of Devotion</a><a class="btn btn-red" href="#join">Sign up</a></nav></header>
+<nav class="dmj-nav" aria-label="Main"><a href="#weeks">The weeks</a><a href="/devotion">40 Days of Devotion</a><a class="btn btn-red" href="#join">Sign up</a></nav></header>
 <main id="main" class="dmj-main">
 {body}
 </main>
