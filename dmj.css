@@ -171,6 +171,9 @@ a.playlist:hover{background:var(--red-ink)}
 .guide-steps .n{font-family:var(--slab);font-weight:900;font-size:32px;line-height:1;color:var(--blue-ink);flex:none;width:44px}
 .guide-steps h2{margin:0 0 8px;font-size:20px;color:var(--cream)}
 .guide-steps p{margin:0;font-size:17px}
+.guide-list{margin:0 0 24px;padding-left:24px;display:flex;flex-direction:column;gap:12px}
+.guide-list li::marker{color:var(--dot)}
+.guide-steps a{color:var(--cream);text-decoration:underline}
 .guide-h{margin:48px 0 16px;font-family:var(--slab);font-weight:900;font-size:28px;line-height:1.2;color:var(--red)}
 .guide-pull{margin-top:40px!important;text-align:center;font-family:var(--script);font-size:40px;line-height:1.2;color:var(--red)}
 .signoff{font-family:var(--script);font-size:40px;line-height:1.2;color:var(--red);margin-top:8px!important}
