@@ -141,6 +141,8 @@ body.dmj{margin:0;background:var(--cream);color:var(--ink);font-family:var(--san
 .res-list{flex:1 1 400px;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px}
 .res-item{display:flex;border:1.5px solid var(--red);background:var(--paper)}
 .res-item .art{width:64px;flex:none}
+.res-item .art.art-dot{background:var(--red);display:flex;align-items:center;justify-content:center}
+.res-item .art.art-dot span{width:22px;height:22px;border-radius:50%;background:var(--dot);border:2px solid var(--cream)}
 .res-item .art.grid-bg{background-size:16px 16px}
 .res-item .art.stripe{height:auto;background:repeating-linear-gradient(0deg,var(--red) 0 18px,var(--red-2) 18px 36px)}
 .res-item .body{padding:22px 24px;display:flex;flex-direction:column;gap:6px}
