@@ -463,12 +463,12 @@ def dmj_home():
 </head>
 <body class="dmj">
 <a class="skip" href="#main">Skip to content</a>
-<header class="dmj-header"><a class="dmj-brand" href="/">DON'T MISS JESUS</a>
+<header class="dmj-header"><a class="dmj-brand" href="/"><span class="dmj-logo">{LOGO}</span>DON'T MISS JESUS</a>
 <nav class="dmj-nav" aria-label="Main"><a href="#how">How it works</a><a href="#weeks">The weeks</a><a href="/devotion">40 Days of Devotion</a><a class="btn btn-red" href="#signup">Sign up</a></nav></header>
 <main id="main" class="dmj-main">
 {body}
 </main>
-<footer class="dmj-footer"><span class="script">Merry Christmas</span><p>From your family at Antioch Waco</p>
+<footer class="dmj-footer"><span class="dmj-logo foot" aria-hidden="true">{LOGO}</span><span class="script">Merry Christmas</span><p>From your family at Antioch Waco</p>
 <nav aria-label="Footer"><a href="/devotion">40 Days of Devotion</a><a href="/resources">Resources</a><a href="https://antiochwaco.com/">Antioch Waco</a></nav></footer>
 <script>document.querySelectorAll('.rail,.more').forEach(function(r){{var d=r.nextElementSibling;if(!d||!d.classList.contains('dots'))return;r.addEventListener('scroll',function(){{var c=r.children[0];if(!c)return;var i=Math.round(r.scrollLeft/(c.offsetWidth+16));d.querySelectorAll('span').forEach(function(s,k){{s.classList.toggle('on',k===i)}})}},{{passive:true}})}});</script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{{"token": "60f7bffc099e494d968954bbf6b5bca0"}}'></script><!-- End Cloudflare Web Analytics -->

@@ -26,7 +26,11 @@ body.dmj{margin:0;background:var(--cream);color:var(--ink);font-family:var(--san
 
 /* header */
 .dmj-header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding:16px 5%;border-bottom:1px solid var(--line)}
-.dmj-brand{text-decoration:none;font-weight:600;letter-spacing:.22em;font-size:13px}
+.dmj-brand{text-decoration:none;font-weight:600;letter-spacing:.22em;font-size:13px;display:inline-flex;align-items:center;gap:12px;min-height:48px}
+.dmj-logo{display:inline-flex;color:var(--red)}
+.dmj-logo svg{width:36px;height:36px}
+.dmj-logo.foot{color:var(--cream)}
+.dmj-logo.foot svg{width:48px;height:48px}
 .dmj-nav{display:flex;flex-wrap:wrap;align-items:center;gap:8px 28px;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
 .dmj-nav a{text-decoration:none;color:var(--red-ink)}
 .dmj-nav .btn{font-size:13px;letter-spacing:.14em;padding:0 22px}
@@ -147,7 +151,8 @@ body.dmj{margin:0;background:var(--cream);color:var(--ink);font-family:var(--san
 @media (max-width:767px){
   body.dmj{font-size:18px}
   .dmj-header{padding:8px var(--m);flex-wrap:nowrap}
-  .dmj-brand{font-size:12px;letter-spacing:.2em}
+  .dmj-brand{font-size:12px;letter-spacing:.2em;gap:8px}
+  .dmj-logo svg{width:28px;height:28px}
   .dmj-nav a:not(.btn){display:none}
   .hero{padding:0}
   .hero-box{border-radius:0;padding:0}
