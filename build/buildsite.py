@@ -432,12 +432,14 @@ def dmj_home():
 </form></div></section>
 <section class="sec weeks" id="weeks"><div class="sec-head"><p class="eyebrow">Six weeks, one King</p><h2 class="script">The weeks</h2><p>Each week of the season has its own theme, from Thanksgiving to the new year.</p></div>
 <ol class="rail">{weeks}</ol>{dots(6)}</section>
-<section class="sec" id="more"><div class="sec-head"><p class="eyebrow">All year long</p><h2 class="slab">40 Days of Devotion</h2><p>The original journey is still here, free to read any time.</p></div>
-<div class="more">
-<a class="more-card" href="/devotion"><div class="art candy"></div><div class="body"><span class="eyebrow">Free</span><h3>Read it here</h3><p>All forty days of the original devotional, at your own pace.</p><span class="go">See all 40 days →</span></div></a>
-<a class="more-card" href="{KIT_DEVOTION}"><div class="art grid-bg"></div><div class="body"><span class="eyebrow">Free</span><h3>Get it by email</h3><p>Start the original 40 days in your inbox any time of year.</p><span class="go">Sign up →</span></div></a>
-<a class="more-card" href="{BOOK_URL}"><div class="art stripe"></div><div class="body"><span class="eyebrow">Print</span><h3>Get the book</h3><p>The printed edition, for a quiet morning with a pen in hand.</p><span class="go">Get the book →</span></div></a>
-</div>{dots(3)}</section>'''
+<section class="sec" id="resources"><div class="sec-head"><p class="eyebrow">More for the season</p><h2 class="slab">Other resources</h2></div>
+<div class="res">
+<div class="playlist"><p class="eyebrow">40 days of songs</p><h3>The playlist</h3><p>One song for every day, picked by the Antioch worship team, from “Gratitude” to “Doxology.”</p><span class="soon">Coming soon</span></div>
+<ul class="res-list">
+<li class="res-item"><div class="art candy" aria-hidden="true"></div><div class="body"><span class="eyebrow">Thanksgiving</span><h3>Gratitude Table Cards</h3><p>Conversation starters and a mealtime prayer to print for your table.</p><span class="soon">Coming soon</span></div></li>
+<li class="res-item"><div class="art stripe" aria-hidden="true"></div><div class="body"><span class="eyebrow">Christmas</span><h3>Family Christmas Eve Guide</h3><p>Read the Christmas story together, with simple questions for kids and adults.</p><span class="soon">Coming soon</span></div></li>
+<li class="res-item"><div class="art grid-bg" aria-hidden="true"></div><div class="body"><span class="eyebrow">New Year</span><h3>30-Day Journal</h3><p>Look back on 2026, pray over 2027 and plan your next step in the Word.</p><a class="go" href="https://passionandpurpose.kit.com/30dayjournal">Get the journal →</a></div></li>
+</ul></div></section>'''
     page = f'''<!doctype html>
 <html lang="en">
 <head>

@@ -119,6 +119,24 @@ body.dmj{margin:0;background:var(--cream);color:var(--ink);font-family:var(--san
 .more-card .go{margin-top:8px;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--red)}
 .more-card:hover{border-color:var(--red-ink)}
 
+/* resources */
+.res{display:flex;flex-wrap:wrap;gap:24px;max-width:1080px;margin:0 auto}
+.playlist{flex:1 1 400px;background:var(--red);color:var(--cream);padding:40px;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.playlist .eyebrow{font-size:12px;letter-spacing:.2em;color:var(--blue-ink)}
+.playlist h3{margin:0;font-family:var(--script);font-weight:400;font-size:48px;line-height:1.1}
+.playlist p{margin:0;font-size:16px}
+.res-list{flex:1 1 400px;list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px}
+.res-item{display:flex;border:1.5px solid var(--red);background:var(--paper)}
+.res-item .art{width:64px;flex:none}
+.res-item .art.grid-bg{background-size:16px 16px}
+.res-item .art.stripe{height:auto;background:repeating-linear-gradient(0deg,var(--red) 0 18px,var(--red-2) 18px 36px)}
+.res-item .body{padding:22px 24px;display:flex;flex-direction:column;gap:6px}
+.res-item .eyebrow{font-size:12px;letter-spacing:.2em;color:var(--red-2)}
+.res-item h3{margin:0;font-size:19px;color:var(--red-ink)}
+.res-item p{margin:0;font-size:15px;line-height:1.5}
+.res .go{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;min-height:32px;display:inline-flex;align-items:center}
+.res .soon{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+
 /* footer */
 .dmj-footer{background:var(--red);color:var(--cream);padding:56px 5%;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
 .dmj-footer .script{font-family:var(--script);font-size:64px;line-height:1}
@@ -166,6 +184,11 @@ body.dmj{margin:0;background:var(--cream);color:var(--ink);font-family:var(--san
   .dots{display:flex;justify-content:center;gap:8px;margin-top:24px}
   .dots span{width:8px;height:8px;border-radius:50%;background:#CDBBA6}
   .dots span.on{width:24px;border-radius:999px;background:var(--red)}
+  .res{padding:0 var(--m);gap:16px}
+  .playlist{padding:32px 24px}
+  .playlist h3{font-size:44px}
+  .res-item .art{width:48px}
+  .res-item .body{padding:20px}
   .dmj-footer{padding:48px var(--m)}
   .dmj-footer .script{font-size:48px}
 }
