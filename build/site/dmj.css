@@ -56,7 +56,7 @@ body.dmj{margin:0;background:var(--cream);color:var(--ink);font-family:var(--san
 .phone-note .app span:last-child{color:#6B5A50;font-weight:500;letter-spacing:0}
 .phone-note strong{font-size:13px}
 .phone-note p{margin:0;font-size:12px;line-height:1.4;color:#4A3A32}
-.hero-stripe{margin:0 5%}
+.hero-stripe{margin:0}
 
 /* hero sign-up */
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
