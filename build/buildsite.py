@@ -388,6 +388,93 @@ def resources():
 </section>'''
     write('resources.html', shell('Resources · 40 Days of Devotion', 'The Face to Face teaching series and the Alone With God guidebook.', '/resources', body, '', KIT_DEVOTION))
 
+# ---------- Don't Miss Jesus: seasonal home page (Nov 2026 to Jan 1 2027) ----------
+# Set DMJ_SEASON = False after Jan 1 to put the 40 Days of Devotion landing page back on the home page.
+DMJ_SEASON = True
+DMJ_FORM = 'https://app.kit.com/forms/10209100/subscriptions'   # Kit landing page "Don't Miss Jesus 2026"
+DMJ_CSS_V = hashlib.md5(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'site', 'dmj.css'), 'rb').read()).hexdigest()[:8]
+DMJ_WEEKS = [('Thanksgiving', 1, 7, 'Nov 23 to 29'), ('Hope', 8, 14, 'Nov 30 to Dec 6'), ('Peace', 15, 21, 'Dec 7 to 13'),
+             ('Joy', 22, 28, 'Dec 14 to 20'), ('Love', 29, 35, 'Dec 21 to 27'), ('Grace', 36, 40, 'Dec 28 to Jan 1')]
+
+def dots(n): return '<div class="dots" aria-hidden="true">' + ''.join('<span class="on"></span>' if i == 0 else '<span></span>' for i in range(n)) + '</div>'
+
+def dmj_home():
+    desc = "40 days in the Word of God. A short devotional in your inbox every morning, from Thanksgiving week to New Year's Day."
+    weeks = ''.join(f'''<li class="week"><div class="candy"></div><div class="week-body"><div class="meta"><span>WEEK {i+1}</span><span>DAYS {a}–{b}</span></div><h3>{t}</h3><span class="when">{w}</span></div></li>''' for i, (t, a, b, w) in enumerate(DMJ_WEEKS))
+    body = f'''<section class="hero"><div class="hero-box"><div class="hero-inner">
+<div class="hero-copy">
+<p class="eyebrow dates">Nov 23 to Jan 1 · 40 Days</p>
+<h1><span class="slab">DON'T MISS</span><span class="script">Jesus</span></h1>
+<p class="lede">{desc}</p>
+<a class="btn btn-cream cta" href="#signup">Get the daily email</a>
+</div>
+<div class="phone" aria-hidden="true"><div class="phone-body"><div class="phone-dot"></div><div class="phone-screen">
+<span class="phone-date">Monday, November 23</span><span class="phone-time">6:00</span>
+<div class="phone-note"><div class="app"><span>DON'T MISS JESUS</span><span>now</span></div><strong>Day 1 · Thanksgiving</strong><p>Give thanks to the Lord, for He is good. Today's devotional is ready.</p></div>
+</div></div></div>
+</div></div><div class="stripe hero-stripe"></div></section>
+<section class="signup grid-bg" id="signup"><div class="signup-box">
+<div class="signup-side"><div><p class="eyebrow">Starts Monday, Nov 23</p><h2>One email.<br>Every morning.<br>Forty days.</h2></div><p>Thanksgiving week to New Year's Day</p></div>
+<form action="{DMJ_FORM}" method="post">
+<h2>Count me in</h2>
+<div class="fields"><div class="field"><label for="dmj-name">First name</label><input id="dmj-name" name="fields[first_name]" autocomplete="given-name" required></div>
+<div class="field"><label for="dmj-email">Email</label><input id="dmj-email" type="email" name="email_address" autocomplete="email" required></div></div>
+<button type="submit">SIGN ME UP</button>
+<p class="fine">One email a day, Nov 23 to Jan 1, from Antioch Waco. Unsubscribe anytime. We'll never share your email.</p>
+</form></div></section>
+<section class="verse"><div class="red-dot" aria-hidden="true"></div>
+<blockquote>“He is before all things, and in Him all things hold together… so that He Himself will come to have first place in everything.”</blockquote>
+<p class="eyebrow ref">Colossians 1:17–18</p>
+<p class="dot-note">This season is full. In all of it, there is one thing not to miss.</p></section>
+<section class="sec" id="how"><div class="sec-head"><p class="eyebrow">How it works</p><h2 class="slab">Simple by design</h2></div>
+<ol class="rail"><li class="step"><span class="n">01</span><h3>Sign up</h3><p>Add your name and email. That is all.</p></li>
+<li class="step"><span class="n">02</span><h3>Open it each morning</h3><p>A short devotional lands at 6:00 AM: a word from Scripture, a worship song, a prayer.</p></li>
+<li class="step"><span class="n">03</span><h3>Listen and obey</h3><p>Each day ends with one simple step to walk out with Jesus that day.</p></li></ol>{dots(3)}</section>
+<section class="sec weeks" id="weeks"><div class="sec-head"><p class="eyebrow">Six weeks, one King</p><h2 class="script">The weeks</h2><p>Each week of the season has its own theme, from Thanksgiving to the new year.</p></div>
+<ol class="rail">{weeks}</ol>{dots(6)}</section>
+<section class="sec" id="more"><div class="sec-head"><p class="eyebrow">All year long</p><h2 class="slab">40 Days of Devotion</h2><p>The original journey is still here, free to read any time.</p></div>
+<div class="more">
+<a class="more-card" href="/devotion"><div class="art candy"></div><div class="body"><span class="eyebrow">Free</span><h3>Read it here</h3><p>All forty days of the original devotional, at your own pace.</p><span class="go">See all 40 days →</span></div></a>
+<a class="more-card" href="{KIT_DEVOTION}"><div class="art grid-bg"></div><div class="body"><span class="eyebrow">Free</span><h3>Get it by email</h3><p>Start the original 40 days in your inbox any time of year.</p><span class="go">Sign up →</span></div></a>
+<a class="more-card" href="{BOOK_URL}"><div class="art stripe"></div><div class="body"><span class="eyebrow">Print</span><h3>Get the book</h3><p>The printed edition, for a quiet morning with a pen in hand.</p><span class="go">Get the book →</span></div></a>
+</div>{dots(3)}</section>'''
+    page = f'''<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Don't Miss Jesus · 40 Days of Devotion</title>
+<meta name="description" content="{esc(desc)}">
+<link rel="canonical" href="{DOMAIN}/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="40 Days of Devotion">
+<meta property="og:title" content="Don't Miss Jesus">
+<meta property="og:description" content="{esc(desc)}">
+<meta property="og:url" content="{DOMAIN}/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&amp;family=Outfit:wght@400;500;600;700&amp;family=Yellowtail&amp;display=swap">
+<link rel="stylesheet" href="/dmj.css?v={DMJ_CSS_V}">
+</head>
+<body class="dmj">
+<a class="skip" href="#main">Skip to content</a>
+<header class="dmj-header"><a class="dmj-brand" href="/">DON'T MISS JESUS</a>
+<nav class="dmj-nav" aria-label="Main"><a href="#how">How it works</a><a href="#weeks">The weeks</a><a href="/devotion">40 Days of Devotion</a><a class="btn btn-red" href="#signup">Sign up</a></nav></header>
+<main id="main" class="dmj-main">
+{body}
+</main>
+<footer class="dmj-footer"><span class="script">Merry Christmas</span><p>From your family at Antioch Waco</p>
+<nav aria-label="Footer"><a href="/devotion">40 Days of Devotion</a><a href="/resources">Resources</a><a href="https://antiochwaco.com/">Antioch Waco</a></nav></footer>
+<script>document.querySelectorAll('.rail,.more').forEach(function(r){{var d=r.nextElementSibling;if(!d||!d.classList.contains('dots'))return;r.addEventListener('scroll',function(){{var c=r.children[0];if(!c)return;var i=Math.round(r.scrollLeft/(c.offsetWidth+16));d.querySelectorAll('span').forEach(function(s,k){{s.classList.toggle('on',k===i)}})}},{{passive:true}})}});</script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{{"token": "60f7bffc099e494d968954bbf6b5bca0"}}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
+'''
+    write('index.html', page)
+
 def devotion_landing():
     groups = ''.join(f'''<div class="group"><div class="group-head"><h3>{s}</h3><span>Days {a} to {b}</span></div>
 <ol class="day-list">{day_rows([x for x in DEV if a <= x[0] <= b], "/devos/")}</ol></div>''' for s, a, b in SECTIONS)
@@ -416,7 +503,7 @@ def devotion_landing():
     page = shell('40 Days of Devotion', 'A daily devotional to help you start, strengthen or reignite the daily habit of spending time with the Lord.', '/devotion', body,
                  photo(HERO_PHOTO, 1200, share=True), KIT_DEVOTION, overlay=True)
     write('devotion.html', page)
-    write('index.html', page)   # the home page is the devotion landing page
+    if not DMJ_SEASON: write('index.html', page)   # outside the Don't Miss Jesus season the home page is the devotion landing page
 
 def notices():
     write('whats-next.html', shell('You are all signed up! · 40 Days of Devotion', 'You are signed up for 40 Days of Devotion.', '/whats-next',
@@ -425,9 +512,10 @@ def notices():
         '<section class="notice"><h1>Page not found</h1><p>The page you were looking for isn’t here anymore. All 40 days of the devotional are still on the site.</p><a class="btn" href="/devotion#days">See all 40 days</a></section>'))
 
 devotion_landing(); resources(); notices()
+if DMJ_SEASON: dmj_home()
 
 # ---------- launch files ----------
-paths = ['/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]
+paths = ['/', '/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]
 write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{DOMAIN}{p}</loc></url>\n' for p in paths) + '</urlset>\n')
 write('robots.txt', f'User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n')
 write('_redirects', '''# Old Squarespace addresses
