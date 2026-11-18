@@ -142,7 +142,8 @@ body.dmj{margin:0;background:var(--cream);color:var(--ink);font-family:var(--san
   .hero .cta{display:none}
   .phone{display:none}
   .hero-stripe{margin:0;height:8px}
-  .signup{padding:32px var(--m);background-size:32px 32px}
+  .hero{order:-2}
+  .signup{order:-1;padding:32px var(--m);background-size:32px 32px}
   .signup-side{display:none}
   .signup form{padding:24px;gap:16px}
   .signup form h2{font-size:40px}
