@@ -421,6 +421,8 @@ def dmj_home():
 <blockquote>“He is before all things, and in Him all things hold together… so that He Himself will come to have first place in everything.”</blockquote>
 <p class="eyebrow ref">Colossians 1:17–18</p>
 <p class="dot-note">This season is full. In all of it, there is one thing not to miss.</p></section>
+<section class="sec weeks" id="weeks"><div class="sec-head"><p class="eyebrow">Six weeks, one King</p><h2 class="script">The weeks</h2><p>Each week of the season has its own theme, from Thanksgiving to the new year.</p></div>
+<ol class="rail">{weeks}</ol>{dots(6)}</section>
 <section class="sec" id="how"><div class="sec-head"><p class="eyebrow">How it works</p><h2 class="slab">Simple by design</h2></div>
 <ol class="rail"><li class="step"><span class="n">01</span><h3>Sign up</h3><p>Add your name and email. That is all.</p></li>
 <li class="step"><span class="n">02</span><h3>Open it each morning</h3><p>A short devotional lands at 6:00 AM: a word from Scripture, a worship song, a prayer.</p></li>
@@ -434,8 +436,6 @@ def dmj_home():
 <button type="submit">SIGN ME UP</button>
 <p class="fine">One email a day, Nov 23 to Jan 1, from Antioch Waco. Unsubscribe anytime. We'll never share your email.</p>
 </form></div></section>
-<section class="sec weeks" id="weeks"><div class="sec-head"><p class="eyebrow">Six weeks, one King</p><h2 class="script">The weeks</h2><p>Each week of the season has its own theme, from Thanksgiving to the new year.</p></div>
-<ol class="rail">{weeks}</ol>{dots(6)}</section>
 <section class="sec" id="resources"><div class="sec-head"><p class="eyebrow">More for the season</p><h2 class="slab">Other resources</h2></div>
 <div class="res">
 <div class="playlist"><p class="eyebrow">40 days of songs</p><h3>The playlist</h3><p>One song for every day, picked by the Antioch worship team, from “Gratitude” to “Doxology.”</p><span class="soon">Coming soon</span></div>

@@ -112,7 +112,7 @@ body.dmj{margin:0;background:var(--cream);color:var(--ink);font-family:var(--san
 .signup .fine{margin:0;font-size:13px;line-height:1.5;color:var(--muted)}
 
 /* weeks */
-.weeks{padding-top:112px}
+.weeks{padding-top:0}
 .week{background:var(--paper);border:1.5px solid var(--line);display:flex;flex-direction:column}
 .week .candy{height:10px}
 .week-body{padding:28px;display:flex;flex-direction:column;gap:8px}
@@ -182,7 +182,7 @@ body.dmj{margin:0;background:var(--cream);color:var(--ink);font-family:var(--san
   .red-dot{width:16px;height:16px}
   .verse blockquote{font-size:26px}
   .sec{padding:0 0 64px}
-  .weeks{padding-top:64px}
+  .weeks{padding-top:0}
   .sec-head{align-items:flex-start;text-align:left;padding:0 var(--m);margin-bottom:24px;gap:8px}
   .sec-head .slab{font-size:32px}
   .sec-head .script{font-size:44px}
