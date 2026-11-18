@@ -398,6 +398,67 @@ DMJ_WEEKS = [('Thanksgiving', 1, 7, 'Nov 23 to 29'), ('Hope', 8, 14, 'Nov 30 to 
 
 def dots(n): return '<div class="dots" aria-hidden="true">' + ''.join('<span class="on"></span>' if i == 0 else '<span></span>' for i in range(n)) + '</div>'
 
+def dmj_shell(title, desc, path, body, signup='/#join', extra=''):
+    return f'''<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{esc(title)}</title>
+<meta name="description" content="{esc(desc)}">
+<link rel="canonical" href="{DOMAIN}{path}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="40 Days of Devotion">
+<meta property="og:title" content="{esc(title)}">
+<meta property="og:description" content="{esc(desc)}">
+<meta property="og:url" content="{DOMAIN}{path}">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&amp;family=Outfit:wght@400;500;600;700&amp;family=Yellowtail&amp;display=swap">
+<link rel="stylesheet" href="/dmj.css?v={DMJ_CSS_V}">
+</head>
+<body class="dmj{extra}">
+<a class="skip" href="#main">Skip to content</a>
+<header class="dmj-header"><a class="dmj-brand" href="/"><span class="dmj-logo">{LOGO}</span>DON'T MISS JESUS</a>
+<nav class="dmj-nav" aria-label="Main"><a href="/#weeks">The weeks</a><a href="/devotion">40 Days of Devotion</a><a class="btn btn-red" href="{signup}">Sign up</a></nav></header>
+<main id="main" class="dmj-main">
+{body}
+</main>
+<footer class="dmj-footer"><span class="dmj-logo foot" aria-hidden="true">{LOGO}</span><span class="script">Merry Christmas</span><p>From your family at Antioch Waco</p>
+<nav aria-label="Footer"><a href="/devotion">40 Days of Devotion</a><a href="/resources">Resources</a><a href="https://antiochwaco.com/">Antioch Waco</a></nav></footer>
+<script>document.querySelectorAll('.rail,.more').forEach(function(r){{var d=r.nextElementSibling;if(!d||!d.classList.contains('dots'))return;r.addEventListener('scroll',function(){{var c=r.children[0];if(!c)return;var i=Math.round(r.scrollLeft/(c.offsetWidth+16));d.querySelectorAll('span').forEach(function(s,k){{s.classList.toggle('on',k===i)}})}},{{passive:true}})}});</script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{{"token": "60f7bffc099e494d968954bbf6b5bca0"}}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>
+'''
+
+def dmj_family():
+    desc = "A simple way to start each day with God at the center as a family: give thanks, read and talk, then pray."
+    body = """<article class="guide">
+<header class="guide-head"><p class="eyebrow">For families</p><h1><span class="script">How to do</span><span class="slab">Family Devotions</span></h1>
+<p class="lede">“The family that prays together stays together.” This simple phrase really is a truth.</p></header>
+<div class="guide-body">
+<p>We have tried to create an environment where, consistently in the mornings, we gather for what we call family devotions. It is a very simple process for us. As a general rule, the outline looks something like this:</p>
+<ol class="guide-steps">
+<li><span class="n">01</span><div><h2>Give thanks</h2><p>We pray for breakfast, and then everyone describes one thing they are thankful for. “In everything give thanks; for this is God’s will for you in Christ Jesus.” We want to create thankful hearts and thankful attitudes, and there is always something to be thankful for.</p></div></li>
+<li><span class="n">02</span><div><h2>Read and talk</h2><p>Then we share a passage of Scripture or a thought from a devotion, and we discuss it for about five minutes.</p></div></li>
+<li><span class="n">03</span><div><h2>Pray</h2><p>We usually pray for one missionary, one need, and then over our day.</p></div></li>
+</ol>
+<p>This simple structure has allowed us to stay connected and to put a stake in the ground: we start every day with God at the center. As a family we are committed to seeking God together, and these family devotional times have been great.</p>
+<h2 class="guide-h">Start from the very beginning</h2>
+<p>From the day they were born, even while being held in our arms, our kids were with us while we read the Bible, prayed and sought God. We would read the Bible to them and pray for them. As soon as they were old enough to speak, we taught them Scripture, had them memorize it, and helped them begin to understand God.</p>
+<h2 class="guide-h">Time alone with Jesus, at every stage</h2>
+<p>Each of our kids has time alone with Jesus every morning. When they were little, we started with short Bible story videos. While we spent time with the Lord, they would watch these stories about Jesus, and then we would talk about them together. As they got a little older, we got them large-print kids’ Bibles. They would read, pray, wait on God and learn to hear Him.</p>
+<p>At every stage of life we sat side by side with them, helped them get started, and taught them to spend time alone with Jesus. Today, with young adults and teenagers, it is still the first thing that happens every day. As our daughters have gone away to college, we have found it is the number one thing they do every day. Not because we ask them to, but because they have found it to be the source of life they need for everything in front of them.</p>
+<p class="guide-pull">Remember, your example matters in everything.</p>
+</div>
+<aside class="guide-cta"><p class="eyebrow">Starts Monday, Nov 23</p><h2>Use Don’t Miss Jesus as your family’s passage</h2><p>Each morning’s devotional gives you a Scripture, a song and a prayer to share around the table.</p><a class="btn btn-cream" href="/#join">Count Me In</a></aside>
+</article>"""
+    write('dontmissjesus/family-devotions.html', dmj_shell("How to Do Family Devotions · Don't Miss Jesus", desc, '/dontmissjesus/family-devotions', body, extra=' dmj-page'))
+
 def dmj_home():
     desc = "Sign up for a free 40 day devotional to help you experience Jesus this Holiday season."
     weeks = ''.join(f'''<li class="week"><div class="candy"></div><div class="week-body"><div class="meta"><span>WEEK {i+1}</span><span>DAYS {a}–{b}</span></div><h3>{t}</h3><span class="when">{w}</span></div></li>''' for i, (t, a, b, w) in enumerate(DMJ_WEEKS))
@@ -434,47 +495,13 @@ def dmj_home():
 </form></div></section>
 <section class="sec" id="resources"><div class="sec-head"><p class="eyebrow">More for the season</p><h2 class="slab">Other resources</h2></div>
 <div class="res">
-<div class="playlist"><p class="eyebrow">40 days of songs</p><h3>The playlist</h3><p>One song for every day, picked by the Antioch worship team, from “Gratitude” to “Doxology.”</p><span class="soon">Coming soon</span></div>
+<a class="playlist" href="/dontmissjesus/family-devotions"><p class="eyebrow">For families</p><h3>Family devotions</h3><p>A simple way to start each morning with God at the center: give thanks, read and talk, then pray together.</p><span class="go">Read the guide →</span></a>
 <ul class="res-list">
 <li class="res-item"><div class="art candy" aria-hidden="true"></div><div class="body"><span class="eyebrow">Thanksgiving</span><h3>Gratitude Table Cards</h3><p>Conversation starters and a mealtime prayer to print for your table.</p><span class="soon">Coming soon</span></div></li>
 <li class="res-item"><div class="art stripe" aria-hidden="true"></div><div class="body"><span class="eyebrow">Christmas</span><h3>Family Christmas Eve Guide</h3><p>Read the Christmas story together, with simple questions for kids and adults.</p><span class="soon">Coming soon</span></div></li>
 <li class="res-item"><div class="art grid-bg" aria-hidden="true"></div><div class="body"><span class="eyebrow">New Year</span><h3>30-Day Journal</h3><p>Look back on 2026, pray over 2027 and plan your next step in the Word.</p><a class="go" href="https://passionandpurpose.kit.com/30dayjournal">Get the journal →</a></div></li>
 </ul></div></section>'''
-    page = f'''<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','{GA_ID}');</script>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Don't Miss Jesus · 40 Days of Devotion</title>
-<meta name="description" content="{esc(desc)}">
-<link rel="canonical" href="{DOMAIN}/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="40 Days of Devotion">
-<meta property="og:title" content="Don't Miss Jesus">
-<meta property="og:description" content="{esc(desc)}">
-<meta property="og:url" content="{DOMAIN}/">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&amp;family=Outfit:wght@400;500;600;700&amp;family=Yellowtail&amp;display=swap">
-<link rel="stylesheet" href="/dmj.css?v={DMJ_CSS_V}">
-</head>
-<body class="dmj">
-<a class="skip" href="#main">Skip to content</a>
-<header class="dmj-header"><a class="dmj-brand" href="/"><span class="dmj-logo">{LOGO}</span>DON'T MISS JESUS</a>
-<nav class="dmj-nav" aria-label="Main"><a href="#weeks">The weeks</a><a href="/devotion">40 Days of Devotion</a><a class="btn btn-red" href="#join">Sign up</a></nav></header>
-<main id="main" class="dmj-main">
-{body}
-</main>
-<footer class="dmj-footer"><span class="dmj-logo foot" aria-hidden="true">{LOGO}</span><span class="script">Merry Christmas</span><p>From your family at Antioch Waco</p>
-<nav aria-label="Footer"><a href="/devotion">40 Days of Devotion</a><a href="/resources">Resources</a><a href="https://antiochwaco.com/">Antioch Waco</a></nav></footer>
-<script>document.querySelectorAll('.rail,.more').forEach(function(r){{var d=r.nextElementSibling;if(!d||!d.classList.contains('dots'))return;r.addEventListener('scroll',function(){{var c=r.children[0];if(!c)return;var i=Math.round(r.scrollLeft/(c.offsetWidth+16));d.querySelectorAll('span').forEach(function(s,k){{s.classList.toggle('on',k===i)}})}},{{passive:true}})}});</script>
-<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{{"token": "60f7bffc099e494d968954bbf6b5bca0"}}'></script><!-- End Cloudflare Web Analytics -->
-</body>
-</html>
-'''
+    page = dmj_shell("Don't Miss Jesus · 40 Days of Devotion", desc, '/', body, '#join')
     write('index.html', page)
 
 def devotion_landing():
@@ -514,10 +541,10 @@ def notices():
         '<section class="notice"><h1>Page not found</h1><p>The page you were looking for isn’t here anymore. All 40 days of the devotional are still on the site.</p><a class="btn" href="/devotion#days">See all 40 days</a></section>'))
 
 devotion_landing(); resources(); notices()
-if DMJ_SEASON: dmj_home()
+if DMJ_SEASON: dmj_home(); dmj_family()
 
 # ---------- launch files ----------
-paths = ['/', '/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]
+paths = ['/', '/dontmissjesus/family-devotions', '/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]
 write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{DOMAIN}{p}</loc></url>\n' for p in paths) + '</urlset>\n')
 write('robots.txt', f'User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n')
 write('_redirects', '''# Old Squarespace addresses
