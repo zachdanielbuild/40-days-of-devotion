@@ -406,7 +406,11 @@ def dmj_home():
 <p class="eyebrow dates">Nov 23 to Jan 1 · 40 Days</p>
 <h1><span class="slab">DON'T MISS</span><span class="script">Jesus</span></h1>
 <p class="lede">{desc}</p>
-<a class="btn btn-cream cta" href="#signup">Get the daily email</a>
+<form class="hero-form" id="join" action="{DMJ_FORM}" method="post">
+<label class="sr" for="hero-name">First name</label><input id="hero-name" name="fields[first_name]" placeholder="First name" autocomplete="given-name" required>
+<label class="sr" for="hero-email">Email</label><input id="hero-email" type="email" name="email_address" placeholder="Email" autocomplete="email" required>
+<button type="submit">Count Me In</button>
+</form>
 </div>
 <div class="phone" aria-hidden="true"><div class="phone-body"><div class="phone-dot"></div><div class="phone-screen">
 <span class="phone-date">Monday, November 23</span><span class="phone-time">6:00</span>
@@ -464,7 +468,7 @@ def dmj_home():
 <body class="dmj">
 <a class="skip" href="#main">Skip to content</a>
 <header class="dmj-header"><a class="dmj-brand" href="/"><span class="dmj-logo">{LOGO}</span>DON'T MISS JESUS</a>
-<nav class="dmj-nav" aria-label="Main"><a href="#how">How it works</a><a href="#weeks">The weeks</a><a href="/devotion">40 Days of Devotion</a><a class="btn btn-red" href="#signup">Sign up</a></nav></header>
+<nav class="dmj-nav" aria-label="Main"><a href="#how">How it works</a><a href="#weeks">The weeks</a><a href="/devotion">40 Days of Devotion</a><a class="btn btn-red" href="#join">Sign up</a></nav></header>
 <main id="main" class="dmj-main">
 {body}
 </main>
