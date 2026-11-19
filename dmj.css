@@ -47,7 +47,7 @@ body.dmj{margin:0;background:var(--cream);color:var(--ink);font-family:var(--san
 .hero .dates{color:var(--blue-ink)}
 .phone{flex:0 1 300px;display:flex;justify-content:center}
 .phone-body{width:270px;height:540px;border-radius:44px;background:var(--cream);padding:12px;transform:rotate(4deg);box-shadow:0 24px 60px rgba(0,0,0,.35);position:relative}
-.phone-dot{position:absolute;top:28px;right:32px;width:34px;height:34px;border-radius:50%;background:var(--dot);box-shadow:0 1px 2px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.25);z-index:2;transform:rotate(-4deg)}
+.phone-dot{position:absolute;top:28px;left:32px;width:34px;height:34px;border-radius:50%;background:var(--dot);box-shadow:0 1px 2px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.25);z-index:2;transform:rotate(-4deg)}
 .phone-screen{width:100%;height:100%;border-radius:34px;background:#4A1010;display:flex;flex-direction:column;align-items:center;padding:56px 14px 0;color:var(--cream)}
 .phone-date{font-size:13px;opacity:.85}
 .phone-time{font-family:var(--slab);font-weight:700;font-size:64px;line-height:1.1}
@@ -235,7 +235,7 @@ a.playlist:hover{background:var(--red-ink)}
   .phone-note{margin-top:40px;padding:10px 12px}
   .phone-note strong{font-size:12px}
   .phone-note p{font-size:11px}
-  .phone-dot{top:20px;right:22px;width:26px;height:26px}
+  .phone-dot{top:20px;left:22px;width:26px;height:26px}
   .hero-stripe{margin:0;height:8px}
   .signup{display:none;padding:32px var(--m);background-size:32px 32px}
   .signup-side{display:none}
