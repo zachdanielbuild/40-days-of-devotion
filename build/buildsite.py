@@ -414,7 +414,15 @@ def dmj_shell(title, desc, path, body, signup='/#join', extra=''):
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:url" content="{DOMAIN}{path}">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:image" content="{DOMAIN}/dmj-share.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Antioch A logo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{DOMAIN}/dmj-share.png">
+<meta name="theme-color" content="#7C1F1F">
+<link rel="icon" href="/dmj-favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/dmj-icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&amp;family=Outfit:wght@400;500;600;700&amp;family=Yellowtail&amp;display=swap">
