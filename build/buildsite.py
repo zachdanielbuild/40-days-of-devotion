@@ -540,6 +540,24 @@ def dmj_top20():
             'Extra conversation starters:<ul class="guide-list sub"><li>What is one thing you want to do in 2027 that is for the good of someone other than yourself?</li><li>What quality of God are you most thankful for this Christmas?</li><li>What is the best Christmas gift you have ever received?</li><li>Share an encouragement with someone around your table. What is one way they have blessed you or done something meaningful for you in 2026?</li><li>What attribute of God have you been reminded of by a friend or family member in 2026?</li></ul>'])],
         'Make room for Jesus all season', 'Don’t Miss Jesus brings a short devotional to your inbox every morning at 5 AM, all the way to New Year’s Day.')
 
+def dmj_welcome():
+    desc = "You're signed up for Don't Miss Jesus. Your first devotional arrives Monday, November 23 at 5 AM."
+    body = """<article class="guide welcome">
+<header class="guide-head"><div class="red-dot big" aria-hidden="true"></div><p class="eyebrow">You're signed up</p><h1><span class="script">You're</span><span class="slab">In!</span></h1>
+<p class="lede" id="when">Your first devotional arrives Monday, November 23 at 5 AM.</p></header>
+<div class="guide-body">
+<p>We're so glad you're joining us for Don't Miss Jesus. Check your inbox for a welcome email from Jimmy Seibert. If you don't see it in a few minutes, look in your Promotions or Spam folder and move it to your inbox so you don't miss a day.</p>
+<ol class="guide-steps">
+<li><span class="n">01</span><div><h2>Put a red dot on your phone</h2><p>Let it remind you all season that He holds it all together.</p></div></li>
+<li><span class="n">02</span><div><h2>Bring someone with you</h2><p>Invite a friend, roommate or family member to sign up at <a href="/">40daysofdevotion.com</a>.</p></div></li>
+<li><span class="n">03</span><div><h2>Do it with your family</h2><p>Read our <a href="/dontmissjesus/family-devotions">simple guide to family devotions</a>, and check out the <a href="/#resources">other resources</a> for Thanksgiving and Christmas.</p></div></li>
+</ol>
+<p class="guide-pull">We're excited to encounter Jesus with you!</p>
+</div>
+</article>
+<script>(function(){var d=new Date(),start=new Date('2026-11-23T05:00:00-06:00');if(d>=start){var el=document.getElementById('when');if(el)el.textContent='Your next devotional arrives tomorrow at 5 AM.';}})();</script>"""
+    write('dontmissjesus/welcome.html', dmj_shell("You're In! · Don't Miss Jesus", desc, '/dontmissjesus/welcome', body, extra=' dmj-page'))
+
 def dmj_home():
     desc = "Sign up for a free 40 day devotional to help you experience Jesus this Holiday season."
     weeks = ''.join(f'''<li class="week"><div class="candy"></div><div class="week-body"><div class="meta"><span>WEEK {i+1}</span><span>DAYS {a}–{b}</span></div><h3>{t}</h3><span class="when">{w}</span></div></li>''' for i, (t, a, b, w) in enumerate(DMJ_WEEKS))
@@ -623,7 +641,7 @@ def notices():
         '<section class="notice"><h1>Page not found</h1><p>The page you were looking for isn’t here anymore. All 40 days of the devotional are still on the site.</p><a class="btn" href="/devotion#days">See all 40 days</a></section>'))
 
 devotion_landing(); resources(); notices()
-if DMJ_SEASON: dmj_home(); dmj_family(); dmj_top10(); dmj_top20()
+if DMJ_SEASON: dmj_home(); dmj_family(); dmj_top10(); dmj_top20(); dmj_welcome()
 
 # ---------- launch files ----------
 paths = ['/', '/dontmissjesus/family-devotions', '/dontmissjesus/top-10-thanksgiving', '/dontmissjesus/top-20-christmas', '/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]

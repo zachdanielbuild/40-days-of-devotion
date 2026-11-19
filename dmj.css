@@ -182,6 +182,8 @@ a.playlist:hover{background:var(--red-ink)}
 .num-list em{color:var(--muted)}
 .guide-list.sub{margin:12px 0 0}
 .guide-body a{color:var(--red)}
+.red-dot.big{width:40px;height:40px;margin-bottom:8px}
+.welcome .guide-steps a{color:var(--cream)}
 .print-btn{margin-top:8px}
 @media print{
   .dmj-header,.dmj-footer,.guide-cta,.print-btn,.skip{display:none!important}
