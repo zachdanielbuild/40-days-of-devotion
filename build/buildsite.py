@@ -628,7 +628,8 @@ if DMJ_SEASON: dmj_home(); dmj_family(); dmj_top10(); dmj_top20()
 paths = ['/', '/dontmissjesus/family-devotions', '/dontmissjesus/top-10-thanksgiving', '/dontmissjesus/top-20-christmas', '/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]
 write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{DOMAIN}{p}</loc></url>\n' for p in paths) + '</urlset>\n')
 write('robots.txt', f'User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n')
-write('_redirects', '''# Old Squarespace addresses
+write('_redirects', '''/dontmissjesus/thanksgiving-table /dontmissjesus/top-10-thanksgiving 301
+# Old Squarespace addresses
 /40-day-journeys          /                          301
 /home                     /                          301
 /devos                    /devotion#days             301
