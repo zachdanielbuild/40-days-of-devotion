@@ -437,6 +437,7 @@ def dmj_shell(title, desc, path, body, signup='/#join', extra=''):
 </main>
 <footer class="dmj-footer"><span class="dmj-logo foot" aria-hidden="true">{LOGO}</span><span class="script">Merry Christmas</span><p>From your family at Antioch Waco</p>
 <nav aria-label="Footer"><a href="/devotion">40 Days of Devotion</a><a href="/resources">Resources</a><a href="https://antiochwaco.com/">Antioch Waco</a></nav></footer>
+<script>document.querySelectorAll('form[action*="app.kit.com"]').forEach(function(f){{f.addEventListener('submit',function(e){{if(f.dataset.sent)return;e.preventDefault();f.dataset.sent='1';var go=function(){{f.submit()}};var t=setTimeout(go,1000);try{{gtag('event','sign_up',{{method:"Don't Miss Jesus",form_location:f.id==='join'?'hero':'signup_box',transport_type:'beacon',event_callback:function(){{clearTimeout(t);go()}}}})}}catch(err){{clearTimeout(t);go()}}}})}});</script>
 <script>document.querySelectorAll('.rail,.more').forEach(function(r){{var d=r.nextElementSibling;if(!d||!d.classList.contains('dots'))return;r.addEventListener('scroll',function(){{var c=r.children[0];if(!c)return;var i=Math.round(r.scrollLeft/(c.offsetWidth+16));d.querySelectorAll('span').forEach(function(s,k){{s.classList.toggle('on',k===i)}})}},{{passive:true}})}});</script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{{"token": "60f7bffc099e494d968954bbf6b5bca0"}}'></script><!-- End Cloudflare Web Analytics -->
 </body>
