@@ -525,7 +525,7 @@ def dmj_home():
 </form>
 </div>
 <div class="phone" aria-hidden="true"><div class="phone-body"><div class="phone-dot"></div><div class="phone-screen">
-<span class="phone-date">Monday, November 23</span><span class="phone-time">6:00</span>
+<span class="phone-date">Monday, November 23</span><span class="phone-time">5:00</span>
 <div class="phone-note"><div class="app"><span>DON'T MISS JESUS</span><span>now</span></div><strong>Day 1 · Thanksgiving</strong><p>Give thanks to the Lord, for He is good. Today's devotional is ready.</p></div>
 </div></div></div>
 </div></div><div class="stripe hero-stripe"></div></section>
