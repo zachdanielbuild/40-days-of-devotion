@@ -150,6 +150,7 @@ body.dmj{margin:0;background:var(--cream);color:var(--ink);font-family:var(--san
 .res-item h3{margin:0;font-size:19px;color:var(--red-ink)}
 .res-item p{margin:0;font-size:15px;line-height:1.5}
 .res .go{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;min-height:32px;display:inline-flex;align-items:center}
+.res .links{display:flex;flex-direction:column;gap:0}
 .res .soon{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
 
 a.playlist{text-decoration:none;color:var(--cream)!important}
