@@ -472,44 +472,6 @@ def dmj_family():
 </article>"""
     write('dontmissjesus/family-devotions.html', dmj_shell("How to Do Family Devotions · Don't Miss Jesus", desc, '/dontmissjesus/family-devotions', body, extra=' dmj-page'))
 
-def dmj_thanksgiving():
-    desc = "Simple ways to give thanks and honor one another around the Thanksgiving table, and to keep thanking God all day long."
-    body = """<article class="guide">
-<header class="guide-head"><p class="eyebrow">Thanksgiving</p><h1><span class="script">Give thanks at</span><span class="slab">The Table</span></h1>
-<p class="byline">From Jimmy and Laura Seibert</p>
-<p class="lede">“In everything give thanks; for this is God’s will for you in Christ Jesus.” 1 Thessalonians 5:18</p></header>
-<div class="guide-body">
-<p>Many of us grew up in homes where thanksgiving and appreciation for one another were not voiced very often. A few years ago, my brother and I took some time to honor our parents in front of our children. We talked about the valuable things they had given us. We were able to build them up, and our kids got to see what it looks like to honor your parents along the journey.</p>
-<p>There are so many ways to do this at the Thanksgiving table:</p>
-<ol class="guide-steps">
-<li><span class="n">01</span><div><h2>A Scripture at every plate</h2><p>Put a verse in front of everyone’s plate. Have each person read their Scripture out loud and say what they are thankful for.</p></div></li>
-<li><span class="n">02</span><div><h2>A name on every tag</h2><p>Put someone’s name on each place card, and have each person say one encouraging thing about the person whose name they drew.</p></div></li>
-<li><span class="n">03</span><div><h2>Honor your grandparents</h2><p>If grandparents are at the table, take time to honor them, and let the younger ones see what honor and thanksgiving are all about.</p></div></li>
-<li><span class="n">04</span><div><h2>Remember and pray</h2><p>Read Abraham Lincoln’s 1863 <a href="https://www.abrahamlincolnonline.org/lincoln/speeches/thanks.htm">Thanksgiving Proclamation</a> together. Be in awe again of what this season is all about, and take some time to pray for our country.</p></div></li>
-</ol>
-<h2 class="guide-h">More for the day</h2>
-<ul class="guide-list">
-<li><strong>Tell the story.</strong> Talk about the history of Thanksgiving.</li>
-<li><strong>Remember His faithfulness.</strong> Ask: What blessing are you thankful for? Where did you find God faithful in a hard time?</li>
-<li><strong>Have fun.</strong> Joy is a partner with thankfulness. Play a family game together.</li>
-<li><strong>Speak life.</strong> Encourage one another, especially the college students and young adults at the table who are learning what it means to be an adult and give life to others.</li>
-</ul>
-<h2 class="guide-h">Give thanks all day long</h2>
-<p>Set a reminder on your watch or phone for every hour. Each time it goes off, take a moment with 1 Thessalonians 5:18:</p>
-<ul class="guide-list">
-<li>Acknowledge God’s presence and His love for you.</li>
-<li>Thank Him for what is happening in that moment.</li>
-<li>Pray, “Speak, Lord, Your servant is listening.”</li>
-</ul>
-<h2 class="guide-h">Make it a thankfulness feast</h2>
-<p>Gather the family around the table and let everyone share three things they are thankful for. Make room for deep conversation, and finish with something you do together as a family.</p>
-<p>We are sharing these because we want you to have a great Thanksgiving!</p>
-<p class="signoff">Jimmy and Laura</p>
-</div>
-<aside class="guide-cta"><p class="eyebrow">Starts Monday, Nov 23</p><h2>Start Thanksgiving week with Don’t Miss Jesus</h2><p>Week one of the 40 days is all about thanksgiving. A short devotional in your inbox each morning.</p><a class="btn btn-cream" href="/#join">Count Me In</a></aside>
-</article>"""
-    write('dontmissjesus/thanksgiving-table.html', dmj_shell("Give Thanks at the Table · Don't Miss Jesus", desc, '/dontmissjesus/thanksgiving-table', body, extra=' dmj-page'))
-
 def dmj_list_page(slug, title_script, title_slab, eyebrow, lede, desc, page_title, sections, cta_h, cta_p):
     parts = []
     for heading, start, items in sections:
@@ -616,7 +578,7 @@ def dmj_home():
 <a class="playlist" href="/dontmissjesus/family-devotions"><p class="eyebrow">For families</p><h3>Family devotions</h3><p>A simple way to start each morning with God at the center: give thanks, read and talk, then pray together.</p><span class="go">Read the guide →</span></a>
 <ul class="res-list">
 <li class="res-item"><div class="art art-dot" aria-hidden="true"><span></span></div><div class="body"><span class="eyebrow">40 days of songs</span><h3>The playlist</h3><p>One song for every day of Don’t Miss Jesus, from “Gratitude” to “Doxology.”</p><a class="go" href="https://open.spotify.com/playlist/3zKOYFC8yjDHfWAfFUlsB9">Open in Spotify →</a></div></li>
-<li class="res-item"><div class="art candy" aria-hidden="true"></div><div class="body"><span class="eyebrow">Thanksgiving</span><h3>Top 10 things to do for a powerful Thanksgiving</h3><p>Ideas for you personally, with the people you love, and around the table.</p><span class="links"><a class="go" href="/dontmissjesus/top-10-thanksgiving">See the list →</a><a class="go" href="/dontmissjesus/thanksgiving-table">Read: Give thanks at the table →</a></span></div></li>
+<li class="res-item"><div class="art candy" aria-hidden="true"></div><div class="body"><span class="eyebrow">Thanksgiving</span><h3>Top 10 things to do for a powerful Thanksgiving</h3><p>Ideas for you personally, with the people you love, and around the table.</p><a class="go" href="/dontmissjesus/top-10-thanksgiving">See the list →</a></div></li>
 <li class="res-item"><div class="art stripe" aria-hidden="true"></div><div class="body"><span class="eyebrow">Christmas</span><h3>Top 20 ways to have a joy-filled Christmas</h3><p>Ideas for your own time with God, your family, and Christmas Day around the tree and the table.</p><a class="go" href="/dontmissjesus/top-20-christmas">See the list →</a></div></li>
 <li class="res-item"><div class="art grid-bg" aria-hidden="true"></div><div class="body"><span class="eyebrow">New Year</span><h3>30-Day Journal</h3><p>Look back on 2026, pray over 2027 and plan your next step in the Word.</p><a class="go" href="https://passionandpurpose.kit.com/30dayjournal">Get the journal →</a></div></li>
 </ul></div></section>'''
@@ -660,10 +622,10 @@ def notices():
         '<section class="notice"><h1>Page not found</h1><p>The page you were looking for isn’t here anymore. All 40 days of the devotional are still on the site.</p><a class="btn" href="/devotion#days">See all 40 days</a></section>'))
 
 devotion_landing(); resources(); notices()
-if DMJ_SEASON: dmj_home(); dmj_family(); dmj_thanksgiving(); dmj_top10(); dmj_top20()
+if DMJ_SEASON: dmj_home(); dmj_family(); dmj_top10(); dmj_top20()
 
 # ---------- launch files ----------
-paths = ['/', '/dontmissjesus/family-devotions', '/dontmissjesus/thanksgiving-table', '/dontmissjesus/top-10-thanksgiving', '/dontmissjesus/top-20-christmas', '/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]
+paths = ['/', '/dontmissjesus/family-devotions', '/dontmissjesus/top-10-thanksgiving', '/dontmissjesus/top-20-christmas', '/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]
 write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{DOMAIN}{p}</loc></url>\n' for p in paths) + '</urlset>\n')
 write('robots.txt', f'User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n')
 write('_redirects', '''# Old Squarespace addresses
