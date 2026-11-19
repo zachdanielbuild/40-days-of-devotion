@@ -176,9 +176,9 @@ a.playlist:hover{background:var(--red-ink)}
 .guide-list li::marker{color:var(--dot)}
 .guide-steps a{color:var(--cream);text-decoration:underline}
 .num-list{margin:0 0 16px;padding:0;list-style:none}
-.num-list li{position:relative;padding:20px 0 20px 64px;border-top:1px solid var(--line)}
-.num-list li:first-child{border-top:0}
-.num-list li::before{content:counter(n,decimal-leading-zero);counter-increment:n;position:absolute;left:0;top:16px;font-family:var(--slab);font-weight:900;font-size:28px;line-height:1;color:var(--red-2)}
+.num-list>li{position:relative;padding:20px 0 20px 64px;border-top:1px solid var(--line)}
+.num-list>li:first-child{border-top:0}
+.num-list>li::before{content:counter(n,decimal-leading-zero);counter-increment:n;position:absolute;left:0;top:16px;font-family:var(--slab);font-weight:900;font-size:28px;line-height:1;color:var(--red-2)}
 .num-list em{color:var(--muted)}
 .guide-list.sub{margin:12px 0 0}
 .guide-body a{color:var(--red)}
@@ -191,8 +191,8 @@ a.playlist:hover{background:var(--red-ink)}
   .guide-head .script{font-size:28pt}.guide-head .slab{font-size:30pt}
   .guide-head .lede{font-size:13pt}
   .guide-h{font-size:18pt;margin:18px 0 6px;break-after:avoid}
-  .num-list li{padding:8px 0 8px 44px;break-inside:avoid}
-  .num-list li::before{font-size:18pt;top:6px}
+  .num-list>li{padding:8px 0 8px 44px;break-inside:avoid}
+  .num-list>li::before{font-size:18pt;top:6px}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 .guide-h{margin:48px 0 16px;font-family:var(--slab);font-weight:900;font-size:28px;line-height:1.2;color:var(--red)}
