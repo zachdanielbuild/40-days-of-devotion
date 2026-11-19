@@ -510,6 +510,73 @@ def dmj_thanksgiving():
 </article>"""
     write('dontmissjesus/thanksgiving-table.html', dmj_shell("Give Thanks at the Table · Don't Miss Jesus", desc, '/dontmissjesus/thanksgiving-table', body, extra=' dmj-page'))
 
+def dmj_list_page(slug, title_script, title_slab, eyebrow, lede, desc, page_title, sections, cta_h, cta_p):
+    parts = []
+    for heading, start, items in sections:
+        lis = ''.join(f'<li>{it}</li>' for it in items)
+        parts.append(f'<h2 class="guide-h">{heading}</h2>\n<ol class="num-list" start="{start}" style="counter-reset:n {start-1}">{lis}</ol>')
+    body = f"""<article class="guide">
+<header class="guide-head"><p class="eyebrow">{eyebrow}</p><h1><span class="script">{title_script}</span><span class="slab">{title_slab}</span></h1>
+<p class="byline">From Jimmy and Laura Seibert</p>
+<p class="lede">{lede}</p>
+<button class="btn btn-red print-btn" type="button" onclick="window.print()">Print this list</button></header>
+<div class="guide-body">
+{chr(10).join(parts)}
+</div>
+<aside class="guide-cta"><p class="eyebrow">Nov 23 to Jan 1</p><h2>{cta_h}</h2><p>{cta_p}</p><a class="btn btn-cream" href="/#join">Count Me In</a></aside>
+</article>"""
+    write(f'dontmissjesus/{slug}.html', dmj_shell(page_title, desc, f'/dontmissjesus/{slug}', body, extra=' dmj-page'))
+
+def dmj_top10():
+    dmj_list_page('top-10-thanksgiving', 'Top 10 things to do for a', 'Powerful Thanksgiving', 'Thanksgiving',
+        'Simple ways to give thanks with God, with the people you love, and around the table.',
+        'Ten simple ways to have a powerful Thanksgiving: personally, with your people, and around the table.',
+        "Top 10 Things to Do for a Powerful Thanksgiving · Don't Miss Jesus",
+        [('Personal', 1, [
+            'Journal a list of things you’re thankful for from this past year. <em>One idea is to wake up early and make a list of 10 things.</em>',
+            'Ask God to speak to you about His thankfulness to you for things done in the past year. <em>“Lord, where are You proud of me, or what have I done that is honoring and pleasing to You?”</em>',
+            'Text an encouragement of gratitude to someone God puts on your heart.']),
+         ('People', 4, [
+            'Take a walk with a child, spouse or family member. <em>Ask them, “What is one thing you want me to know about your life?” or “What is one thing you’d like to know about my life?”</em>',
+            'Ask forgiveness from someone you know you’ve hurt or need to reconcile with.',
+            'Be intentional while kids nap or after they go to bed. Get some free time to play a game or worship to a song. Ask how you can pray for each other, and take time to do that.']),
+         ('At the table', 7, [
+            'Pass around a bowl with creative questions about life, and have each person pick one to answer.',
+            'Put a jar in the middle of the table. Have everyone write down two things they’re thankful for on separate strips of paper. Mix them up. Pull out pieces of paper during the meal and guess who wrote what, then have them expound on it.',
+            'Highlight a family member (parents or grandparents) to honor them and encourage them.',
+            'Play a group game with prizes.'])],
+        'Start Thanksgiving week with Don’t Miss Jesus', 'Week one of the 40 days is all about thanksgiving. A short devotional in your inbox every morning at 5 AM.')
+
+def dmj_top20():
+    dmj_list_page('top-20-christmas', 'Top 20 ways to have a', 'Joy-Filled Christmas', 'Christmas',
+        'Ideas for your own time with God, for your family and the people you gather with, and for Christmas Day.',
+        'Twenty ways to have a joy-filled Christmas: personally, with your family, and on Christmas Day around the tree and the table.',
+        "Top 20 Ways to Have a Joy-Filled Christmas · Don't Miss Jesus",
+        [('Personal', 1, [
+            'Start each day of the holidays alone with God. Pray through passages like Psalm 103:1–6 and Isaiah 9:6–7, pausing to be with Jesus as you connect with the One who created you.',
+            'Take at least one day to put your phone down. Choose a set time to text or check email, but step away from the constant communication and be present with your family. This season invites us to pause and engage with the love Jesus has for us and our love for one another.',
+            'After Christmas, take time to complete the <a href="https://passionandpurpose.kit.com/rolesandgoalsguide">Roles &amp; Goals worksheet</a>.']),
+         ('Family and the people I gather with', 4, [
+            'Pick a family game to play every day and build on it throughout the holiday. It can be a card game or a board game. Our family finds so much joy and love in doing something fun together.',
+            'Join our church family for our Christmas Eve and New Year’s Eve services.',
+            'Find someone to give to. Whether it’s an individual or a cause, find someone or something outside your immediate family that you can give to and show Christ’s love to this holiday season.',
+            'Watch <em>The Chosen</em> Christmas special.',
+            'Have a Christmas cookie decorating or baking contest.',
+            'Drive around and look at Christmas lights, and have everyone secretly pick their favorite house. After you get back home, talk about your favorite!',
+            'Make or give small Christmas gifts to your mail carrier. This season is busy for them, so look for simple ways to bless them.',
+            'Visit a nursing home and sing Christmas carols to the residents as a family or Lifegroup!',
+            'Watch <em>The Nativity Story</em> together.',
+            'Make a fort and have a family campout in front of the Christmas tree one night. Your back will be sore, but memories will be made!',
+            'Pray and ask the Lord to highlight any family members who need special encouragement this season, then reach out to them.']),
+         ('Christmas Day around the tree and the table', 15, [
+            'Before you open presents on Christmas Day, read the story of Jesus from Luke 2:1–20, sing one Christmas carol together, and pray prayers of gratitude for Jesus.',
+            'Read the Christmas story and have family members act out the nativity.',
+            'Before each gift is opened, speak encouragement over that person: how God sees them and how they’ve blessed you in 2026.',
+            'Share one way each person has been a gift to your life this year.',
+            'Sit together and call out the specific “gifts” God has placed in each person, for the whole family to celebrate.',
+            'Extra conversation starters:<ul class="guide-list sub"><li>What is one thing you want to do in 2027 that is for the good of someone other than yourself?</li><li>What quality of God are you most thankful for this Christmas?</li><li>What is the best Christmas gift you have ever received?</li><li>Share an encouragement with someone around your table. What is one way they have blessed you or done something meaningful for you in 2026?</li><li>What attribute of God have you been reminded of by a friend or family member in 2026?</li></ul>'])],
+        'Make room for Jesus all season', 'Don’t Miss Jesus brings a short devotional to your inbox every morning at 5 AM, all the way to New Year’s Day.')
+
 def dmj_home():
     desc = "Sign up for a free 40 day devotional to help you experience Jesus this Holiday season."
     weeks = ''.join(f'''<li class="week"><div class="candy"></div><div class="week-body"><div class="meta"><span>WEEK {i+1}</span><span>DAYS {a}–{b}</span></div><h3>{t}</h3><span class="when">{w}</span></div></li>''' for i, (t, a, b, w) in enumerate(DMJ_WEEKS))
@@ -549,8 +616,8 @@ def dmj_home():
 <a class="playlist" href="/dontmissjesus/family-devotions"><p class="eyebrow">For families</p><h3>Family devotions</h3><p>A simple way to start each morning with God at the center: give thanks, read and talk, then pray together.</p><span class="go">Read the guide →</span></a>
 <ul class="res-list">
 <li class="res-item"><div class="art art-dot" aria-hidden="true"><span></span></div><div class="body"><span class="eyebrow">40 days of songs</span><h3>The playlist</h3><p>One song for every day of Don’t Miss Jesus, from “Gratitude” to “Doxology.”</p><a class="go" href="https://open.spotify.com/playlist/3zKOYFC8yjDHfWAfFUlsB9">Open in Spotify →</a></div></li>
-<li class="res-item"><div class="art candy" aria-hidden="true"></div><div class="body"><span class="eyebrow">Thanksgiving</span><h3>Top 10 things to do for a powerful Thanksgiving</h3><p>Ideas for you personally, with the people you love, and around the table.</p><span class="links"><a class="go" href="/dontmissjesus/downloads/top-10-powerful-thanksgiving.pdf">Download the list (PDF) →</a><a class="go" href="/dontmissjesus/thanksgiving-table">Read: Give thanks at the table →</a></span></div></li>
-<li class="res-item"><div class="art stripe" aria-hidden="true"></div><div class="body"><span class="eyebrow">Christmas</span><h3>Top 20 ways to have a joy-filled Christmas</h3><p>Ideas for your own time with God, your family, and Christmas Day around the tree and the table.</p><a class="go" href="/dontmissjesus/downloads/top-20-joy-filled-christmas.pdf">Download the list (PDF) →</a></div></li>
+<li class="res-item"><div class="art candy" aria-hidden="true"></div><div class="body"><span class="eyebrow">Thanksgiving</span><h3>Top 10 things to do for a powerful Thanksgiving</h3><p>Ideas for you personally, with the people you love, and around the table.</p><span class="links"><a class="go" href="/dontmissjesus/top-10-thanksgiving">See the list →</a><a class="go" href="/dontmissjesus/thanksgiving-table">Read: Give thanks at the table →</a></span></div></li>
+<li class="res-item"><div class="art stripe" aria-hidden="true"></div><div class="body"><span class="eyebrow">Christmas</span><h3>Top 20 ways to have a joy-filled Christmas</h3><p>Ideas for your own time with God, your family, and Christmas Day around the tree and the table.</p><a class="go" href="/dontmissjesus/top-20-christmas">See the list →</a></div></li>
 <li class="res-item"><div class="art grid-bg" aria-hidden="true"></div><div class="body"><span class="eyebrow">New Year</span><h3>30-Day Journal</h3><p>Look back on 2026, pray over 2027 and plan your next step in the Word.</p><a class="go" href="https://passionandpurpose.kit.com/30dayjournal">Get the journal →</a></div></li>
 </ul></div></section>'''
     page = dmj_shell("Don't Miss Jesus · 40 Days of Devotion", desc, '/', body, '#join')
@@ -593,10 +660,10 @@ def notices():
         '<section class="notice"><h1>Page not found</h1><p>The page you were looking for isn’t here anymore. All 40 days of the devotional are still on the site.</p><a class="btn" href="/devotion#days">See all 40 days</a></section>'))
 
 devotion_landing(); resources(); notices()
-if DMJ_SEASON: dmj_home(); dmj_family(); dmj_thanksgiving()
+if DMJ_SEASON: dmj_home(); dmj_family(); dmj_thanksgiving(); dmj_top10(); dmj_top20()
 
 # ---------- launch files ----------
-paths = ['/', '/dontmissjesus/family-devotions', '/dontmissjesus/thanksgiving-table', '/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]
+paths = ['/', '/dontmissjesus/family-devotions', '/dontmissjesus/thanksgiving-table', '/dontmissjesus/top-10-thanksgiving', '/dontmissjesus/top-20-christmas', '/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]
 write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{DOMAIN}{p}</loc></url>\n' for p in paths) + '</urlset>\n')
 write('robots.txt', f'User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n')
 write('_redirects', '''# Old Squarespace addresses
