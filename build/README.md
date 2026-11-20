@@ -35,7 +35,7 @@ git add -A && git commit -m "..." && git push
 
 In Kit, the automation "No te pierdas a Jesús 2026 (Español): etiquetar inscripciones" adds the tag "No te pierdas a Jesús 2026 (Español)", adds the main "Don't Miss Jesus 2026" tag (so they get the daily emails, which are in English for now) and sends the Spanish welcome email (sequence "No te pierdas a Jesús 2026: Bienvenida (Español)").
 
-Both home pages carry hreflang links to each other, and every Don't Miss Jesus page has a language toggle in the header (a pill showing EN or ES with a globe; tapping it switches language).
+The resource pages have Spanish versions too: `/es/devocionales-en-familia`, `/es/accion-de-gracias` and `/es/navidad` (`dmj_family_es`, `dmj_top10_es`, `dmj_top20_es`). `DMJ_PAIRS` in `buildsite.py` lists each English page with its Spanish version; it sets where the toggle goes and the hreflang links. Each pair of pages carries hreflang links to each other, and every Don't Miss Jesus page has a language toggle in the header (a pill showing EN or ES with a globe; tapping it switches language).
 
 ## Photos
 

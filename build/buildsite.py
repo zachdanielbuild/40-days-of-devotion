@@ -409,16 +409,22 @@ DMJ_UI = {
 }
 GLOBE = ('<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5">'
          '<circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4.5" ry="10"/><path d="M2 12h20M4 6.5h16M4 17.5h16M12 2v20"/></svg>')
-HOME_ALTS = {'en': '/', 'es': '/es/'}   # the two language versions of the home page (hreflang)
+# English page <-> its Spanish version. Drives the EN/ES toggle and the hreflang links.
+DMJ_PAIRS = [('/', '/es/'), ('/dontmissjesus/family-devotions', '/es/devocionales-en-familia'),
+             ('/dontmissjesus/top-10-thanksgiving', '/es/accion-de-gracias'), ('/dontmissjesus/top-20-christmas', '/es/navidad'),
+             ('/dontmissjesus/welcome', '/es/bienvenido')]
 
 def dmj_shell(title, desc, path, body, signup='/#join', extra='', lang='en'):
     ui = DMJ_UI[lang]
     nav = ''.join(f'<a href="{h}">{t}</a>' for h, t in ui['nav'])
     code, href, other, label = ui['toggle']
+    pair = next((pr for pr in DMJ_PAIRS if path in pr), None)
+    if pair: href = pair[1] if lang == 'en' else pair[0]
+    alts = (f'<link rel="alternate" hreflang="en" href="{DOMAIN}{pair[0]}">\n<link rel="alternate" hreflang="es" href="{DOMAIN}{pair[1]}">\n'
+            f'<link rel="alternate" hreflang="x-default" href="{DOMAIN}{pair[0]}">\n') if pair else ''
     toggle = (f'<a class="lang-toggle" href="{href}" hreflang="{other}" lang="{other}" aria-label="{label}" title="{label}">'
               f'<span lang="{lang}">{code}</span>{GLOBE}</a>')
     foot = ''.join(f'<a href="{h}">{t}</a>' for h, t in ui['foot'])
-    alts = ''.join(f'<link rel="alternate" hreflang="{l}" href="{DOMAIN}{u}">\n' for l, u in HOME_ALTS.items()) + f'<link rel="alternate" hreflang="x-default" href="{DOMAIN}/">\n' if path in HOME_ALTS.values() else ''
     return f'''<!doctype html>
 <html lang="{lang}">
 <head>
@@ -494,22 +500,24 @@ def dmj_family():
 </article>"""
     write('dontmissjesus/family-devotions.html', dmj_shell("How to Do Family Devotions · Don't Miss Jesus", desc, '/dontmissjesus/family-devotions', body, extra=' dmj-page'))
 
-def dmj_list_page(slug, title_script, title_slab, eyebrow, lede, desc, page_title, sections, cta_h, cta_p):
+def dmj_list_page(slug, title_script, title_slab, eyebrow, lede, desc, page_title, sections, cta_h, cta_p, lang='en'):
+    es = lang == 'es'
     parts = []
     for heading, start, items in sections:
         lis = ''.join(f'<li>{it}</li>' for it in items)
         parts.append(f'<h2 class="guide-h">{heading}</h2>\n<ol class="num-list" start="{start}" style="counter-reset:n {start-1}">{lis}</ol>')
     body = f"""<article class="guide">
 <header class="guide-head"><p class="eyebrow">{eyebrow}</p><h1><span class="script">{title_script}</span><span class="slab">{title_slab}</span></h1>
-<p class="byline">From Jimmy and Laura Seibert</p>
+<p class="byline">{'De parte de Jimmy y Laura Seibert' if es else 'From Jimmy and Laura Seibert'}</p>
 <p class="lede">{lede}</p>
-<button class="btn btn-red print-btn" type="button" onclick="window.print()">Print this list</button></header>
+<button class="btn btn-red print-btn" type="button" onclick="window.print()">{'Imprimir esta lista' if es else 'Print this list'}</button></header>
 <div class="guide-body">
 {chr(10).join(parts)}
 </div>
-<aside class="guide-cta"><p class="eyebrow">Nov 23 to Jan 1</p><h2>{cta_h}</h2><p>{cta_p}</p><a class="btn btn-cream" href="/#join">Count Me In</a></aside>
+<aside class="guide-cta"><p class="eyebrow">{'23 de nov. al 1 de ene.' if es else 'Nov 23 to Jan 1'}</p><h2>{cta_h}</h2><p>{cta_p}</p><a class="btn btn-cream" href="{'/es/#join' if es else '/#join'}">{'¡Cuenta conmigo!' if es else 'Count Me In'}</a></aside>
 </article>"""
-    write(f'dontmissjesus/{slug}.html', dmj_shell(page_title, desc, f'/dontmissjesus/{slug}', body, extra=' dmj-page'))
+    if es: write(f'es/{slug}.html', dmj_shell(page_title, desc, f'/es/{slug}', body, signup='/es/#join', extra=' dmj-page', lang='es'))
+    else: write(f'dontmissjesus/{slug}.html', dmj_shell(page_title, desc, f'/dontmissjesus/{slug}', body, extra=' dmj-page'))
 
 def dmj_top10():
     dmj_list_page('top-10-thanksgiving', 'Top 10 things to do for a', 'Powerful Thanksgiving', 'Thanksgiving',
@@ -579,6 +587,85 @@ def dmj_welcome():
 <script>(function(){var d=new Date(),start=new Date('2026-11-23T05:00:00-06:00');if(d>=start){var el=document.getElementById('when');if(el)el.textContent='Your next devotional arrives tomorrow at 5 AM.';}})();</script>"""
     write('dontmissjesus/welcome.html', dmj_shell("You're In! · Don't Miss Jesus", desc, '/dontmissjesus/welcome', body, extra=' dmj-page'))
 
+def dmj_family_es():
+    desc = "Una manera sencilla de empezar cada día en familia con Dios en el centro: den gracias, lean y conversen, y luego oren."
+    body = """<article class="guide">
+<header class="guide-head"><p class="eyebrow">Para familias</p><h1><span class="script">Cómo hacer</span><span class="slab">Devocionales en familia</span></h1>
+<p class="byline">De parte de Jimmy y Laura Seibert</p>
+<p class="lede">“La familia que ora unida permanece unida.” Esta frase sencilla de verdad es cierta.</p></header>
+<div class="guide-body">
+<p>Cuando criábamos a nuestros hijos, el Señor nos dio la visión de formar una familia de amor, honra y propósito. Los devocionales en familia fueron una parte clave para crear ese ambiente en nuestro hogar. Para nosotros era algo muy sencillo, más o menos así:</p>
+<ol class="guide-steps">
+<li><span class="n">01</span><div><h2>Den gracias</h2><p>Oramos por el desayuno y luego cada uno cuenta una cosa por la que está agradecido. “Dad gracias en todo, porque esta es la voluntad de Dios para con vosotros en Cristo Jesús.” Queremos formar corazones y actitudes agradecidas, y siempre hay algo por lo cual dar gracias.</p></div></li>
+<li><span class="n">02</span><div><h2>Lean y conversen</h2><p>Después compartimos un pasaje de la Biblia o una idea de un devocional, y lo conversamos durante unos cinco minutos.</p></div></li>
+<li><span class="n">03</span><div><h2>Oren</h2><p>Normalmente oramos por un misionero, por una necesidad y luego por nuestro día.</p></div></li>
+</ol>
+<p>Esta estructura sencilla nos ha permitido mantenernos conectados y tomar una decisión firme: empezamos cada día con Dios en el centro.</p>
+<h2 class="guide-h">Tiempo a solas con Jesús, en cada etapa</h2>
+<p>Además de los devocionales en familia, quisimos ayudar a nuestros hijos a formar su propia vida devocional. Sabíamos que esto les ayudaría a caminar con Jesús desde pequeños y que sería un hábito que podrían llevar con alegría a su vida adulta.</p>
+<p>Desde el día en que nacieron, incluso cuando los teníamos en brazos, nuestros hijos estaban con nosotros mientras leíamos la Biblia, orábamos y buscábamos a Dios. Les leíamos la Biblia y orábamos por ellos. En cuanto tuvieron edad para hablar, les enseñamos la Palabra, les ayudamos a memorizarla y a empezar a entender a Dios.</p>
+<p>Cada uno de nuestros hijos tiene un tiempo a solas con Jesús cada mañana. Cuando eran pequeños, empezamos con videos cortos de historias bíblicas. Mientras nosotros pasábamos tiempo con el Señor, ellos veían estas historias de Jesús, y luego las conversábamos juntos. Cuando crecieron un poco, les dimos Biblias para niños con letra grande. Leían, oraban, esperaban en Dios y aprendían a escuchar Su voz.</p>
+<p>En cada etapa de la vida nos sentamos a su lado, les ayudamos a empezar y les enseñamos a pasar tiempo a solas con Jesús. Hoy, con hijos adultos que ya crían a sus propios hijos, nos da mucha alegría ver que han llevado este valor consigo y lo están pasando a nuestros nietos. No lo hacen porque se lo pidamos, sino porque han descubierto que es la fuente de vida que necesitan para todo lo que tienen por delante.</p>
+<p class="guide-pull">Recuerda: tu ejemplo importa en todo.</p>
+<h2 class="guide-h">No te pierdas a Jesús</h2>
+<p>La temporada navideña siempre era un torbellino para nosotros, pero los devocionales en familia nos ayudaron a encontrarnos con Dios juntos, de manera significativa, en medio de todas las actividades de la temporada. Durante estos 40 días, puedes usar estos devocionales no solo para tu vida devocional personal, sino también para alimentar los devocionales de tu familia.</p>
+<p>¡Te amamos, y estamos emocionados de encontrarnos con Jesús contigo en esta temporada navideña!</p>
+<p class="signoff">Jimmy y Laura</p>
+</div>
+<aside class="guide-cta"><p class="eyebrow">Comienza el lunes 23 de nov.</p><h2>Usa No te pierdas a Jesús como el pasaje de tu familia</h2><p>El devocional de cada mañana te da un pasaje, una canción y una oración para compartir en la mesa. Por ahora, los devocionales diarios llegan en inglés.</p><a class="btn btn-cream" href="/es/#join">¡Cuenta conmigo!</a></aside>
+</article>"""
+    write('es/devocionales-en-familia.html', dmj_shell("Cómo hacer devocionales en familia · No te pierdas a Jesús", desc, '/es/devocionales-en-familia', body, signup='/es/#join', extra=' dmj-page', lang='es'))
+
+def dmj_top10_es():
+    dmj_list_page('accion-de-gracias', '10 cosas para un', 'Día de Acción de Gracias poderoso', 'Acción de Gracias',
+        'Maneras sencillas de dar gracias con Dios, con las personas que amas y alrededor de la mesa.',
+        'Diez maneras sencillas de tener un Día de Acción de Gracias poderoso: a solas, con tu gente y alrededor de la mesa.',
+        "10 cosas para un Día de Acción de Gracias poderoso · No te pierdas a Jesús",
+        [('A solas', 1, [
+            'Escribe en un diario una lista de cosas por las que estás agradecido este último año. <em>Una idea es levantarte temprano y hacer una lista de 10 cosas.</em>',
+            'Pídele a Dios que te hable de Su gratitud hacia ti por cosas que hiciste este año. <em>“Señor, ¿en qué estás orgulloso de mí, o qué he hecho que te honra y te agrada?”</em>',
+            'Envíale un mensaje de gratitud y ánimo a alguien que Dios ponga en tu corazón.']),
+         ('Con tu gente', 4, [
+            'Sal a caminar con un hijo, tu cónyuge o un familiar. <em>Pregúntale: “¿Qué es algo de tu vida que quieres que yo sepa?” o “¿Qué es algo que te gustaría saber de mi vida?”</em>',
+            'Pide perdón a alguien que sabes que has lastimado o con quien necesitas reconciliarte.',
+            'Aprovecha con intención la siesta de los niños o el rato después de que se duermen. Busca un tiempo libre para jugar algo o adorar con una canción. Pregúntense cómo pueden orar el uno por el otro, y tomen tiempo para hacerlo.']),
+         ('Alrededor de la mesa', 7, [
+            'Pasen un tazón con preguntas creativas sobre la vida, y que cada persona escoja una para responder.',
+            'Pongan un frasco en el centro de la mesa. Que cada uno escriba dos cosas por las que está agradecido en tiras de papel separadas. Mézclenlas. Durante la comida, saquen los papelitos, adivinen quién escribió cada uno y pídanle que cuente más.',
+            'Escojan a un miembro de la familia (padres o abuelos) para honrarlo y animarlo.',
+            'Jueguen un juego en grupo con premios.'])],
+        'Empieza la semana de Acción de Gracias con No te pierdas a Jesús', 'La primera semana de los 40 días se trata de dar gracias. Un devocional breve en tu correo cada mañana a las 5 AM (por ahora, en inglés).', lang='es')
+
+def dmj_top20_es():
+    dmj_list_page('navidad', '20 maneras de tener una', 'Navidad llena de gozo', 'Navidad',
+        'Ideas para tu tiempo a solas con Dios, para tu familia y las personas con quienes te reúnes, y para el día de Navidad.',
+        'Veinte maneras de tener una Navidad llena de gozo: a solas, en familia y el día de Navidad alrededor del árbol y la mesa.',
+        "20 maneras de tener una Navidad llena de gozo · No te pierdas a Jesús",
+        [('A solas', 1, [
+            'Empieza cada día de las fiestas a solas con Dios. Ora con pasajes como Salmo 103:1–6 e Isaías 9:6–7, deteniéndote para estar con Jesús mientras te conectas con Aquel que te creó.',
+            'Toma por lo menos un día para dejar tu teléfono. Escoge un horario fijo para revisar mensajes o correos, pero apártate de la comunicación constante y está presente con tu familia. Esta temporada nos invita a hacer una pausa y recibir el amor que Jesús tiene por nosotros y el amor que nos tenemos unos a otros.',
+            'Después de Navidad, toma tiempo para completar la <a href="https://passionandpurpose.kit.com/rolesandgoalsguide" hreflang="en">hoja de Roles y Metas</a> (en inglés).']),
+         ('En familia y con las personas con quienes me reúno', 4, [
+            'Escojan un juego familiar para jugar todos los días y sigan con él durante las fiestas. Puede ser de cartas o de mesa. Nuestra familia encuentra mucho gozo y amor en hacer algo divertido juntos.',
+            'Únete a nuestra familia de la iglesia en los servicios de Nochebuena y de Fin de Año.',
+            'Busca a alguien a quien dar. Ya sea una persona o una causa, busca a alguien o algo fuera de tu familia inmediata a quien puedas dar y mostrarle el amor de Cristo en esta temporada.',
+            'Vean el especial de Navidad de <em>The Chosen</em>.',
+            'Hagan un concurso de decorar u hornear galletas navideñas.',
+            'Salgan en el carro a ver las luces de Navidad, y que cada uno escoja en secreto su casa favorita. Al volver a casa, ¡cuenten cuál fue su favorita!',
+            'Hagan o regalen pequeños obsequios de Navidad a su cartero. Esta temporada es muy ocupada para ellos, así que busquen maneras sencillas de bendecirlos.',
+            '¡Visiten un asilo de ancianos y cántenles villancicos a los residentes en familia o con su Lifegroup!',
+            'Vean juntos la película <em>Natividad</em> (<em>The Nativity Story</em>).',
+            'Hagan un fuerte y acampen en familia una noche frente al árbol de Navidad. Les va a doler la espalda, ¡pero crearán recuerdos!',
+            'Oren y pídanle al Señor que les muestre qué familiares necesitan un ánimo especial esta temporada, y luego comuníquense con ellos.']),
+         ('El día de Navidad alrededor del árbol y la mesa', 15, [
+            'Antes de abrir los regalos el día de Navidad, lean la historia de Jesús en Lucas 2:1–20, canten juntos un villancico y oren dando gracias por Jesús.',
+            'Lean la historia de Navidad y que los miembros de la familia representen el nacimiento.',
+            'Antes de abrir cada regalo, digan palabras de ánimo sobre esa persona: cómo la ve Dios y cómo los ha bendecido a ustedes en 2026.',
+            'Compartan una manera en que cada persona ha sido un regalo en su vida este año.',
+            'Siéntense juntos y nombren los “regalos” específicos que Dios ha puesto en cada persona, para que toda la familia los celebre.',
+            'Más preguntas para conversar:<ul class="guide-list sub"><li>¿Qué es algo que quieres hacer en 2027 para el bien de alguien más?</li><li>¿Por cuál cualidad de Dios estás más agradecido esta Navidad?</li><li>¿Cuál es el mejor regalo de Navidad que has recibido?</li><li>Anima a alguien en tu mesa. ¿De qué manera te ha bendecido o ha hecho algo significativo por ti en 2026?</li><li>¿Qué atributo de Dios te ha recordado un amigo o familiar en 2026?</li></ul>'])],
+        'Hazle lugar a Jesús toda la temporada', 'No te pierdas a Jesús te lleva un devocional breve a tu correo cada mañana a las 5 AM, hasta el Día de Año Nuevo (por ahora, en inglés).', lang='es')
+
 def dmj_welcome_es():
     desc = "Ya estás inscrito en No te pierdas a Jesús. Tu primer devocional llega el lunes 23 de noviembre a las 5 AM."
     body = """<article class="guide welcome">
@@ -589,7 +676,7 @@ def dmj_welcome_es():
 <ol class="guide-steps">
 <li><span class="n">01</span><div><h2>Pon un punto rojo en tu teléfono</h2><p>Que te recuerde toda la temporada que Él lo sostiene todo.</p></div></li>
 <li><span class="n">02</span><div><h2>Invita a alguien</h2><p>Invita a un amigo, compañero de cuarto o familiar a inscribirse en <a href="/es/">40daysofdevotion.com/es</a>.</p></div></li>
-<li><span class="n">03</span><div><h2>Hazlo en familia</h2><p>Lee nuestra <a href="/dontmissjesus/family-devotions" hreflang="en">guía sencilla para devocionales en familia</a> (en inglés) y mira los <a href="/es/#resources">otros recursos</a> para Acción de Gracias y Navidad.</p></div></li>
+<li><span class="n">03</span><div><h2>Hazlo en familia</h2><p>Lee nuestra <a href="/es/devocionales-en-familia">guía sencilla para devocionales en familia</a> y mira los <a href="/es/#resources">otros recursos</a> para Acción de Gracias y Navidad.</p></div></li>
 </ol>
 <p class="guide-pull">¡Estamos emocionados de encontrarnos con Jesús contigo!</p>
 </div>
@@ -686,11 +773,11 @@ def dmj_home_es():
 </form></div></section>
 <section class="sec" id="resources"><div class="sec-head"><p class="eyebrow">Más para la temporada</p><h2 class="slab">Otros recursos</h2></div>
 <div class="res">
-<a class="playlist" href="/dontmissjesus/family-devotions" hreflang="en"><p class="eyebrow">Para familias · en inglés</p><h3>Devocionales en familia</h3><p>Una manera sencilla de empezar cada mañana con Dios en el centro: den gracias, lean y conversen, y luego oren juntos.</p><span class="go">Lee la guía →</span></a>
+<a class="playlist" href="/es/devocionales-en-familia"><p class="eyebrow">Para familias</p><h3>Devocionales en familia</h3><p>Una manera sencilla de empezar cada mañana con Dios en el centro: den gracias, lean y conversen, y luego oren juntos.</p><span class="go">Lee la guía →</span></a>
 <ul class="res-list">
 <li class="res-item"><div class="art art-dot" aria-hidden="true"><span></span></div><div class="body"><span class="eyebrow">40 días de canciones</span><h3>La lista de canciones</h3><p>Una canción para cada día de No te pierdas a Jesús, desde “Gratitude” hasta “Doxology.”</p><a class="go" href="https://open.spotify.com/playlist/3zKOYFC8yjDHfWAfFUlsB9">Abrir en Spotify →</a></div></li>
-<li class="res-item"><div class="art candy" aria-hidden="true"></div><div class="body"><span class="eyebrow">Acción de Gracias · en inglés</span><h3>10 cosas para un Día de Acción de Gracias poderoso</h3><p>Ideas para ti, para las personas que amas y para la mesa.</p><a class="go" href="/dontmissjesus/top-10-thanksgiving" hreflang="en">Ver la lista →</a></div></li>
-<li class="res-item"><div class="art stripe" aria-hidden="true"></div><div class="body"><span class="eyebrow">Navidad · en inglés</span><h3>20 maneras de tener una Navidad llena de gozo</h3><p>Ideas para tu tiempo a solas con Dios, para tu familia y para el día de Navidad alrededor del árbol y la mesa.</p><a class="go" href="/dontmissjesus/top-20-christmas" hreflang="en">Ver la lista →</a></div></li>
+<li class="res-item"><div class="art candy" aria-hidden="true"></div><div class="body"><span class="eyebrow">Acción de Gracias</span><h3>10 cosas para un Día de Acción de Gracias poderoso</h3><p>Ideas para ti, para las personas que amas y para la mesa.</p><a class="go" href="/es/accion-de-gracias">Ver la lista →</a></div></li>
+<li class="res-item"><div class="art stripe" aria-hidden="true"></div><div class="body"><span class="eyebrow">Navidad</span><h3>20 maneras de tener una Navidad llena de gozo</h3><p>Ideas para tu tiempo a solas con Dios, para tu familia y para el día de Navidad alrededor del árbol y la mesa.</p><a class="go" href="/es/navidad">Ver la lista →</a></div></li>
 <li class="res-item"><div class="art grid-bg" aria-hidden="true"></div><div class="body"><span class="eyebrow">Año Nuevo · en inglés</span><h3>Diario de 30 días</h3><p>Mira hacia atrás a 2026, ora por 2027 y planea tu próximo paso en la Palabra.</p><a class="go" href="https://30dayjournal.com/" hreflang="en">Consigue el diario →</a></div></li>
 </ul></div></section>'''
     write('es/index.html', dmj_shell("No te pierdas a Jesús · 40 Days of Devotion", desc, '/es/', body, '#join', lang='es'))
@@ -732,10 +819,10 @@ def notices():
         '<section class="notice"><h1>Page not found</h1><p>The page you were looking for isn’t here anymore. All 40 days of the devotional are still on the site.</p><a class="btn" href="/devotion#days">See all 40 days</a></section>'))
 
 devotion_landing(); resources(); notices()
-if DMJ_SEASON: dmj_home(); dmj_home_es(); dmj_welcome_es(); dmj_family(); dmj_top10(); dmj_top20(); dmj_welcome()
+if DMJ_SEASON: dmj_home(); dmj_home_es(); dmj_welcome_es(); dmj_family_es(); dmj_top10_es(); dmj_top20_es(); dmj_family(); dmj_top10(); dmj_top20(); dmj_welcome()
 
 # ---------- launch files ----------
-paths = ['/'] + (['/es/'] if DMJ_SEASON else []) + ['/dontmissjesus/family-devotions', '/dontmissjesus/top-10-thanksgiving', '/dontmissjesus/top-20-christmas', '/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]
+paths = ['/'] + (['/es/', '/es/devocionales-en-familia', '/es/accion-de-gracias', '/es/navidad'] if DMJ_SEASON else []) + ['/dontmissjesus/family-devotions', '/dontmissjesus/top-10-thanksgiving', '/dontmissjesus/top-20-christmas', '/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]
 write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{DOMAIN}{p}</loc></url>\n' for p in paths) + '</urlset>\n')
 write('robots.txt', f'User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n')
 write('_redirects', '''/dontmissjesus/thanksgiving-table /dontmissjesus/top-10-thanksgiving 301
