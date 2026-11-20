@@ -218,6 +218,11 @@ a.playlist:hover{background:var(--red-ink)}
   .dmj-brand{font-size:12px;letter-spacing:.2em;gap:8px}
   .dmj-logo svg{width:28px;height:28px}
   .dmj-nav a:not(.btn){display:none}
+  .dmj-nav a.lang{display:inline}
+  .dmj-nav{flex-wrap:nowrap;gap:14px;font-size:12px}
+  .dmj-nav .btn{padding:0 16px}
+  .dmj-nav a{white-space:nowrap}
+  .dmj-brand{letter-spacing:.14em}
   .hero{padding:0}
   .hero-box{border-radius:0;padding:0}
   .hero-inner{border:0;padding:48px var(--m);gap:0}
@@ -276,3 +281,6 @@ a.playlist:hover{background:var(--red-ink)}
   .dmj-footer{padding:48px var(--m)}
   .dmj-footer .script{font-size:48px}
 }
+/* Language switch (Español / English) */
+.dmj-nav a.lang{opacity:.75}
+.dmj-nav a.lang:hover{opacity:1}

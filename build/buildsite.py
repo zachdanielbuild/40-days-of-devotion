@@ -398,9 +398,24 @@ DMJ_WEEKS = [('Thanksgiving', 1, 7, 'Nov 23 to 29'), ('Hope', 8, 14, 'Nov 30 to 
 
 def dots(n): return '<div class="dots" aria-hidden="true">' + ''.join('<span class="on"></span>' if i == 0 else '<span></span>' for i in range(n)) + '</div>'
 
-def dmj_shell(title, desc, path, body, signup='/#join', extra=''):
+DMJ_UI = {
+    'en': dict(brand="DON'T MISS JESUS", home='/', nav=[('/#weeks', 'The weeks'), ('/devotion', '40 Days of Devotion'), ('/es/', 'Español')], signup='Sign up',
+               merry='Merry Christmas', family='From your family at Antioch Waco', skip='Skip to content',
+               foot=[('/devotion', '40 Days of Devotion'), ('/resources', 'Resources'), ('/es/', 'Español'), ('https://antiochwaco.com/', 'Antioch Waco')]),
+    'es': dict(brand='NO TE PIERDAS A JESÚS', home='/es/', nav=[('/es/#weeks', 'Las semanas'), ('/', 'English')], signup='Inscríbete',
+               merry='Feliz Navidad', family='De parte de tu familia en Antioch Waco', skip='Ir al contenido',
+               foot=[('/', 'English'), ('https://antiochwaco.com/', 'Antioch Waco')]),
+}
+HOME_ALTS = {'en': '/', 'es': '/es/'}   # the two language versions of the home page (hreflang)
+
+def dmj_shell(title, desc, path, body, signup='/#join', extra='', lang='en'):
+    ui = DMJ_UI[lang]
+    LANGS = {'Español': 'es', 'English': 'en'}
+    nav = ''.join(f'<a class="lang" href="{h}" lang="{LANGS[t]}" hreflang="{LANGS[t]}">{t}</a>' if t in LANGS else f'<a href="{h}">{t}</a>' for h, t in ui['nav'])
+    foot = ''.join(f'<a href="{h}">{t}</a>' for h, t in ui['foot'])
+    alts = ''.join(f'<link rel="alternate" hreflang="{l}" href="{DOMAIN}{u}">\n' for l, u in HOME_ALTS.items()) + f'<link rel="alternate" hreflang="x-default" href="{DOMAIN}/">\n' if path in HOME_ALTS.values() else ''
     return f'''<!doctype html>
-<html lang="en">
+<html lang="{lang}">
 <head>
 <meta charset="utf-8">
 <script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>
@@ -409,8 +424,9 @@ def dmj_shell(title, desc, path, body, signup='/#join', extra=''):
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{DOMAIN}{path}">
-<meta property="og:type" content="website">
+{alts}<meta property="og:type" content="website">
 <meta property="og:site_name" content="40 Days of Devotion">
+<meta property="og:locale" content="{'es_US' if lang == 'es' else 'en_US'}">
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:url" content="{DOMAIN}{path}">
@@ -429,15 +445,15 @@ def dmj_shell(title, desc, path, body, signup='/#join', extra=''):
 <link rel="stylesheet" href="/dmj.css?v={DMJ_CSS_V}">
 </head>
 <body class="dmj{extra}">
-<a class="skip" href="#main">Skip to content</a>
-<header class="dmj-header"><a class="dmj-brand" href="/"><span class="dmj-logo">{LOGO}</span>DON'T MISS JESUS</a>
-<nav class="dmj-nav" aria-label="Main"><a href="/#weeks">The weeks</a><a href="/devotion">40 Days of Devotion</a><a class="btn btn-red" href="{signup}">Sign up</a></nav></header>
+<a class="skip" href="#main">{ui['skip']}</a>
+<header class="dmj-header"><a class="dmj-brand" href="{ui['home']}"><span class="dmj-logo">{LOGO}</span>{ui['brand']}</a>
+<nav class="dmj-nav" aria-label="Main">{nav}<a class="btn btn-red" href="{signup}">{ui['signup']}</a></nav></header>
 <main id="main" class="dmj-main">
 {body}
 </main>
-<footer class="dmj-footer"><span class="dmj-logo foot" aria-hidden="true">{LOGO}</span><span class="script">Merry Christmas</span><p>From your family at Antioch Waco</p>
-<nav aria-label="Footer"><a href="/devotion">40 Days of Devotion</a><a href="/resources">Resources</a><a href="https://antiochwaco.com/">Antioch Waco</a></nav></footer>
-<script>document.querySelectorAll('form[action*="app.kit.com"]').forEach(function(f){{f.addEventListener('submit',function(e){{if(f.dataset.sent)return;e.preventDefault();f.dataset.sent='1';var go=function(){{f.submit()}};var t=setTimeout(go,1000);try{{gtag('event','sign_up',{{method:"Don't Miss Jesus",form_location:f.id==='join'?'hero':'signup_box',transport_type:'beacon',event_callback:function(){{clearTimeout(t);go()}}}})}}catch(err){{clearTimeout(t);go()}}}})}});</script>
+<footer class="dmj-footer"><span class="dmj-logo foot" aria-hidden="true">{LOGO}</span><span class="script">{ui['merry']}</span><p>{ui['family']}</p>
+<nav aria-label="Footer">{foot}</nav></footer>
+<script>document.querySelectorAll('form[action*="app.kit.com"]').forEach(function(f){{f.addEventListener('submit',function(e){{if(f.dataset.sent)return;e.preventDefault();f.dataset.sent='1';var go=function(){{f.submit()}};var t=setTimeout(go,1000);try{{gtag('event','sign_up',{{method:"Don't Miss Jesus",form_location:f.id==='join'?'hero':'signup_box',language:document.documentElement.lang,transport_type:'beacon',event_callback:function(){{clearTimeout(t);go()}}}})}}catch(err){{clearTimeout(t);go()}}}})}});</script>
 <script>document.querySelectorAll('.rail,.more').forEach(function(r){{var d=r.nextElementSibling;if(!d||!d.classList.contains('dots'))return;r.addEventListener('scroll',function(){{var c=r.children[0];if(!c)return;var i=Math.round(r.scrollLeft/(c.offsetWidth+16));d.querySelectorAll('span').forEach(function(s,k){{s.classList.toggle('on',k===i)}})}},{{passive:true}})}});</script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{{"token": "60f7bffc099e494d968954bbf6b5bca0"}}'></script><!-- End Cloudflare Web Analytics -->
 </body>
@@ -604,6 +620,58 @@ def dmj_home():
     page = dmj_shell("Don't Miss Jesus · 40 Days of Devotion", desc, '/', body, '#join')
     write('index.html', page)
 
+DMJ_WEEKS_ES = [('Acción de Gracias', '23 al 29 de nov.'), ('Esperanza', '30 de nov. al 6 de dic.'), ('Paz', '7 al 13 de dic.'),
+                ('Gozo', '14 al 20 de dic.'), ('Amor', '21 al 27 de dic.'), ('Gracia', '28 de dic. al 1 de ene.')]
+
+def dmj_home_es():
+    """Spanish version of the Don't Miss Jesus home page, at /es/.
+    Sign-ups go to the same Kit form, with the custom field Language = es so Spanish speakers
+    can be found in Kit (filter or segment on Language). The daily emails are in English for now."""
+    desc = "Inscríbete gratis en un devocional de 40 días que te ayudará a encontrarte con Jesús en esta temporada navideña."
+    weeks = ''.join(f'''<li class="week"><div class="candy"></div><div class="week-body"><div class="meta"><span>SEMANA {i+1}</span><span>DÍAS {a}–{b}</span></div><h3>{DMJ_WEEKS_ES[i][0]}</h3><span class="when">{DMJ_WEEKS_ES[i][1]}</span></div></li>''' for i, (t, a, b, w) in enumerate(DMJ_WEEKS))
+    lang_field = '<input type="hidden" name="fields[language]" value="es">'
+    body = f'''<section class="hero"><div class="hero-box"><div class="hero-inner">
+<div class="hero-copy">
+<p class="eyebrow dates">23 de nov. al 1 de ene. · 40 días</p>
+<h1><span class="slab">NO TE PIERDAS A</span><span class="script">Jesús</span></h1>
+<p class="lede">{desc}</p>
+<form class="hero-form" id="join" action="{DMJ_FORM}" method="post">{lang_field}
+<label class="sr" for="hero-name">Nombre</label><input id="hero-name" name="fields[first_name]" placeholder="Nombre" autocomplete="given-name" required>
+<label class="sr" for="hero-email">Correo electrónico</label><input id="hero-email" type="email" name="email_address" placeholder="Correo" autocomplete="email" required>
+<button type="submit">¡Cuenta conmigo!</button>
+</form>
+</div>
+<div class="phone" aria-hidden="true"><div class="phone-body"><div class="phone-dot"></div><div class="phone-screen">
+<span class="phone-date">Lunes, 23 de noviembre</span><span class="phone-time">5:00</span>
+<div class="phone-note"><div class="app"><span>NO TE PIERDAS A JESÚS</span><span>ahora</span></div><strong>Día 1 · Acción de Gracias</strong><p>Da gracias al Señor, porque Él es bueno. Tu devocional de hoy ya está listo.</p></div>
+</div></div></div>
+</div></div><div class="stripe hero-stripe"></div></section>
+<section class="verse"><div class="red-dot" aria-hidden="true"></div>
+<blockquote>“Y él es antes de todas las cosas, y todas las cosas en él subsisten… para que en todo tenga la preeminencia.”</blockquote>
+<p class="eyebrow ref">Colosenses 1:17–18 (RVR1960)</p>
+<p class="dot-note">Esta temporada está llena de cosas. En medio de todo, hay una que no te puedes perder.</p></section>
+<section class="sec weeks" id="weeks"><div class="sec-head"><p class="eyebrow">Seis semanas, un Rey</p><h2 class="script">Las semanas</h2><p>Cada semana de la temporada tiene su propio tema, desde Acción de Gracias hasta el Año Nuevo.</p></div>
+<ol class="rail">{weeks}</ol>{dots(6)}</section>
+<section class="signup grid-bg" id="signup"><div class="signup-box">
+<div class="signup-side"><div><p class="eyebrow">Comienza el lunes 23 de nov.</p><h2>Un correo.<br>Cada mañana.<br>Cuarenta días.</h2></div><p>De la semana de Acción de Gracias al Día de Año Nuevo</p></div>
+<form action="{DMJ_FORM}" method="post">{lang_field}
+<h2>Cuenta conmigo</h2>
+<div class="fields"><div class="field"><label for="dmj-name">Nombre</label><input id="dmj-name" name="fields[first_name]" autocomplete="given-name" required></div>
+<div class="field"><label for="dmj-email">Correo electrónico</label><input id="dmj-email" type="email" name="email_address" autocomplete="email" required></div></div>
+<button type="submit">INSCRÍBEME</button>
+<p class="fine">Un correo al día, del 23 de nov. al 1 de ene., de parte de Antioch Waco. Por ahora, los devocionales diarios llegan en inglés. Puedes darte de baja cuando quieras. Nunca compartiremos tu correo.</p>
+</form></div></section>
+<section class="sec" id="resources"><div class="sec-head"><p class="eyebrow">Más para la temporada</p><h2 class="slab">Otros recursos</h2></div>
+<div class="res">
+<a class="playlist" href="/dontmissjesus/family-devotions" hreflang="en"><p class="eyebrow">Para familias · en inglés</p><h3>Devocionales en familia</h3><p>Una manera sencilla de empezar cada mañana con Dios en el centro: den gracias, lean y conversen, y luego oren juntos.</p><span class="go">Lee la guía →</span></a>
+<ul class="res-list">
+<li class="res-item"><div class="art art-dot" aria-hidden="true"><span></span></div><div class="body"><span class="eyebrow">40 días de canciones</span><h3>La lista de canciones</h3><p>Una canción para cada día de No te pierdas a Jesús, desde “Gratitude” hasta “Doxology.”</p><a class="go" href="https://open.spotify.com/playlist/3zKOYFC8yjDHfWAfFUlsB9">Abrir en Spotify →</a></div></li>
+<li class="res-item"><div class="art candy" aria-hidden="true"></div><div class="body"><span class="eyebrow">Acción de Gracias · en inglés</span><h3>10 cosas para un Día de Acción de Gracias poderoso</h3><p>Ideas para ti, para las personas que amas y para la mesa.</p><a class="go" href="/dontmissjesus/top-10-thanksgiving" hreflang="en">Ver la lista →</a></div></li>
+<li class="res-item"><div class="art stripe" aria-hidden="true"></div><div class="body"><span class="eyebrow">Navidad · en inglés</span><h3>20 maneras de tener una Navidad llena de gozo</h3><p>Ideas para tu tiempo a solas con Dios, para tu familia y para el día de Navidad alrededor del árbol y la mesa.</p><a class="go" href="/dontmissjesus/top-20-christmas" hreflang="en">Ver la lista →</a></div></li>
+<li class="res-item"><div class="art grid-bg" aria-hidden="true"></div><div class="body"><span class="eyebrow">Año Nuevo · en inglés</span><h3>Diario de 30 días</h3><p>Mira hacia atrás a 2026, ora por 2027 y planea tu próximo paso en la Palabra.</p><a class="go" href="https://30dayjournal.com/" hreflang="en">Consigue el diario →</a></div></li>
+</ul></div></section>'''
+    write('es/index.html', dmj_shell("No te pierdas a Jesús · 40 Days of Devotion", desc, '/es/', body, '#join', lang='es'))
+
 def devotion_landing():
     groups = ''.join(f'''<div class="group"><div class="group-head"><h3>{s}</h3><span>Days {a} to {b}</span></div>
 <ol class="day-list">{day_rows([x for x in DEV if a <= x[0] <= b], "/devos/")}</ol></div>''' for s, a, b in SECTIONS)
@@ -641,10 +709,10 @@ def notices():
         '<section class="notice"><h1>Page not found</h1><p>The page you were looking for isn’t here anymore. All 40 days of the devotional are still on the site.</p><a class="btn" href="/devotion#days">See all 40 days</a></section>'))
 
 devotion_landing(); resources(); notices()
-if DMJ_SEASON: dmj_home(); dmj_family(); dmj_top10(); dmj_top20(); dmj_welcome()
+if DMJ_SEASON: dmj_home(); dmj_home_es(); dmj_family(); dmj_top10(); dmj_top20(); dmj_welcome()
 
 # ---------- launch files ----------
-paths = ['/', '/dontmissjesus/family-devotions', '/dontmissjesus/top-10-thanksgiving', '/dontmissjesus/top-20-christmas', '/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]
+paths = ['/'] + (['/es/'] if DMJ_SEASON else []) + ['/dontmissjesus/family-devotions', '/dontmissjesus/top-10-thanksgiving', '/dontmissjesus/top-20-christmas', '/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]
 write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{DOMAIN}{p}</loc></url>\n' for p in paths) + '</urlset>\n')
 write('robots.txt', f'User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n')
 write('_redirects', '''/dontmissjesus/thanksgiving-table /dontmissjesus/top-10-thanksgiving 301

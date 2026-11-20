@@ -29,6 +29,10 @@ git add -A && git commit -m "..." && git push
 - **Day page layout:** four movements, each with a big heading: Word (the main verse, then the devotional, then "Scriptures for Today" under a small label), Worship, Pray, Listen & Obey. A day's `## Invite a Friend` section (only Day 1 has one) shows last, under a small label. Built by `render_sections` in `buildsite.py`.
 - **Day page reading type:** matched to Substack posts (Spectral 19px, line height 1.6, 20px between paragraphs, 728px column; 17px on phones). Sections are 48px apart with no divider lines. The Word verse has a thin green line down its left side (`.word .verse`). Set by `.day` and the `--serif` and `--read` variables in `site/style.css`.
 
+## Spanish landing page (/es/)
+
+`dmj_home_es()` in `buildsite.py` builds the Spanish Don't Miss Jesus page at `/es/`. It posts to the same Kit form as the English page, with a hidden field that sets the subscriber's **Language** custom field to `es`, so Spanish sign-ups can be filtered in Kit. The daily emails are in English for now, and the page says so. Both home pages carry hreflang links to each other, and every Don't Miss Jesus page has an Español / English switch in the header.
+
 ## Photos
 
 Photos live in `/photos` at the repo root (WebP, uploaded Oct 30, 2026). The build matches each day to its photo by the original file name from the old site; `DAY_PHOTOS` in `buildsite.py` covers the exceptions (Days 1, 2 and 36). `DAY_FOCUS` sets where a tall photo is cropped. Link-preview copies (1200x630 JPG) are made into `photos/share/` the first time the build sees a photo.
