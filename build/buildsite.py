@@ -399,19 +399,23 @@ DMJ_WEEKS = [('Thanksgiving', 1, 7, 'Nov 23 to 29'), ('Hope', 8, 14, 'Nov 30 to 
 def dots(n): return '<div class="dots" aria-hidden="true">' + ''.join('<span class="on"></span>' if i == 0 else '<span></span>' for i in range(n)) + '</div>'
 
 DMJ_UI = {
-    'en': dict(brand="DON'T MISS JESUS", home='/', nav=[('/#weeks', 'The weeks'), ('/devotion', '40 Days of Devotion'), ('/es/', 'Español')], signup='Sign up',
+    'en': dict(brand="DON'T MISS JESUS", home='/', nav=[('/#weeks', 'The weeks'), ('/devotion', '40 Days of Devotion')], toggle=('EN', '/es/', 'es', 'Ver en español'), signup='Sign up',
                merry='Merry Christmas', family='From your family at Antioch Waco', skip='Skip to content',
                foot=[('/devotion', '40 Days of Devotion'), ('/resources', 'Resources'), ('/es/', 'Español'), ('https://antiochwaco.com/', 'Antioch Waco')]),
-    'es': dict(brand='NO TE PIERDAS A JESÚS', home='/es/', nav=[('/es/#weeks', 'Las semanas'), ('/', 'English')], signup='Inscríbete',
+    'es': dict(brand='NO TE PIERDAS A JESÚS', home='/es/', nav=[('/es/#weeks', 'Las semanas')], toggle=('ES', '/', 'en', 'View in English'), signup='Inscríbete',
                merry='Feliz Navidad', family='De parte de tu familia en Antioch Waco', skip='Ir al contenido',
                foot=[('/', 'English'), ('https://antiochwaco.com/', 'Antioch Waco')]),
 }
+GLOBE = ('<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5">'
+         '<circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4.5" ry="10"/><path d="M2 12h20M4 6.5h16M4 17.5h16M12 2v20"/></svg>')
 HOME_ALTS = {'en': '/', 'es': '/es/'}   # the two language versions of the home page (hreflang)
 
 def dmj_shell(title, desc, path, body, signup='/#join', extra='', lang='en'):
     ui = DMJ_UI[lang]
-    LANGS = {'Español': 'es', 'English': 'en'}
-    nav = ''.join(f'<a class="lang" href="{h}" lang="{LANGS[t]}" hreflang="{LANGS[t]}">{t}</a>' if t in LANGS else f'<a href="{h}">{t}</a>' for h, t in ui['nav'])
+    nav = ''.join(f'<a href="{h}">{t}</a>' for h, t in ui['nav'])
+    code, href, other, label = ui['toggle']
+    toggle = (f'<a class="lang-toggle" href="{href}" hreflang="{other}" lang="{other}" aria-label="{label}" title="{label}">'
+              f'<span lang="{lang}">{code}</span>{GLOBE}</a>')
     foot = ''.join(f'<a href="{h}">{t}</a>' for h, t in ui['foot'])
     alts = ''.join(f'<link rel="alternate" hreflang="{l}" href="{DOMAIN}{u}">\n' for l, u in HOME_ALTS.items()) + f'<link rel="alternate" hreflang="x-default" href="{DOMAIN}/">\n' if path in HOME_ALTS.values() else ''
     return f'''<!doctype html>
@@ -447,7 +451,7 @@ def dmj_shell(title, desc, path, body, signup='/#join', extra='', lang='en'):
 <body class="dmj{extra}">
 <a class="skip" href="#main">{ui['skip']}</a>
 <header class="dmj-header"><a class="dmj-brand" href="{ui['home']}"><span class="dmj-logo">{LOGO}</span>{ui['brand']}</a>
-<nav class="dmj-nav" aria-label="Main">{nav}<a class="btn btn-red" href="{signup}">{ui['signup']}</a></nav></header>
+<nav class="dmj-nav" aria-label="Main">{nav}<a class="btn btn-red" href="{signup}">{ui['signup']}</a>{toggle}</nav></header>
 <main id="main" class="dmj-main">
 {body}
 </main>

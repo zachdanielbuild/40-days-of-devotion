@@ -218,7 +218,7 @@ a.playlist:hover{background:var(--red-ink)}
   .dmj-brand{font-size:12px;letter-spacing:.2em;gap:8px}
   .dmj-logo svg{width:28px;height:28px}
   .dmj-nav a:not(.btn){display:none}
-  .dmj-nav a.lang{display:inline}
+  .dmj-nav a.lang-toggle{display:inline-flex}
   .dmj-nav{flex-wrap:nowrap;gap:14px;font-size:12px}
   .dmj-nav .btn{padding:0 16px}
   .dmj-nav a{white-space:nowrap}
@@ -281,6 +281,7 @@ a.playlist:hover{background:var(--red-ink)}
   .dmj-footer{padding:48px var(--m)}
   .dmj-footer .script{font-size:48px}
 }
-/* Language switch (Español / English) */
-.dmj-nav a.lang{opacity:.75}
-.dmj-nav a.lang:hover{opacity:1}
+/* Language toggle: a pill with the current language and a globe (EN on English pages, ES on Spanish) */
+.dmj-nav a.lang-toggle{display:inline-flex;align-items:center;gap:4px;height:36px;padding:0 3px 0 11px;border:1.5px solid currentColor;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.02em;line-height:1;transition:background .15s,color .15s}
+.dmj-nav a.lang-toggle svg{width:28px;height:28px;flex:none}
+.dmj-nav a.lang-toggle:hover,.dmj-nav a.lang-toggle:focus-visible{background:var(--red-ink);color:#fff}

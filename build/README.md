@@ -31,7 +31,7 @@ git add -A && git commit -m "..." && git push
 
 ## Spanish landing page (/es/)
 
-`dmj_home_es()` in `buildsite.py` builds the Spanish Don't Miss Jesus page at `/es/`. It posts to the same Kit form as the English page, with a hidden field that sets the subscriber's **Language** custom field to `es`, so Spanish sign-ups can be filtered in Kit. The daily emails are in English for now, and the page says so. Both home pages carry hreflang links to each other, and every Don't Miss Jesus page has an Español / English switch in the header.
+`dmj_home_es()` in `buildsite.py` builds the Spanish Don't Miss Jesus page at `/es/`. It posts to the same Kit form as the English page, with a hidden field that sets the subscriber's **Language** custom field to `es`, so Spanish sign-ups can be filtered in Kit. The daily emails are in English for now, and the page says so. Both home pages carry hreflang links to each other, and every Don't Miss Jesus page has a language toggle in the header (a pill showing EN or ES with a globe; tapping it switches language).
 
 ## Photos
 
