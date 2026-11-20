@@ -392,6 +392,7 @@ def resources():
 # Set DMJ_SEASON = False after Jan 1 to put the 40 Days of Devotion landing page back on the home page.
 DMJ_SEASON = True
 DMJ_FORM = 'https://app.kit.com/forms/10209100/subscriptions'   # Kit landing page "Don't Miss Jesus 2026"
+DMJ_FORM_ES = 'https://app.kit.com/forms/10220197/subscriptions'   # Kit landing page "No te pierdas a Jesús 2026 (Español)": tags, Spanish welcome email
 DMJ_CSS_V = hashlib.md5(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'site', 'dmj.css'), 'rb').read()).hexdigest()[:8]
 DMJ_WEEKS = [('Thanksgiving', 1, 7, 'Nov 23 to 29'), ('Hope', 8, 14, 'Nov 30 to Dec 6'), ('Peace', 15, 21, 'Dec 7 to 13'),
              ('Joy', 22, 28, 'Dec 14 to 20'), ('Love', 29, 35, 'Dec 21 to 27'), ('Grace', 36, 40, 'Dec 28 to Jan 1')]
@@ -457,7 +458,7 @@ def dmj_shell(title, desc, path, body, signup='/#join', extra='', lang='en'):
 </main>
 <footer class="dmj-footer"><span class="dmj-logo foot" aria-hidden="true">{LOGO}</span><span class="script">{ui['merry']}</span><p>{ui['family']}</p>
 <nav aria-label="Footer">{foot}</nav></footer>
-<script>document.querySelectorAll('form[action*="app.kit.com"]').forEach(function(f){{f.addEventListener('submit',function(e){{if(f.dataset.sent)return;e.preventDefault();f.dataset.sent='1';var go=function(){{f.submit()}};var t=setTimeout(go,1000);try{{gtag('event','sign_up',{{method:"Don't Miss Jesus",form_location:f.id==='join'?'hero':'signup_box',language:document.documentElement.lang,transport_type:'beacon',event_callback:function(){{clearTimeout(t);go()}}}})}}catch(err){{clearTimeout(t);go()}}}})}});</script>
+<script>document.querySelectorAll('form[action*="app.kit.com"]').forEach(function(f){{f.addEventListener('submit',function(e){{if(f.dataset.sent)return;e.preventDefault();f.dataset.sent='1';var go=function(){{if(f.dataset.next&&window.fetch){{fetch(f.action,{{method:'POST',body:new FormData(f),mode:'no-cors'}}).then(function(){{location.href=f.dataset.next}},function(){{f.submit()}})}}else f.submit()}};var t=setTimeout(go,1000);try{{gtag('event','sign_up',{{method:"Don't Miss Jesus",form_location:f.id==='join'?'hero':'signup_box',language:document.documentElement.lang,transport_type:'beacon',event_callback:function(){{clearTimeout(t);go()}}}})}}catch(err){{clearTimeout(t);go()}}}})}});</script>
 <script>document.querySelectorAll('.rail,.more').forEach(function(r){{var d=r.nextElementSibling;if(!d||!d.classList.contains('dots'))return;r.addEventListener('scroll',function(){{var c=r.children[0];if(!c)return;var i=Math.round(r.scrollLeft/(c.offsetWidth+16));d.querySelectorAll('span').forEach(function(s,k){{s.classList.toggle('on',k===i)}})}},{{passive:true}})}});</script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{{"token": "60f7bffc099e494d968954bbf6b5bca0"}}'></script><!-- End Cloudflare Web Analytics -->
 </body>
@@ -578,6 +579,24 @@ def dmj_welcome():
 <script>(function(){var d=new Date(),start=new Date('2026-11-23T05:00:00-06:00');if(d>=start){var el=document.getElementById('when');if(el)el.textContent='Your next devotional arrives tomorrow at 5 AM.';}})();</script>"""
     write('dontmissjesus/welcome.html', dmj_shell("You're In! · Don't Miss Jesus", desc, '/dontmissjesus/welcome', body, extra=' dmj-page'))
 
+def dmj_welcome_es():
+    desc = "Ya estás inscrito en No te pierdas a Jesús. Tu primer devocional llega el lunes 23 de noviembre a las 5 AM."
+    body = """<article class="guide welcome">
+<header class="guide-head"><div class="red-dot big" aria-hidden="true"></div><p class="eyebrow">Ya estás inscrito</p><h1><span class="script">¡Ya</span><span class="slab">estás!</span></h1>
+<p class="lede" id="when">Tu primer devocional llega el lunes 23 de noviembre a las 5 AM.</p></header>
+<div class="guide-body">
+<p>Qué alegría que te unas a nosotros en No te pierdas a Jesús. Revisa tu correo: te enviamos un mensaje de bienvenida de Jimmy Seibert. Si no lo ves en unos minutos, búscalo en Promociones o Spam y muévelo a tu bandeja de entrada para que no te pierdas ningún día. Por ahora, los devocionales diarios llegan en inglés.</p>
+<ol class="guide-steps">
+<li><span class="n">01</span><div><h2>Pon un punto rojo en tu teléfono</h2><p>Que te recuerde toda la temporada que Él lo sostiene todo.</p></div></li>
+<li><span class="n">02</span><div><h2>Invita a alguien</h2><p>Invita a un amigo, compañero de cuarto o familiar a inscribirse en <a href="/es/">40daysofdevotion.com/es</a>.</p></div></li>
+<li><span class="n">03</span><div><h2>Hazlo en familia</h2><p>Lee nuestra <a href="/dontmissjesus/family-devotions" hreflang="en">guía sencilla para devocionales en familia</a> (en inglés) y mira los <a href="/es/#resources">otros recursos</a> para Acción de Gracias y Navidad.</p></div></li>
+</ol>
+<p class="guide-pull">¡Estamos emocionados de encontrarnos con Jesús contigo!</p>
+</div>
+</article>
+<script>(function(){var d=new Date(),start=new Date('2026-11-23T05:00:00-06:00');if(d>=start){var el=document.getElementById('when');if(el)el.textContent='Tu próximo devocional llega mañana a las 5 AM.';}})();</script>"""
+    write('es/bienvenido.html', dmj_shell("¡Ya estás inscrito! · No te pierdas a Jesús", desc, '/es/bienvenido', body, signup='/es/#join', extra=' dmj-page', lang='es'))
+
 def dmj_home():
     desc = "Sign up for a free 40 day devotional to help you experience Jesus this Holiday season."
     weeks = ''.join(f'''<li class="week"><div class="candy"></div><div class="week-body"><div class="meta"><span>WEEK {i+1}</span><span>DAYS {a}–{b}</span></div><h3>{t}</h3><span class="when">{w}</span></div></li>''' for i, (t, a, b, w) in enumerate(DMJ_WEEKS))
@@ -639,7 +658,7 @@ def dmj_home_es():
 <p class="eyebrow dates">23 de nov. al 1 de ene. · 40 días</p>
 <h1><span class="slab">NO TE PIERDAS A</span><span class="script">Jesús</span></h1>
 <p class="lede">{desc}</p>
-<form class="hero-form" id="join" action="{DMJ_FORM}" method="post">{lang_field}
+<form class="hero-form" id="join" action="{DMJ_FORM_ES}" data-next="/es/bienvenido" method="post">{lang_field}
 <label class="sr" for="hero-name">Nombre</label><input id="hero-name" name="fields[first_name]" placeholder="Nombre" autocomplete="given-name" required>
 <label class="sr" for="hero-email">Correo electrónico</label><input id="hero-email" type="email" name="email_address" placeholder="Correo" autocomplete="email" required>
 <button type="submit">¡Cuenta conmigo!</button>
@@ -658,7 +677,7 @@ def dmj_home_es():
 <ol class="rail">{weeks}</ol>{dots(6)}</section>
 <section class="signup grid-bg" id="signup"><div class="signup-box">
 <div class="signup-side"><div><p class="eyebrow">Comienza el lunes 23 de nov.</p><h2>Un correo.<br>Cada mañana.<br>Cuarenta días.</h2></div><p>De la semana de Acción de Gracias al Día de Año Nuevo</p></div>
-<form action="{DMJ_FORM}" method="post">{lang_field}
+<form action="{DMJ_FORM_ES}" data-next="/es/bienvenido" method="post">{lang_field}
 <h2>Cuenta conmigo</h2>
 <div class="fields"><div class="field"><label for="dmj-name">Nombre</label><input id="dmj-name" name="fields[first_name]" autocomplete="given-name" required></div>
 <div class="field"><label for="dmj-email">Correo electrónico</label><input id="dmj-email" type="email" name="email_address" autocomplete="email" required></div></div>
@@ -713,7 +732,7 @@ def notices():
         '<section class="notice"><h1>Page not found</h1><p>The page you were looking for isn’t here anymore. All 40 days of the devotional are still on the site.</p><a class="btn" href="/devotion#days">See all 40 days</a></section>'))
 
 devotion_landing(); resources(); notices()
-if DMJ_SEASON: dmj_home(); dmj_home_es(); dmj_family(); dmj_top10(); dmj_top20(); dmj_welcome()
+if DMJ_SEASON: dmj_home(); dmj_home_es(); dmj_welcome_es(); dmj_family(); dmj_top10(); dmj_top20(); dmj_welcome()
 
 # ---------- launch files ----------
 paths = ['/'] + (['/es/'] if DMJ_SEASON else []) + ['/dontmissjesus/family-devotions', '/dontmissjesus/top-10-thanksgiving', '/dontmissjesus/top-20-christmas', '/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]
