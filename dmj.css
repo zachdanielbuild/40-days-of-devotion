@@ -294,8 +294,9 @@ body.dmj-day{background:var(--paper)}
 .day-meta .sep{color:#9A8678}
 .day-meta .red-dot{width:10px;height:10px;border-radius:50%;background:var(--dot);flex:none}
 .day-head h1{margin:18px 0 0;font-family:var(--slab);font-weight:900;font-size:clamp(38px,6vw,56px);line-height:1.08;color:var(--red-ink)}
-.day-photo{margin:36px 0 0}
-.day-photo img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+/* photo matches the original 40 days banner: wider than the text (up to 956px) and 1.4:1; edge to edge on phones */
+.day-photo{--w:min(956px,calc(100vw - 64px));width:var(--w);margin:40px 0 0 calc((100% - var(--w))/2)}
+.day-photo img{width:100%;height:auto;aspect-ratio:1.4;object-fit:cover}
 .day-sec{margin-top:56px;font-family:var(--serif);font-size:19px;line-height:1.6;color:#2E211C}
 .day-sec p{margin:0 0 20px}
 .day-sec h2{margin:0 0 20px;font-family:var(--script);font-weight:400;font-size:46px;line-height:1.1;color:var(--red)}
@@ -337,7 +338,7 @@ body.dmj-day{background:var(--paper)}
   .day-sec{font-size:17px;margin-top:44px}
   .day-sec h2{font-size:40px}
   .day-post .day-verse{font-size:19px}
-  .day-photo{margin-top:28px}
+  .day-photo{--w:100vw;margin-top:28px}
   .seven,.day-invite{padding:22px 20px}
   .day-nav a.next{align-items:flex-start;text-align:left}
 }
