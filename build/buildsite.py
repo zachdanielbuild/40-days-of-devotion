@@ -822,6 +822,7 @@ def notices():
 # ---------- Don't Miss Jesus day pages ----------
 # Content: content/dontmissjesus/week1.json (from the Week 1 doc). Photos: /photos/dmj/day-NN.webp (+ -share.jpg for link previews).
 # Layout follows the "Single post" mockup: title, photo, Word, Scriptures for Today, Worship, Pray (+ "Write down 7"), Listen & Obey.
+DMJ_FOCUS = {1: '50% 22%', 2: '50% 55%', 4: '50% 45%', 5: '50% 50%', 6: '50% 0%', 7: '50% 12%'}   # where each photo is cropped (x% y%)
 DMJ_TR = {'nasb': 'NASB1995', 'esv': 'ESV', 'nkjv': 'NKJV', 'bsb': 'BSB'}
 DMJ_DAY_JS = """<script>document.querySelectorAll('.dmj-video').forEach(function(v){v.addEventListener('click',function(){var f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+v.dataset.id+'?autoplay=1&rel=0';f.title=v.dataset.title;f.allow='autoplay; encrypted-media; picture-in-picture';f.allowFullscreen=true;v.replaceWith(f)})});
 document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){var t=b.dataset.copy,done=function(){var o=b.textContent;b.textContent='Link copied';setTimeout(function(){b.textContent=o},2000)};if(navigator.share&&matchMedia('(pointer:coarse)').matches){navigator.share({title:"Don't Miss Jesus",url:t}).catch(function(){});return}if(navigator.clipboard)navigator.clipboard.writeText(t).then(done);else prompt('Copy this link:',t)})});</script>"""
@@ -857,7 +858,7 @@ def dmj_days():
 <article class="day-post">
 <header class="day-head"><p class="day-meta"><span class="red-dot" aria-hidden="true"></span><span>Day {n} of 40</span><span class="sep">·</span><span>{esc(week[0])} week</span><span class="sep">·</span><span>{esc(d['day'])}</span>{tag}</p>
 <h1>{esc(d['title'])}</h1></header>
-<figure class="day-photo"><img src="/photos/dmj/{d['photo']}" alt="" fetchpriority="high"></figure>
+<figure class="day-photo"><img src="/photos/dmj/{d['photo']}" alt="" fetchpriority="high" style="object-position:{DMJ_FOCUS.get(n, '50% 50%')}"></figure>
 <section class="day-sec word"><h2>Word</h2>
 <blockquote class="day-verse">{esc(d['verse'])}<cite>{esc(d['ref'])}</cite></blockquote>
 {''.join(f'<p>{esc(p)}</p>' for p in d['devo'])}
