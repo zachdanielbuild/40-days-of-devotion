@@ -738,7 +738,7 @@ def dmj_home_es():
     Sign-ups go to the same Kit form, with the custom field Language = es so Spanish speakers
     can be found in Kit (filter or segment on Language). The daily emails are in English for now."""
     desc = "Inscríbete gratis en un devocional de 40 días que te ayudará a encontrarte con Jesús en esta temporada navideña."
-    weeks = ''.join(f'''<li class="week"><div class="candy"></div><div class="week-body"><div class="meta"><span>SEMANA {i+1}</span><span>DÍAS {a}–{b}</span></div><h3>{DMJ_WEEKS_ES[i][0]}</h3><span class="when">{DMJ_WEEKS_ES[i][1]}</span></div></li>''' for i, (t, a, b, w) in enumerate(DMJ_WEEKS))
+    weeks = ''.join(f'''<li class="week">{'<a class="week-link" href="/es/dia-1">' if i == 0 else ''}<div class="candy"></div><div class="week-body"><div class="meta"><span>SEMANA {i+1}</span><span>DÍAS {a}–{b}</span></div><h3>{DMJ_WEEKS_ES[i][0]}</h3><span class="when">{DMJ_WEEKS_ES[i][1]}</span>{'<span class="go">Comienza el Día 1 →</span>' if i == 0 else ''}</div>{'</a>' if i == 0 else ''}</li>''' for i, (t, a, b, w) in enumerate(DMJ_WEEKS))
     lang_field = '<input type="hidden" name="fields[language]" value="es">'
     body = f'''<section class="hero"><div class="hero-box"><div class="hero-inner">
 <div class="hero-copy">
@@ -862,7 +862,7 @@ def dmj_week(n, days):
     rows = ''
     for d in days:
         rows += f"""<li><a class="wk-day" href="/dontmissjesus/day-{d['n']}" data-date="{d['date']}" data-open="{esc(d['day'].split(',')[0][:3] + ', ' + d['day'].split(', ')[1])}">
-<span class="num"><span>Day</span><b>{d['n']}</b></span><span class="info"><span class="when"><span class="today-tag">Today · </span>{esc(d['day'])}{(' · ' + esc(d['tag'])) if d.get('tag') else ''}</span><span class="t">{esc(d['title'])}</span><span class="sub">{esc(d['ref'])} · Song: {esc(d['song'])}</span><span class="opens">Opens {esc(d['day'])} at 6:00 AM</span></span>
+<span class="num"><span>Day</span><b>{d['n']}</b></span><span class="info"><span class="when"><span class="today-tag">Today · </span>{esc(d['day'])}{(' · ' + esc(d['tag'])) if d.get('tag') else ''}</span><span class="t">{esc(d['title'])}</span><span class="sub">{esc(d['ref'])} · Song: {esc(d['song'])}</span><span class="opens">Opens {esc(d['day'])} at 5:00 AM</span></span>
 <span class="go"><span class="read">Read →</span><span class="now">Read now</span><svg class="lock" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></a></li>"""
     songs = ''.join(f'<li><a href="https://www.youtube.com/watch?v={d["yt"]}"><b>{esc(d["song"])}</b> · {esc(d["artist"])}</a></li>' for d in days)
     res = ''.join(f'<a class="card wk-res" href="{h}"><div class="{art}" aria-hidden="true"></div><div><p class="kicker">{esc(k)}</p><h3>{esc(t)}</h3><p class="desc">{esc(dsc)}</p><span class="wk-go">{go}</span></div></a>' for art, k, t, dsc, h, go in DMJ_WEEK_RES.get(n, []))
@@ -892,6 +892,7 @@ document.querySelectorAll('.wk-day').forEach(function(a){var d=a.dataset.date;va
     return f'/dontmissjesus/week-{n}'
 
 def dmj_days():
+    DMJ_PAIRS.extend((f'/dontmissjesus/day-{k}', f'/es/dia-{k}') for k in range(1, 8))
     data = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'content', 'dontmissjesus', 'week1.json')))
     days, cr = data['days'], data['credits']
     out = []
@@ -951,8 +952,60 @@ def dmj_days():
     out.append(dmj_week(1, days))
     return out
 
+def dmj_days_es():
+    """Spanish Week 1 day pages at /es/dia-N. Content: content/dontmissjesus/week1.es.json (Scripture: Reina-Valera 1909, public domain)."""
+    data = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'content', 'dontmissjesus', 'week1.es.json')))
+    days = data['days']; out = []
+    js = DMJ_DAY_JS.replace("'Link copied'", "'Enlace copiado'").replace("'Copy this link:'", "'Copia este enlace:'").replace('"Don\'t Miss Jesus"', '"No te pierdas a Jesús"')
+    for i, d in enumerate(days):
+        n = d['n']; path = f'/es/dia-{n}'
+        wi = next(k for k, w in enumerate(DMJ_WEEKS) if w[1] <= n <= w[2])
+        tag = f'<span class="sep">·</span><span>{esc(d["tag"])}</span>' if d.get('tag') else ''
+        scrip = ''.join(f'<p class="passage"><span class="ref">{esc(x["ref"])}</span> {esc(x["text"])}</p>' for x in d['scriptures'])
+        listen = ''.join(f'<li>{esc(q)}</li>' for q in d['listen'])
+        invite = ''
+        if n == 1:
+            invite = f"""<aside class="day-invite"><p class="label">Invita a un amigo</p><p>¿Quién podría hacer estos 40 días contigo? Envíale un mensaje a tu grupo de vida, a tu familia o a un amigo e invítalo a leer contigo.</p>
+<div class="row"><button class="btn btn-red" type="button" data-copy="{DOMAIN}/es/">Copiar enlace de invitación</button><a class="btn btn-line" href="/es/#join">Compartir la página de inscripción</a></div></aside>"""
+        prev = days[i-1] if i > 0 else None; nxt = days[i+1] if i + 1 < len(days) else None
+        nav = (f'<a class="prev" href="/es/dia-{prev["n"]}"><span class="k">← Día {prev["n"]}</span><span class="t">{esc(prev["title"])}</span></a>' if prev
+               else f'<a class="prev" href="/es/#weeks"><span class="k">Las semanas</span><span class="t">Semana de {esc(DMJ_WEEKS_ES[0][0])}</span></a>')
+        nav += (f'<a class="next" href="/es/dia-{nxt["n"]}"><span class="k">Mañana · Día {nxt["n"]} →</span><span class="t">{esc(nxt["title"])}</span></a>' if nxt
+                else f'<a class="next" href="/es/#weeks"><span class="k">Próxima semana</span><span class="t">{esc(DMJ_WEEKS_ES[1][0])} · comienza el 30 de nov.</span></a>')
+        body = f"""<div class="stripe" aria-hidden="true"></div>
+<article class="day-post">
+<header class="day-head"><p class="day-meta"><span class="red-dot" aria-hidden="true"></span><span>Día {n} de 40</span><span class="sep">·</span><span>Semana de {esc(DMJ_WEEKS_ES[wi][0])}</span><span class="sep">·</span><span>{esc(d['day'])}</span>{tag}</p>
+<h1>{esc(d['title'])}</h1></header>
+<figure class="day-photo"><img src="{dmj_photo(d['photo'])}" alt="" fetchpriority="high" style="object-position:{DMJ_FOCUS.get(n, '50% 50%')}">{f'<figcaption>{esc(d["credit"])}</figcaption>' if d.get('credit') else ''}</figure>
+<section class="day-sec word"><h2>Palabra</h2>
+<blockquote class="day-verse">{esc(d['verse'])}<cite>{esc(d['ref'])}</cite></blockquote>
+{''.join(f'<p>{esc(p)}</p>' for p in d['devo'])}
+<h3 class="label">Escrituras para hoy</h3>
+<p class="hint">Al leer las Escrituras de hoy, lee despacio y con atención, permitiendo que el Espíritu Santo te hable mientras meditas en Su Palabra.</p>
+{scrip}</section>
+<section class="day-sec"><h2>Adoración</h2>
+<button class="dmj-video" type="button" data-id="{d['yt']}" data-title="{esc(d['song'])}" aria-label="Reproducir {esc(d['song'])} de {esc(d['artist'])}"><img src="https://i.ytimg.com/vi/{d['yt']}/hqdefault.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="#FFFDF8"/></svg></span></button>
+<p class="song"><strong>{esc(d['song'])}</strong> · {esc(d['artist'])}</p>
+<p class="links"><a href="https://www.youtube.com/watch?v={d['yt']}">Ver en YouTube</a><a href="{d['spotify']}">Escuchar en Spotify</a></p></section>
+<section class="day-sec"><h2>Oración</h2>
+<p class="prayer">{esc(d['prayer'])}</p>
+<div class="seven"><p class="label">Da gracias por 7</p><p>{esc(d['seven'])}</p></div></section>
+<section class="day-sec"><h2>Escuchar y obedecer</h2>
+<p>{esc(d['listen_intro'])}</p><ul class="prompts">{listen}</ul></section>
+{invite}
+<nav class="day-nav" aria-label="Navegación de días">{nav}</nav>
+<footer class="day-credits"><p>{esc(data['credit'])}</p></footer>
+</article>
+<section class="day-strip"><div><p class="script">No te pierdas mañana</p><p>Recibe el devocional de cada día en tu correo cada mañana.</p></div><a class="btn btn-cream" href="/es/#join">Inscríbeme</a></section>"""
+        desc = f"Día {n} de No te pierdas a Jesús: {d['ref']}. Un devocional corto con Escritura, adoración, oración y tiempo para escuchar."
+        head = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&amp;display=swap">\n'
+        write(f'es/dia-{n}.html', dmj_shell(f"Día {n}: {d['title']} · No te pierdas a Jesús", desc, path, body + js, signup='/es/#join', extra=' dmj-page dmj-day', lang='es',
+              image=dmj_photo(f'day-{n:02d}-share.jpg'), image_alt=d['title'], head=head))
+        out.append(path)
+    return out
+
 devotion_landing(); resources(); notices()
-DMJ_DAY_PATHS = dmj_days() if DMJ_SEASON else []
+DMJ_DAY_PATHS = (dmj_days() + dmj_days_es()) if DMJ_SEASON else []
 if DMJ_SEASON: dmj_home(); dmj_home_es(); dmj_welcome_es(); dmj_family_es(); dmj_top10_es(); dmj_top20_es(); dmj_family(); dmj_top10(); dmj_top20(); dmj_welcome()
 
 # ---------- launch files ----------
