@@ -297,6 +297,7 @@ body.dmj-day{background:var(--paper)}
 /* photo matches the original 40 days banner: wider than the text (up to 956px) and 1.4:1; edge to edge on phones */
 .day-photo{--w:min(956px,calc(100vw - 64px));width:var(--w);margin:40px 0 0 calc((100% - var(--w))/2)}
 .day-photo img{width:100%;height:auto;aspect-ratio:1.4;object-fit:cover}
+.day-photo figcaption{margin-top:8px;padding:0 var(--m);font-size:13px;color:var(--muted);text-align:right}
 .day-sec{margin-top:56px;font-family:var(--serif);font-size:19px;line-height:1.6;color:#2E211C}
 .day-sec p{margin:0 0 20px}
 .day-sec h2{margin:0 0 20px;font-family:var(--script);font-weight:400;font-size:46px;line-height:1.1;color:var(--red)}
