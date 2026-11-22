@@ -899,7 +899,7 @@ def dmj_days():
     for i, d in enumerate(days):
         n = d['n']; path = f'/dontmissjesus/day-{n}'
         week = next(w for w in DMJ_WEEKS if w[1] <= n <= w[2])
-        tag = f'<span class="sep">·</span><span>{esc(d["tag"])}</span>' if d.get('tag') else ''
+        tag = f'<span class="sep brk">·</span><span>{esc(d["tag"])}</span>' if d.get('tag') else ''
         scrip = ''.join(f'<p class="passage"><span class="ref">{esc(x["ref"])}</span> {esc(x["text"])}</p>' for x in d['scriptures'])
         used = {}
         for x in d['scriptures']:
@@ -921,7 +921,7 @@ def dmj_days():
                 else '<a class="next" href="/#weeks"><span class="k">Next week</span><span class="t">Hope · starts Nov 30</span></a>')
         body = f"""<div class="stripe" aria-hidden="true"></div>
 <article class="day-post">
-<header class="day-head"><p class="day-meta"><span class="red-dot" aria-hidden="true"></span><span>Day {n} of 40</span><span class="sep">·</span><span>{esc(week[0])} week</span><span class="sep">·</span><span>{esc(d['day'])}</span>{tag}</p>
+<header class="day-head"><p class="day-meta"><span class="red-dot" aria-hidden="true"></span><span>Day {n} of 40</span><span class="sep wk">·</span><span class="wk">{esc(week[0])} week</span><span class="sep">·</span><span>{esc(d['day'])}</span>{tag}</p>
 <h1>{esc(d['title'])}</h1></header>
 <figure class="day-photo"><img src="{dmj_photo(d['photo'])}" alt="" fetchpriority="high" style="object-position:{DMJ_FOCUS.get(n, '50% 50%')}">{f'<figcaption>{esc(d["credit"])}</figcaption>' if d.get('credit') else ''}</figure>
 <section class="day-sec word"><h2>Word</h2>
@@ -960,7 +960,7 @@ def dmj_days_es():
     for i, d in enumerate(days):
         n = d['n']; path = f'/es/dia-{n}'
         wi = next(k for k, w in enumerate(DMJ_WEEKS) if w[1] <= n <= w[2])
-        tag = f'<span class="sep">·</span><span>{esc(d["tag"])}</span>' if d.get('tag') else ''
+        tag = f'<span class="sep brk">·</span><span>{esc(d["tag"])}</span>' if d.get('tag') else ''
         scrip = ''.join(f'<p class="passage"><span class="ref">{esc(x["ref"])}</span> {esc(x["text"])}</p>' for x in d['scriptures'])
         listen = ''.join(f'<li>{esc(q)}</li>' for q in d['listen'])
         invite = ''
@@ -974,7 +974,7 @@ def dmj_days_es():
                 else f'<a class="next" href="/es/#weeks"><span class="k">Próxima semana</span><span class="t">{esc(DMJ_WEEKS_ES[1][0])} · comienza el 30 de nov.</span></a>')
         body = f"""<div class="stripe" aria-hidden="true"></div>
 <article class="day-post">
-<header class="day-head"><p class="day-meta"><span class="red-dot" aria-hidden="true"></span><span>Día {n} de 40</span><span class="sep">·</span><span>Semana de {esc(DMJ_WEEKS_ES[wi][0])}</span><span class="sep">·</span><span>{esc(d['day'])}</span>{tag}</p>
+<header class="day-head"><p class="day-meta"><span class="red-dot" aria-hidden="true"></span><span>Día {n} de 40</span><span class="sep wk">·</span><span class="wk">Semana de {esc(DMJ_WEEKS_ES[wi][0])}</span><span class="sep">·</span><span>{esc(d['day'])}</span>{tag}</p>
 <h1>{esc(d['title'])}</h1></header>
 <figure class="day-photo"><img src="{dmj_photo(d['photo'])}" alt="" fetchpriority="high" style="object-position:{DMJ_FOCUS.get(n, '50% 50%')}">{f'<figcaption>{esc(d["credit"])}</figcaption>' if d.get('credit') else ''}</figure>
 <section class="day-sec word"><h2>Palabra</h2>

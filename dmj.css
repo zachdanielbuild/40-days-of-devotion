@@ -52,8 +52,8 @@ body.dmj{margin:0;background:var(--cream);color:var(--ink);font-family:var(--san
 .phone-date{font-size:13px;opacity:.85}
 .phone-time{font-family:var(--slab);font-weight:700;font-size:64px;line-height:1.1}
 .phone-note{margin-top:64px;width:100%;background:var(--cream);color:var(--ink);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;text-align:left}
-.phone-note .app{display:flex;justify-content:space-between;font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--red)}
-.phone-note .app span:last-child{color:#6B5A50;font-weight:500;letter-spacing:0}
+.phone-note .app{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--red)}
+.phone-note .app span:last-child{flex:none;color:#6B5A50;font-weight:500;letter-spacing:0}
 .phone-note strong{font-size:13px}
 .phone-note p{margin:0;font-size:12px;line-height:1.4;color:#4A3A32}
 .hero-stripe{margin:0}
@@ -435,3 +435,6 @@ body.dmj-day{background:var(--paper)}
   .seven,.day-invite{padding:22px 20px}
   .day-nav a.next{align-items:flex-start;text-align:left}
 }
+
+/* Day meta on phones: drop the week name and put the holiday tag on its own line, so no line ends in a stray dot */
+@media (max-width:600px){.day-meta{font-size:12px;letter-spacing:.14em}.day-meta .wk{display:none}.day-meta .brk{flex-basis:100%;height:0;overflow:hidden;visibility:hidden}.day-photo figcaption{text-wrap:balance}}
