@@ -348,6 +348,12 @@ a.playlist:hover{background:var(--red-ink)}
 .wk-songs h3{margin:4px 0 10px;font-size:20px;color:var(--red-ink)}
 .wk-songs ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:16px}
 .wk-songs a{text-decoration:none;color:var(--ink)}
+.wk-songs .wrap-900{display:flex;flex-direction:column;gap:16px}
+.wk-songs .card.wk-res{color:var(--ink)}
+.wk-songs .card.wk-res:hover{background:#FFF8EE}
+.wk-songs .card.wk-res .candy{width:64px;height:64px;flex:none}
+.wk-songs .card.wk-res .desc{margin:0 0 8px;font-size:15px;color:var(--muted)}
+.wk-songs .card.wk-res .wk-go{font-size:14px;font-weight:600;color:var(--red)}
 .wk-songs a:hover b{color:var(--red)}
 .wk-nav{padding:0 5% 80px}
 .wk-nav .wrap-900{display:flex;flex-wrap:wrap;gap:16px}

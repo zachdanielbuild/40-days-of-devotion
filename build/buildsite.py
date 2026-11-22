@@ -830,6 +830,8 @@ document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener(
 
 
 DMJ_SERMONS = {1: dict(yt='7bI6LEwcPmA', date='Sunday, Nov 22', title='The launch message', who='Jimmy Seibert')}
+DMJ_WEEK_RES = {1: [('candy', 'For Thanksgiving', 'Top 10 things to do for a powerful Thanksgiving', 'Ideas for you personally, with the people you love, and around the table.', '/dontmissjesus/top-10-thanksgiving', 'See the list →'),
+                     ('stripe-sq', 'For families', 'How to do family devotions', 'A simple way to start each morning with God at the center: give thanks, read and talk, then pray together.', '/dontmissjesus/family-devotions', 'Read the guide →')]}
 DMJ_WEEK_INTRO = {1: "We start where the ten lepers did, with the one who came back to say thank you. For seven days we'll practice giving thanks in everything, at the table and in the hard seasons, so we don't miss Jesus in the middle of His blessings."}
 
 def dmj_week(n, days):
@@ -853,6 +855,7 @@ def dmj_week(n, days):
 <span class="num"><span>Day</span><b>{d['n']}</b></span><span class="info"><span class="when"><span class="today-tag">Today · </span>{esc(d['day'])}{(' · ' + esc(d['tag'])) if d.get('tag') else ''}</span><span class="t">{esc(d['title'])}</span><span class="sub">{esc(d['ref'])} · Song: {esc(d['song'])}</span><span class="opens">Opens {esc(d['day'])} at 6:00 AM</span></span>
 <span class="go"><span class="read">Read →</span><span class="now">Read now</span><svg class="lock" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></a></li>"""
     songs = ''.join(f'<li><a href="https://www.youtube.com/watch?v={d["yt"]}"><b>{esc(d["song"])}</b> · {esc(d["artist"])}</a></li>' for d in days)
+    res = ''.join(f'<a class="card wk-res" href="{h}"><div class="{art}" aria-hidden="true"></div><div><p class="kicker">{esc(k)}</p><h3>{esc(t)}</h3><p class="desc">{esc(dsc)}</p><span class="wk-go">{go}</span></div></a>' for art, k, t, dsc, h, go in DMJ_WEEK_RES.get(n, []))
     nxt = DMJ_WEEKS[n] if n < len(DMJ_WEEKS) else None
     prev_a = (f'<a class="prev" href="/dontmissjesus/week-{n-1}"><span class="k">← Week {n-1}</span><span class="script">{DMJ_WEEKS[n-2][0]}</span></a>' if n > 1
               else '<a class="prev" href="/#weeks"><span class="k">← All six weeks</span><span class="script">The plan</span></a>')
@@ -868,7 +871,7 @@ def dmj_week(n, days):
 {sermon}
 <section class="wk-days"><div class="wrap-900"><div class="wk-days-head"><h2>This week's devos</h2></div>
 <ol class="wk-list">{rows}</ol></div></section>
-<section class="wk-songs"><div class="wrap-900"><div class="card"><div class="stripe-sq" aria-hidden="true"></div><div><p class="kicker">{esc(theme)} week songs</p><h3>7 songs for the week</h3><ol>{songs}</ol></div></div></div></section>
+<section class="wk-songs"><div class="wrap-900"><div class="card"><div class="stripe-sq" aria-hidden="true"></div><div><p class="kicker">{esc(theme)} week songs</p><h3>7 songs for the week</h3><ol>{songs}</ol></div></div>{res}</div></section>
 <nav class="wk-nav" aria-label="Previous and next week"><div class="wrap-900">{prev_a}{next_a}</div></nav>
 <section class="day-strip"><div><p class="script">Never miss a day</p><p>Get each devotional in your inbox every morning.</p></div><a class="btn btn-cream" href="/#join">Sign me up</a></section>"""
     js = """<script>(function(){var t=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
