@@ -832,7 +832,7 @@ document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener(
 DMJ_SERMONS = {1: dict(yt='7bI6LEwcPmA', date='Sunday, Nov 22', title='The launch message', who='Jimmy Seibert')}
 DMJ_WEEK_RES = {1: [('candy', 'For Thanksgiving', 'Top 10 things to do for a powerful Thanksgiving', 'Ideas for you personally, with the people you love, and around the table.', '/dontmissjesus/top-10-thanksgiving', 'See the list →'),
                      ('stripe-sq', 'For families', 'How to do family devotions', 'A simple way to start each morning with God at the center: give thanks, read and talk, then pray together.', '/dontmissjesus/family-devotions', 'Read the guide →')]}
-DMJ_WEEK_INTRO = {1: "We start where the ten lepers did, with the one who came back to say thank you. For seven days we'll practice giving thanks in everything, at the table and in the hard seasons, so we don't miss Jesus in the middle of His blessings."}
+DMJ_WEEK_INTRO = {}   # optional intro under the week title, e.g. {2: "..."}
 
 def dmj_week(n, days):
     theme, a, b, when = DMJ_WEEKS[n-1]
@@ -867,7 +867,7 @@ def dmj_week(n, days):
 <nav class="wk-pills" aria-label="Weeks">{pills}</nav>
 <section class="wk-hero grid-bg"><div class="wk-box"><div class="wk-box-in">
 <p class="eyebrow">Week {n} · Days {a}–{b}</p><h1 class="script">{esc(theme)}</h1><p class="eyebrow dates">{esc(days[0]['day'].split(',')[0][:3])} {esc(days[0]['day'].split(', ')[1])} · {esc(days[-1]['day'].split(',')[0][:3])} {esc(days[-1]['day'].split(', ')[1])}</p>
-<p class="lede">{esc(DMJ_WEEK_INTRO.get(n, ''))}</p></div></div></section>
+{f'<p class="lede">{esc(DMJ_WEEK_INTRO[n])}</p>' if n in DMJ_WEEK_INTRO else ''}</div></div></section>
 {sermon}
 <section class="wk-days"><div class="wrap-900"><div class="wk-days-head"><h2>This week's devos</h2></div>
 <ol class="wk-list">{rows}</ol></div></section>
