@@ -686,7 +686,7 @@ def dmj_welcome_es():
 
 def dmj_home():
     desc = "Sign up for a free 40 day devotional to help you experience Jesus this Holiday season."
-    weeks = ''.join(f'''<li class="week"><div class="candy"></div><div class="week-body"><div class="meta"><span>WEEK {i+1}</span><span>DAYS {a}–{b}</span></div><h3>{t}</h3><span class="when">{w}</span></div></li>''' for i, (t, a, b, w) in enumerate(DMJ_WEEKS))
+    weeks = ''.join(f'''<li class="week">{'<a class="week-link" href="/dontmissjesus/week-' + str(i+1) + '">' if i + 1 in DMJ_WEEK_PAGES else ''}<div class="candy"></div><div class="week-body"><div class="meta"><span>WEEK {i+1}</span><span>DAYS {a}–{b}</span></div><h3>{t}</h3><span class="when">{w}</span>{'<span class="go">See the week →</span>' if i + 1 in DMJ_WEEK_PAGES else ''}</div>{'</a>' if i + 1 in DMJ_WEEK_PAGES else ''}</li>''' for i, (t, a, b, w) in enumerate(DMJ_WEEKS))
     body = f'''<section class="hero"><div class="hero-box"><div class="hero-inner">
 <div class="hero-copy">
 <p class="eyebrow dates">Nov 23 to Jan 1 · 40 Days</p>
@@ -823,9 +823,60 @@ def notices():
 # Content: content/dontmissjesus/week1.json (from the Week 1 doc). Photos: /photos/dmj/day-NN.webp (+ -share.jpg for link previews).
 # Layout follows the "Single post" mockup: title, photo, Word, Scriptures for Today, Worship, Pray (+ "Write down 7"), Listen & Obey.
 DMJ_FOCUS = {1: '50% 80%', 2: '50% 55%', 4: '50% 45%', 5: '50% 50%', 6: '50% 0%', 7: '50% 12%'}   # where each photo is cropped (x% y%)
+DMJ_WEEK_PAGES = {1}   # weeks that have a week page (/dontmissjesus/week-N)
 DMJ_TR = {'nasb': 'NASB1995', 'esv': 'ESV', 'nkjv': 'NKJV', 'bsb': 'BSB'}
 DMJ_DAY_JS = """<script>document.querySelectorAll('.dmj-video').forEach(function(v){v.addEventListener('click',function(){var f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+v.dataset.id+'?autoplay=1&rel=0';f.title=v.dataset.title;f.allow='autoplay; encrypted-media; picture-in-picture';f.allowFullscreen=true;v.replaceWith(f)})});
 document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){var t=b.dataset.copy,done=function(){var o=b.textContent;b.textContent='Link copied';setTimeout(function(){b.textContent=o},2000)};if(navigator.share&&matchMedia('(pointer:coarse)').matches){navigator.share({title:"Don't Miss Jesus",url:t}).catch(function(){});return}if(navigator.clipboard)navigator.clipboard.writeText(t).then(done);else prompt('Copy this link:',t)})});</script>"""
+
+
+DMJ_SERMONS = {1: dict(yt='7bI6LEwcPmA', date='Sunday, Nov 22', title='The launch message', who='Jimmy Seibert')}
+DMJ_WEEK_INTRO = {1: "We start where the ten lepers did, with the one who came back to say thank you. For seven days we'll practice giving thanks in everything, at the table and in the hard seasons, so we don't miss Jesus in the middle of His blessings."}
+
+def dmj_week(n, days):
+    theme, a, b, when = DMJ_WEEKS[n-1]
+    pills = ''.join((f'<a class="pill on" href="/dontmissjesus/week-{i+1}" aria-current="page">{i+1} · {t}</a>' if i + 1 == n else
+                     f'<a class="pill" href="/dontmissjesus/week-{i+1}">{i+1} · {t}</a>' if i + 1 in DMJ_WEEK_PAGES else
+                     f'<span class="pill off">{i+1} · {t}</span>') for i, (t, *_r) in enumerate(DMJ_WEEKS))
+    s = DMJ_SERMONS.get(n)
+    sermon = ''
+    if s:
+        sermon = f"""<section class="wk-sermon"><div class="wrap-900">
+<div class="wk-sermon-head"><div><p class="kicker"><span class="red-dot" aria-hidden="true"></span>Sunday's message · {esc(s['date'])}</p><h2>{esc(s['title'])}</h2><p class="who">{esc(s['who'])} · Antioch Waco</p></div>
+<p class="script">This message launched {esc(theme)} week</p></div>
+<button class="dmj-video" type="button" data-id="{s['yt']}" data-title="{esc(s['title'])}" aria-label="Play Sunday's message"><img src="https://i.ytimg.com/vi/{s['yt']}/hqdefault.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="#FFFDF8"/></svg></span></button>
+<div class="wk-sermon-foot"><p>Missed Sunday? Start here. This week's seven devos build on this message.</p>
+<div class="row"><a class="btn btn-cream" href="https://www.youtube.com/watch?v={s['yt']}">Watch on YouTube</a><button class="btn btn-line" type="button" data-copy="https://www.youtube.com/watch?v={s['yt']}">Share the message</button></div></div>
+</div></section>"""
+    rows = ''
+    for d in days:
+        rows += f"""<li><a class="wk-day" href="/dontmissjesus/day-{d['n']}" data-date="{d['date']}" data-open="{esc(d['day'].split(',')[0][:3] + ', ' + d['day'].split(', ')[1])}">
+<span class="num"><span>Day</span><b>{d['n']}</b></span><span class="info"><span class="when"><span class="today-tag">Today · </span>{esc(d['day'])}{(' · ' + esc(d['tag'])) if d.get('tag') else ''}</span><span class="t">{esc(d['title'])}</span><span class="sub">{esc(d['ref'])} · Song: {esc(d['song'])}</span><span class="opens">Opens {esc(d['day'])} at 6:00 AM</span></span>
+<span class="go"><span class="read">Read →</span><span class="now">Read now</span><svg class="lock" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span></a></li>"""
+    songs = ''.join(f'<li><a href="https://www.youtube.com/watch?v={d["yt"]}"><b>{esc(d["song"])}</b> · {esc(d["artist"])}</a></li>' for d in days)
+    nxt = DMJ_WEEKS[n] if n < len(DMJ_WEEKS) else None
+    prev_a = (f'<a class="prev" href="/dontmissjesus/week-{n-1}"><span class="k">← Week {n-1}</span><span class="script">{DMJ_WEEKS[n-2][0]}</span></a>' if n > 1
+              else '<a class="prev" href="/#weeks"><span class="k">← All six weeks</span><span class="script">The plan</span></a>')
+    next_a = ''
+    if nxt:
+        href = f'/dontmissjesus/week-{n+1}' if n + 1 in DMJ_WEEK_PAGES else '/#weeks'
+        next_a = f'<a class="next" href="{href}"><span class="k">Week {n+1} · starts {nxt[3].split(" to ")[0]} →</span><span class="script">{nxt[0]}</span></a>'
+    body = f"""<div class="stripe" aria-hidden="true"></div>
+<nav class="wk-pills" aria-label="Weeks">{pills}</nav>
+<section class="wk-hero grid-bg"><div class="wk-box"><div class="wk-box-in">
+<p class="eyebrow">Week {n} · Days {a}–{b}</p><h1 class="script">{esc(theme)}</h1><p class="eyebrow dates">{esc(days[0]['day'].split(',')[0][:3])} {esc(days[0]['day'].split(', ')[1])} · {esc(days[-1]['day'].split(',')[0][:3])} {esc(days[-1]['day'].split(', ')[1])}</p>
+<p class="lede">{esc(DMJ_WEEK_INTRO.get(n, ''))}</p></div></div></section>
+{sermon}
+<section class="wk-days"><div class="wrap-900"><div class="wk-days-head"><h2>This week's devos</h2></div>
+<ol class="wk-list">{rows}</ol></div></section>
+<section class="wk-songs"><div class="wrap-900"><div class="card"><div class="stripe-sq" aria-hidden="true"></div><div><p class="kicker">{esc(theme)} week songs</p><h3>7 songs for the week</h3><ol>{songs}</ol></div></div></div></section>
+<nav class="wk-nav" aria-label="Previous and next week"><div class="wrap-900">{prev_a}{next_a}</div></nav>
+<section class="day-strip"><div><p class="script">Never miss a day</p><p>Get each devotional in your inbox every morning.</p></div><a class="btn btn-cream" href="/#join">Sign me up</a></section>"""
+    js = """<script>(function(){var t=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+document.querySelectorAll('.wk-day').forEach(function(a){var d=a.dataset.date;var li=a.parentNode;if(d<t)li.className='past';else if(d===t)li.className='today';else{li.className='future';a.removeAttribute('href');a.setAttribute('aria-disabled','true')}})})();</script>"""
+    desc = f"Don't Miss Jesus, week {n}: {theme}. Seven short devotionals, Days {a}–{b}, plus Sunday's message."
+    write(f'dontmissjesus/week-{n}.html', dmj_shell(f"Week {n}: {theme} · Don't Miss Jesus", desc, f'/dontmissjesus/week-{n}', body + DMJ_DAY_JS + js,
+          extra=' dmj-page dmj-week', image=f'/photos/dmj/day-{a:02d}-share.jpg', image_alt=f'{theme} week'))
+    return f'/dontmissjesus/week-{n}'
 
 def dmj_days():
     data = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'content', 'dontmissjesus', 'week1.json')))
@@ -851,7 +902,7 @@ def dmj_days():
 <div class="row"><button class="btn btn-red" type="button" data-copy="{DOMAIN}/">Copy invite link</button><a class="btn btn-line" href="/#join">Share the sign-up page</a></div></aside>"""
         prev = days[i-1] if i > 0 else None; nxt = days[i+1] if i + 1 < len(days) else None
         nav = (f'<a class="prev" href="/dontmissjesus/day-{prev["n"]}"><span class="k">← Day {prev["n"]}</span><span class="t">{esc(prev["title"])}</span></a>' if prev
-               else '<a class="prev" href="/#weeks"><span class="k">All 40 days</span><span class="t">See the plan</span></a>')
+               else '<a class="prev" href="/dontmissjesus/week-1"><span class="k">This week</span><span class="t">Thanksgiving week</span></a>')
         nav += (f'<a class="next" href="/dontmissjesus/day-{nxt["n"]}"><span class="k">Tomorrow · Day {nxt["n"]} →</span><span class="t">{esc(nxt["title"])}</span></a>' if nxt
                 else '<a class="next" href="/#weeks"><span class="k">Next week</span><span class="t">Hope · starts Nov 30</span></a>')
         body = f"""<div class="stripe" aria-hidden="true"></div>
@@ -884,6 +935,7 @@ def dmj_days():
         write(f'dontmissjesus/day-{n}.html', dmj_shell(f"Day {n}: {d['title']} · Don't Miss Jesus", desc, path, body + DMJ_DAY_JS, extra=' dmj-page dmj-day',
               image=f'/photos/dmj/day-{n:02d}-share.jpg', image_alt=d['title'], head=head))
         out.append(path)
+    out.append(dmj_week(1, days))
     return out
 
 devotion_landing(); resources(); notices()

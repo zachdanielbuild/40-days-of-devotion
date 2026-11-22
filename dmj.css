@@ -286,6 +286,92 @@ a.playlist:hover{background:var(--red-ink)}
 .dmj-nav a.lang-toggle svg{width:28px;height:28px;flex:none}
 .dmj-nav a.lang-toggle:hover,.dmj-nav a.lang-toggle:focus-visible{background:var(--red-ink);color:#fff}
 
+/* home: a week card that has its own page */
+.week-link{display:flex;flex-direction:column;flex:1;text-decoration:none;color:inherit}
+.week-link:hover{background:#FFF8EE}
+.week .go{margin-top:4px;font-size:14px;font-weight:600;color:var(--red)}
+
+/* Don't Miss Jesus week pages (/dontmissjesus/week-N). Follows the "Week page (with message)" mockup. */
+.dmj-week .stripe{height:8px}
+.wrap-900{width:100%;max-width:900px;margin:0 auto}
+.wk-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;padding:20px 5%;border-bottom:1px solid var(--line)}
+.wk-pills .pill{font-size:14px;font-weight:600;padding:10.5px 18.5px;border-radius:999px;border:1.5px solid #D8C8B4;color:var(--red-ink);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.wk-pills .pill.on{background:var(--red);border-color:var(--red);color:var(--cream)}
+.wk-pills .pill.off{color:#9A8678;border-style:dashed}
+.wk-hero{padding:72px 5%;display:flex;justify-content:center}
+.wk-box{background:var(--red);color:var(--cream);padding:14px;width:100%;max-width:900px}
+.wk-box-in{border:1px solid rgba(244,237,225,.55);padding:56px 6%;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
+.wk-box h1{margin:0;font-family:var(--script);font-weight:400;font-size:clamp(48px,12.5vw,140px);line-height:.95}
+.wk-box .dates{color:var(--blue-ink)}
+.wk-box .lede{margin:8px 0 0;font-size:18px;line-height:1.6;max-width:560px}
+.kicker{display:flex;align-items:center;gap:8px;margin:0;font-size:13px;font-weight:600;letter-spacing:.24em;text-transform:uppercase}
+.kicker .red-dot{width:10px;height:10px;border-radius:50%;background:var(--dot);flex:none}
+.wk-sermon{background:#2A0C0C;color:var(--cream);padding:72px 5%}
+.wk-sermon .wrap-900{display:flex;flex-direction:column;gap:24px}
+.wk-sermon-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px}
+.wk-sermon .kicker{color:#E9B8B0}
+.wk-sermon h2{margin:8px 0 0;font-family:var(--slab);font-weight:900;font-size:40px;line-height:1.1}
+.wk-sermon .who{margin:6px 0 0;font-size:16px;color:#D9C9BC}
+.wk-sermon .script{margin:0;font-family:var(--script);font-size:32px;color:#E9B8B0}
+.wk-sermon iframe{display:block;width:100%;aspect-ratio:16/9;border:0}
+.wk-sermon-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px}
+.wk-sermon-foot p{margin:0;font-size:16px;color:#D9C9BC;max-width:520px}
+.wk-sermon-foot .row{display:flex;flex-wrap:wrap;gap:12px}
+.wk-sermon .btn-line{color:var(--cream)}
+.wk-days{padding:72px 5% 40px}
+.wk-days h2{margin:0 0 24px;font-family:var(--slab);font-weight:900;font-size:36px;text-transform:uppercase;color:var(--red)}
+.wk-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.wk-day{display:flex;align-items:center;gap:24px;background:var(--paper);border:1.5px solid var(--line);padding:22px 28px;text-decoration:none;color:var(--ink)}
+.wk-day .num{width:64px;flex:none;display:flex;flex-direction:column;align-items:center;color:var(--red);font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase}
+.wk-day .num b{font-family:var(--slab);font-weight:900;font-size:40px;line-height:1;letter-spacing:0}
+.wk-day .info{flex:1;display:flex;flex-direction:column;gap:4px}
+.wk-day .when{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#6B5A50}
+.wk-day .t{font-family:var(--slab);font-weight:700;font-size:24px;color:var(--red-ink);line-height:1.2}
+.wk-day .sub{font-size:15px;color:var(--muted)}
+.wk-day .go{flex:none;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+.wk-day .today-tag,.wk-day .opens,.wk-day .now,.wk-day .lock{display:none}
+.wk-list .today .wk-day{background:var(--red);border-color:var(--red);color:var(--cream)}
+.wk-list .today .num,.wk-list .today .t,.wk-list .today .when{color:var(--cream)}
+.wk-list .today .sub{color:#E9DCCF}
+.wk-list .today .today-tag{display:inline}
+.wk-list .today .read{display:none}
+.wk-list .today .now{display:inline-block;background:var(--cream);color:var(--red);padding:14px 22px;border-radius:999px}
+.wk-list .future .wk-day{background:transparent;border-style:dashed;border-color:#CDBBA6;color:#6B5A50;cursor:default}
+.wk-list .future .num{color:#6B5A50}
+.wk-list .future .t,.wk-list .future .sub,.wk-list .future .read{display:none}
+.wk-list .future .opens{display:block;font-size:17px;font-weight:500}
+.wk-list .future .lock{display:block;width:22px;height:22px;fill:none;stroke:#6B5A50;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.wk-songs{padding:0 5% 56px}
+.wk-songs .card{display:flex;gap:20px;background:var(--paper);border:1.5px solid var(--red);padding:24px}
+.wk-songs .stripe-sq{width:64px;height:64px;flex:none;background:repeating-linear-gradient(90deg,var(--red) 0 18px,var(--red-2) 18px 36px)}
+.wk-songs .kicker{color:var(--red-2);font-size:12px;letter-spacing:.18em}
+.wk-songs h3{margin:4px 0 10px;font-size:20px;color:var(--red-ink)}
+.wk-songs ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:16px}
+.wk-songs a{text-decoration:none;color:var(--ink)}
+.wk-songs a:hover b{color:var(--red)}
+.wk-nav{padding:0 5% 80px}
+.wk-nav .wrap-900{display:flex;flex-wrap:wrap;gap:16px}
+.wk-nav a{flex:1 1 260px;display:flex;flex-direction:column;gap:4px;padding:20px 24px;border:1.5px solid var(--line);background:var(--paper);text-decoration:none}
+.wk-nav a.next{border-color:var(--red);align-items:flex-end;text-align:right}
+.wk-nav .k{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#6B5A50}
+.wk-nav .script{font-family:var(--script);font-size:34px;color:var(--red);line-height:1.2}
+@media (max-width:640px){
+  .wk-pills{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;padding:14px var(--m)}
+  .wk-pills .pill{flex:none}
+  .wk-hero{padding:40px var(--m)}
+  .wk-box-in{padding:40px 20px}
+  .wk-sermon,.wk-days{padding-left:var(--m);padding-right:var(--m)}
+  .wk-sermon{padding-top:48px;padding-bottom:48px}
+  .wk-sermon h2{font-size:30px}
+  .wk-day{padding:18px;gap:16px;flex-wrap:wrap}
+  .wk-day .num{width:48px}
+  .wk-day .num b{font-size:32px}
+  .wk-day .info{flex:1 1 200px}
+  .wk-day .t{font-size:20px}
+  .wk-songs .card{flex-direction:column}
+  .wk-nav a.next{align-items:flex-start;text-align:left}
+}
+
 /* Don't Miss Jesus day pages (/dontmissjesus/day-N). Follows the "Single post" mockup. */
 body.dmj-day{background:var(--paper)}
 .dmj-day .stripe{height:8px}
