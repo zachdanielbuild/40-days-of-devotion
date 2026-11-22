@@ -3,7 +3,7 @@
 Content lives in build/content/ as one Markdown file per day (the same text as the
 Notion pages). Run `bash build/deploy.sh` from the repo root, then commit and push.
 """
-import glob, html, os, re
+import glob, html, json, os, re
 
 D = os.path.dirname(os.path.abspath(__file__))
 C, OUT = D + '/content', D + '/site'
@@ -414,7 +414,7 @@ DMJ_PAIRS = [('/', '/es/'), ('/dontmissjesus/family-devotions', '/es/devocionale
              ('/dontmissjesus/top-10-thanksgiving', '/es/accion-de-gracias'), ('/dontmissjesus/top-20-christmas', '/es/navidad'),
              ('/dontmissjesus/welcome', '/es/bienvenido')]
 
-def dmj_shell(title, desc, path, body, signup='/#join', extra='', lang='en'):
+def dmj_shell(title, desc, path, body, signup='/#join', extra='', lang='en', image='/dmj-share.png', image_alt='The Antioch A logo', head=''):
     ui = DMJ_UI[lang]
     nav = ''.join(f'<a href="{h}">{t}</a>' for h, t in ui['nav'])
     code, href, other, label = ui['toggle']
@@ -441,12 +441,12 @@ def dmj_shell(title, desc, path, body, signup='/#join', extra='', lang='en'):
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:url" content="{DOMAIN}{path}">
-<meta property="og:image" content="{DOMAIN}/dmj-share.png">
+<meta property="og:image" content="{DOMAIN}{image}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The Antioch A logo">
+<meta property="og:image:alt" content="{esc(image_alt)}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="{DOMAIN}/dmj-share.png">
+<meta name="twitter:image" content="{DOMAIN}{image}">
 <meta name="theme-color" content="#7C1F1F">
 <link rel="icon" href="/dmj-favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/dmj-icon-180.png">
@@ -454,7 +454,7 @@ def dmj_shell(title, desc, path, body, signup='/#join', extra='', lang='en'):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&amp;family=Outfit:wght@400;500;600;700&amp;family=Yellowtail&amp;display=swap">
 <link rel="stylesheet" href="/dmj.css?v={DMJ_CSS_V}">
-</head>
+{head}</head>
 <body class="dmj{extra}">
 <a class="skip" href="#main">{ui['skip']}</a>
 <header class="dmj-header"><a class="dmj-brand" href="{ui['home']}"><span class="dmj-logo">{LOGO}</span>{ui['brand']}</a>
@@ -818,11 +818,79 @@ def notices():
     write('404.html', shell('Page not found · 40 Days of Devotion', 'Page not found.', '/404',
         '<section class="notice"><h1>Page not found</h1><p>The page you were looking for isn’t here anymore. All 40 days of the devotional are still on the site.</p><a class="btn" href="/devotion#days">See all 40 days</a></section>'))
 
+
+# ---------- Don't Miss Jesus day pages ----------
+# Content: content/dontmissjesus/week1.json (from the Week 1 doc). Photos: /photos/dmj/day-NN.webp (+ -share.jpg for link previews).
+# Layout follows the "Single post" mockup: title, photo, Word, Scriptures for Today, Worship, Pray (+ "Write down 7"), Listen & Obey.
+DMJ_TR = {'nasb': 'NASB1995', 'esv': 'ESV', 'nkjv': 'NKJV', 'bsb': 'BSB'}
+DMJ_DAY_JS = """<script>document.querySelectorAll('.dmj-video').forEach(function(v){v.addEventListener('click',function(){var f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+v.dataset.id+'?autoplay=1&rel=0';f.title=v.dataset.title;f.allow='autoplay; encrypted-media; picture-in-picture';f.allowFullscreen=true;v.replaceWith(f)})});
+document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){var t=b.dataset.copy,done=function(){var o=b.textContent;b.textContent='Link copied';setTimeout(function(){b.textContent=o},2000)};if(navigator.share&&matchMedia('(pointer:coarse)').matches){navigator.share({title:"Don't Miss Jesus",url:t}).catch(function(){});return}if(navigator.clipboard)navigator.clipboard.writeText(t).then(done);else prompt('Copy this link:',t)})});</script>"""
+
+def dmj_days():
+    data = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'content', 'dontmissjesus', 'week1.json')))
+    days, cr = data['days'], data['credits']
+    out = []
+    for i, d in enumerate(days):
+        n = d['n']; path = f'/dontmissjesus/day-{n}'
+        week = next(w for w in DMJ_WEEKS if w[1] <= n <= w[2])
+        tag = f'<span class="sep">·</span><span>{esc(d["tag"])}</span>' if d.get('tag') else ''
+        scrip = ''.join(f'<p class="passage"><span class="ref">{esc(x["ref"])}</span> {esc(x["text"])}</p>' for x in d['scriptures'])
+        used = {}
+        for x in d['scriptures']:
+            if x['tr'] != 'nasb': used.setdefault(x['tr'], []).append(x['ref'])
+        credit = [f'{cr["nasb"]} <a href="https://www.lockman.org">lockman.org</a>']
+        for k in ('esv', 'nkjv', 'bsb'):
+            if k in used:
+                refs = '; '.join(used[k]); text = cr[k]
+                credit.append(f'{esc(refs)}: {"taken from the " if k != "bsb" else ""}{esc(text)}')
+        listen = ''.join(f'<li>{esc(q)}</li>' for q in d['listen'])
+        invite = ''
+        if n == 1:
+            invite = f"""<aside class="day-invite"><p class="label">Invite a friend</p><p>Who could do these 40 days with you? Text your Lifegroup, your family or a friend and invite them to read along.</p>
+<div class="row"><button class="btn btn-red" type="button" data-copy="{DOMAIN}/">Copy invite link</button><a class="btn btn-line" href="/#join">Share the sign-up page</a></div></aside>"""
+        prev = days[i-1] if i > 0 else None; nxt = days[i+1] if i + 1 < len(days) else None
+        nav = (f'<a class="prev" href="/dontmissjesus/day-{prev["n"]}"><span class="k">← Day {prev["n"]}</span><span class="t">{esc(prev["title"])}</span></a>' if prev
+               else '<a class="prev" href="/#weeks"><span class="k">All 40 days</span><span class="t">See the plan</span></a>')
+        nav += (f'<a class="next" href="/dontmissjesus/day-{nxt["n"]}"><span class="k">Tomorrow · Day {nxt["n"]} →</span><span class="t">{esc(nxt["title"])}</span></a>' if nxt
+                else '<a class="next" href="/#weeks"><span class="k">Next week</span><span class="t">Hope · starts Nov 30</span></a>')
+        body = f"""<div class="stripe" aria-hidden="true"></div>
+<article class="day-post">
+<header class="day-head"><p class="day-meta"><span class="red-dot" aria-hidden="true"></span><span>Day {n} of 40</span><span class="sep">·</span><span>{esc(week[0])} week</span><span class="sep">·</span><span>{esc(d['day'])}</span>{tag}</p>
+<h1>{esc(d['title'])}</h1></header>
+<figure class="day-photo"><img src="/photos/dmj/{d['photo']}" alt="" fetchpriority="high"></figure>
+<section class="day-sec word"><h2>Word</h2>
+<blockquote class="day-verse">{esc(d['verse'])}<cite>{esc(d['ref'])}</cite></blockquote>
+{''.join(f'<p>{esc(p)}</p>' for p in d['devo'])}
+<h3 class="label">Scriptures for today</h3>
+<p class="hint">As you read today's Scriptures, read slowly and attentively, allowing the Holy Spirit to speak to you as you meditate on His Word.</p>
+{scrip}</section>
+<section class="day-sec"><h2>Worship</h2>
+<button class="dmj-video" type="button" data-id="{d['yt']}" data-title="{esc(d['song'])}" aria-label="Play {esc(d['song'])} by {esc(d['artist'])}"><img src="https://i.ytimg.com/vi/{d['yt']}/hqdefault.jpg" alt="" loading="lazy"><span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="#FFFDF8"/></svg></span></button>
+<p class="song"><strong>{esc(d['song'])}</strong> · {esc(d['artist'])}</p>
+<p class="links"><a href="https://www.youtube.com/watch?v={d['yt']}">Watch on YouTube</a><a href="{d['spotify']}">Listen on Spotify</a></p></section>
+<section class="day-sec"><h2>Pray</h2>
+<p class="prayer">{esc(d['prayer'])}</p>
+<div class="seven"><p class="label">Give thanks for 7</p><p>{esc(d['seven'])}</p></div></section>
+<section class="day-sec"><h2>Listen &amp; Obey</h2>
+<p>{esc(d['listen_intro'])}</p><ul class="prompts">{listen}</ul></section>
+{invite}
+<nav class="day-nav" aria-label="Day navigation">{nav}</nav>
+<footer class="day-credits">{''.join(f'<p>{c}</p>' for c in credit)}</footer>
+</article>
+<section class="day-strip"><div><p class="script">Don't miss tomorrow</p><p>Get each day's devotional in your inbox every morning.</p></div><a class="btn btn-cream" href="/#join">Sign me up</a></section>"""
+        desc = f"Day {n} of Don't Miss Jesus: {d['ref']}. A short devotional with Scripture, worship, prayer and listening."
+        head = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&amp;display=swap">\n'
+        write(f'dontmissjesus/day-{n}.html', dmj_shell(f"Day {n}: {d['title']} · Don't Miss Jesus", desc, path, body + DMJ_DAY_JS, extra=' dmj-page dmj-day',
+              image=f'/photos/dmj/day-{n:02d}-share.jpg', image_alt=d['title'], head=head))
+        out.append(path)
+    return out
+
 devotion_landing(); resources(); notices()
+DMJ_DAY_PATHS = dmj_days() if DMJ_SEASON else []
 if DMJ_SEASON: dmj_home(); dmj_home_es(); dmj_welcome_es(); dmj_family_es(); dmj_top10_es(); dmj_top20_es(); dmj_family(); dmj_top10(); dmj_top20(); dmj_welcome()
 
 # ---------- launch files ----------
-paths = ['/'] + (['/es/', '/es/devocionales-en-familia', '/es/accion-de-gracias', '/es/navidad'] if DMJ_SEASON else []) + ['/dontmissjesus/family-devotions', '/dontmissjesus/top-10-thanksgiving', '/dontmissjesus/top-20-christmas', '/devotion', '/resources'] +['/devos/' + d['slug'] for _, d in DEV]
+paths = ['/'] + (['/es/', '/es/devocionales-en-familia', '/es/accion-de-gracias', '/es/navidad'] if DMJ_SEASON else []) + ['/dontmissjesus/family-devotions', '/dontmissjesus/top-10-thanksgiving', '/dontmissjesus/top-20-christmas', '/devotion', '/resources'] + DMJ_DAY_PATHS + ['/devos/' + d['slug'] for _, d in DEV]
 write('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{DOMAIN}{p}</loc></url>\n' for p in paths) + '</urlset>\n')
 write('robots.txt', f'User-agent: *\nAllow: /\nSitemap: {DOMAIN}/sitemap.xml\n')
 write('_redirects', '''/dontmissjesus/thanksgiving-table /dontmissjesus/top-10-thanksgiving 301

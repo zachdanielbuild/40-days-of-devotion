@@ -285,3 +285,59 @@ a.playlist:hover{background:var(--red-ink)}
 .dmj-nav a.lang-toggle{display:inline-flex;align-items:center;gap:4px;height:36px;padding:0 3px 0 11px;border:1.5px solid currentColor;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.02em;line-height:1;transition:background .15s,color .15s}
 .dmj-nav a.lang-toggle svg{width:28px;height:28px;flex:none}
 .dmj-nav a.lang-toggle:hover,.dmj-nav a.lang-toggle:focus-visible{background:var(--red-ink);color:#fff}
+
+/* Don't Miss Jesus day pages (/dontmissjesus/day-N). Follows the "Single post" mockup. */
+body.dmj-day{background:var(--paper)}
+.dmj-day .stripe{height:8px}
+.day-post{--serif:'Spectral',Georgia,serif;max-width:728px;margin:0 auto;padding:72px var(--m) 40px}
+.day-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin:0;font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--red)}
+.day-meta .sep{color:#9A8678}
+.day-meta .red-dot{width:10px;height:10px;border-radius:50%;background:var(--dot);flex:none}
+.day-head h1{margin:18px 0 0;font-family:var(--slab);font-weight:900;font-size:clamp(38px,6vw,56px);line-height:1.08;color:var(--red-ink)}
+.day-photo{margin:36px 0 0;background:var(--cream);display:flex;justify-content:center}
+.day-photo img{width:auto;max-width:100%;max-height:640px;height:auto}
+.day-sec{margin-top:56px;font-family:var(--serif);font-size:19px;line-height:1.6;color:#2E211C}
+.day-sec p{margin:0 0 20px}
+.day-sec h2{margin:0 0 20px;font-family:var(--script);font-weight:400;font-size:46px;line-height:1.1;color:var(--red)}
+.day-post .day-verse{margin:0 0 28px;padding:4px 0 4px 22px;border-left:2px solid var(--red-2);font-style:italic;font-size:21px;line-height:1.6;color:var(--ink)}
+.day-post .day-verse cite{display:block;margin-top:10px;font-style:normal;font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--red)}
+.day-post .label{margin:40px 0 12px;font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--red)}
+.day-sec .hint{color:var(--muted)}
+.day-sec .passage{font-style:italic}
+.day-sec .passage .ref{font-style:normal;font-weight:600}
+.dmj-video{position:relative;display:block;width:100%;aspect-ratio:16/9;padding:0;border:0;background:#2A0C0C;cursor:pointer;overflow:hidden}
+.dmj-video img{width:100%;height:100%;object-fit:cover;opacity:.85}
+.dmj-video .play{position:absolute;inset:0;margin:auto;width:76px;height:76px;border-radius:50%;background:var(--dot);display:flex;align-items:center;justify-content:center}
+.dmj-video .play svg{width:30px;height:30px}
+.day-sec iframe{display:block;width:100%;aspect-ratio:16/9;border:0}
+.day-sec .song{margin:14px 0 4px;font-family:var(--sans);font-size:16px}
+.day-sec .links{display:flex;flex-wrap:wrap;gap:6px 20px;font-family:var(--sans);font-size:15px;font-weight:600}
+.day-sec .prayer{font-style:italic}
+.seven{background:var(--cream);border-left:4px solid var(--dot);padding:24px 28px;margin-top:8px}
+.seven .label{margin:0 0 8px}
+.seven p:last-child{margin:0}
+.prompts{margin:0;padding-left:24px;display:flex;flex-direction:column;gap:10px;font-style:italic}
+.prompts li::marker{color:var(--dot)}
+.day-invite{margin-top:56px;background:var(--cream);padding:32px;font-family:var(--serif);font-size:19px;line-height:1.6}
+.day-invite .label{margin:0 0 10px}
+.day-invite p{margin:0}
+.day-invite .row{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px;font-family:var(--sans)}
+.day-nav{margin-top:56px;display:flex;flex-wrap:wrap;gap:16px}
+.day-nav a{flex:1 1 240px;display:flex;flex-direction:column;gap:4px;padding:18px 22px;border:1.5px solid var(--line);text-decoration:none;min-height:48px}
+.day-nav a.next{border-color:var(--red);align-items:flex-end;text-align:right}
+.day-nav .k{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.day-nav .t{font-size:17px;font-weight:600;color:var(--red-ink)}
+.day-credits{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;line-height:1.5;color:var(--muted)}
+.day-credits p{margin:0 0 8px}
+.day-strip{background:var(--red);color:var(--cream);padding:48px 5%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:20px 48px}
+.day-strip p{margin:0}
+.day-strip .script{font-family:var(--script);font-size:40px;line-height:1.1}
+@media (max-width:640px){
+  .day-post{padding:44px var(--m) 32px}
+  .day-sec{font-size:17px;margin-top:44px}
+  .day-sec h2{font-size:40px}
+  .day-post .day-verse{font-size:19px}
+  .day-photo{margin-top:28px}
+  .seven,.day-invite{padding:22px 20px}
+  .day-nav a.next{align-items:flex-start;text-align:left}
+}

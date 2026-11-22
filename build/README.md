@@ -37,6 +37,10 @@ In Kit, the automation "No te pierdas a Jesús 2026 (Español): etiquetar inscri
 
 The resource pages have Spanish versions too: `/es/devocionales-en-familia`, `/es/accion-de-gracias` and `/es/navidad` (`dmj_family_es`, `dmj_top10_es`, `dmj_top20_es`). `DMJ_PAIRS` in `buildsite.py` lists each English page with its Spanish version; it sets where the toggle goes and the hreflang links. Each pair of pages carries hreflang links to each other, and every Don't Miss Jesus page has a language toggle in the header (a pill showing EN or ES with a globe; tapping it switches language).
 
+## Don't Miss Jesus day pages
+
+`dmj_days()` in `buildsite.py` builds `/dontmissjesus/day-1` through `day-7` from `content/dontmissjesus/week1.json` (the Week 1 doc). Each day has its title, photo, main verse, devotional, Scriptures for Today, worship video, prayer, the "Give thanks for 7" prompt and Listen & Obey. Photos are in `/photos/dmj/` (`day-NN.webp`, plus `day-NN-share.jpg` for link previews). Each page lists the Scripture credits it needs at the bottom: NASB1995 by default, with any ESV, NKJV or BSB passages named. Styles are at the end of `site/dmj.css` under "Don't Miss Jesus day pages".
+
 ## Photos
 
 Photos live in `/photos` at the repo root (WebP, uploaded Oct 30, 2026). The build matches each day to its photo by the original file name from the old site; `DAY_PHOTOS` in `buildsite.py` covers the exceptions (Days 1, 2 and 36). `DAY_FOCUS` sets where a tall photo is cropped. Link-preview copies (1200x630 JPG) are made into `photos/share/` the first time the build sees a photo.
