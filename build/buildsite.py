@@ -875,7 +875,7 @@ def dmj_week(n, days):
 <nav class="wk-nav" aria-label="Previous and next week"><div class="wrap-900">{prev_a}{next_a}</div></nav>
 <section class="day-strip"><div><p class="script">Never miss a day</p><p>Get each devotional in your inbox every morning.</p></div><a class="btn btn-cream" href="/#join">Sign me up</a></section>"""
     js = """<script>(function(){var t=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Chicago',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-document.querySelectorAll('.wk-day').forEach(function(a){var d=a.dataset.date;var li=a.parentNode;if(d<t)li.className='past';else if(d===t)li.className='today';else{li.className='future';a.removeAttribute('href');a.setAttribute('aria-disabled','true')}})})();</script>"""
+document.querySelectorAll('.wk-day').forEach(function(a){var d=a.dataset.date;var li=a.parentNode;if(d<t)li.className='past';else if(d===t)li.className='today';else li.className='upcoming'})})();</script>"""
     desc = f"Don't Miss Jesus, week {n}: {theme}. Seven short devotionals, Days {a}–{b}, plus Sunday's message."
     write(f'dontmissjesus/week-{n}.html', dmj_shell(f"Week {n}: {theme} · Don't Miss Jesus", desc, f'/dontmissjesus/week-{n}', body + DMJ_DAY_JS + js,
           extra=' dmj-page dmj-week', image=f'/photos/dmj/day-{a:02d}-share.jpg', image_alt=f'{theme} week'))
