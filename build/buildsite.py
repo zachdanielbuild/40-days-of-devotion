@@ -820,6 +820,16 @@ def notices():
 
 
 # ---------- Don't Miss Jesus day pages ----------
+def dmj_photo(name):
+    """Photo URL with a content hash, so a replaced photo is never served from cache."""
+    import hashlib
+    fp = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'photos', 'dmj', name)
+    try:
+        h = hashlib.md5(open(fp, 'rb').read()).hexdigest()[:8]
+        return f'/photos/dmj/{name}?v={h}'
+    except OSError:
+        return f'/photos/dmj/{name}'
+
 # Content: content/dontmissjesus/week1.json (from the Week 1 doc). Photos: /photos/dmj/day-NN.webp (+ -share.jpg for link previews).
 # Layout follows the "Single post" mockup: title, photo, Word, Scriptures for Today, Worship, Pray (+ "Write down 7"), Listen & Obey.
 DMJ_FOCUS = {1: '50% 80%', 2: '50% 55%', 4: '50% 45%', 5: '50% 50%', 6: '50% 0%', 7: '50% 12%'}   # where each photo is cropped (x% y%)
@@ -878,7 +888,7 @@ def dmj_week(n, days):
 document.querySelectorAll('.wk-day').forEach(function(a){var d=a.dataset.date;var li=a.parentNode;if(d<t)li.className='past';else if(d===t)li.className='today';else li.className='upcoming'})})();</script>"""
     desc = f"Don't Miss Jesus, week {n}: {theme}. Seven short devotionals, Days {a}–{b}, plus Sunday's message."
     write(f'dontmissjesus/week-{n}.html', dmj_shell(f"Week {n}: {theme} · Don't Miss Jesus", desc, f'/dontmissjesus/week-{n}', body + DMJ_DAY_JS + js,
-          extra=' dmj-page dmj-week', image=f'/photos/dmj/day-{a:02d}-share.jpg', image_alt=f'{theme} week'))
+          extra=' dmj-page dmj-week', image=dmj_photo(f'day-{a:02d}-share.jpg'), image_alt=f'{theme} week'))
     return f'/dontmissjesus/week-{n}'
 
 def dmj_days():
@@ -912,7 +922,7 @@ def dmj_days():
 <article class="day-post">
 <header class="day-head"><p class="day-meta"><span class="red-dot" aria-hidden="true"></span><span>Day {n} of 40</span><span class="sep">·</span><span>{esc(week[0])} week</span><span class="sep">·</span><span>{esc(d['day'])}</span>{tag}</p>
 <h1>{esc(d['title'])}</h1></header>
-<figure class="day-photo"><img src="/photos/dmj/{d['photo']}" alt="" fetchpriority="high" style="object-position:{DMJ_FOCUS.get(n, '50% 50%')}">{f'<figcaption>{esc(d["credit"])}</figcaption>' if d.get('credit') else ''}</figure>
+<figure class="day-photo"><img src="{dmj_photo(d['photo'])}" alt="" fetchpriority="high" style="object-position:{DMJ_FOCUS.get(n, '50% 50%')}">{f'<figcaption>{esc(d["credit"])}</figcaption>' if d.get('credit') else ''}</figure>
 <section class="day-sec word"><h2>Word</h2>
 <blockquote class="day-verse">{esc(d['verse'])}<cite>{esc(d['ref'])}</cite></blockquote>
 {''.join(f'<p>{esc(p)}</p>' for p in d['devo'])}
@@ -936,7 +946,7 @@ def dmj_days():
         desc = f"Day {n} of Don't Miss Jesus: {d['ref']}. A short devotional with Scripture, worship, prayer and listening."
         head = '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&amp;display=swap">\n'
         write(f'dontmissjesus/day-{n}.html', dmj_shell(f"Day {n}: {d['title']} · Don't Miss Jesus", desc, path, body + DMJ_DAY_JS, extra=' dmj-page dmj-day',
-              image=f'/photos/dmj/day-{n:02d}-share.jpg', image_alt=d['title'], head=head))
+              image=dmj_photo(f'day-{n:02d}-share.jpg'), image_alt=d['title'], head=head))
         out.append(path)
     out.append(dmj_week(1, days))
     return out
