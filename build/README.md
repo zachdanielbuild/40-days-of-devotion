@@ -45,6 +45,8 @@ The resource pages have Spanish versions too: `/es/devocionales-en-familia`, `/e
 
 Photos live in `/photos` at the repo root (WebP, uploaded Oct 30, 2026). The build matches each day to its photo by the original file name from the old site; `DAY_PHOTOS` in `buildsite.py` covers the exceptions (Days 1, 2 and 36). `DAY_FOCUS` sets where a tall photo is cropped. Link-preview copies (1200x630 JPG) are made into `photos/share/` the first time the build sees a photo.
 
+Phones get smaller copies: the build makes an 800px-wide WebP of each banner and Don't Miss Jesus day photo in a `w800/` folder next to it (`photos/w800/`, `photos/dmj/w800/`) and lists both sizes in the image's `srcset`, so phones load about a tenth of the bytes. A replaced photo gets a fresh copy on the next build.
+
 To change a day's photo, upload the new file to `photos/`, add the day to `DAY_PHOTOS`, and rebuild.
 
 Still loading from Squarespace, so upload them before Squarespace is cancelled: the landing page banner (`yusron-el-jihan-pc4OfudfwOo-unsplash`), the Face to Face card (`Face+to+Face+Square`) and the Alone With God card (`Untitled+design+(3)`). Keep those names and the build picks them up.

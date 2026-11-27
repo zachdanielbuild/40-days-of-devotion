@@ -47,6 +47,35 @@ def share_image(f):
         im.resize((1200, 630), Image.LANCZOS).save(out, quality=85, optimize=True)
     return f'/photos/share/{os.path.basename(out)}'
 
+def small_image(rel, width=800):
+    """An 800px-wide WebP copy of a photo for phones, made once. rel is the path under /photos."""
+    src = os.path.join(PHOTOS, rel)
+    d, f = os.path.split(rel)
+    out = os.path.join(PHOTOS, d, 'w800', f)
+    if not os.path.exists(out) or os.path.getmtime(out) < os.path.getmtime(src):
+        try:
+            from PIL import Image
+            im = Image.open(src)
+            if im.width <= width: return None
+            im = im.convert('RGB')
+            im = im.resize((width, round(im.height * width / im.width)), Image.LANCZOS)
+            os.makedirs(os.path.dirname(out), exist_ok=True)
+            im.save(out, 'WEBP', quality=72, method=6)
+        except Exception:
+            return None
+    return '/photos/' + '/'.join(x for x in (d, 'w800', f) if x)
+
+def srcset(url, _w, sizes):
+    """srcset/sizes attributes for a local /photos URL, so phones get the 800px copy."""
+    if not url.startswith('/photos/'): return ''
+    path, _, q = url.partition('?')
+    small = small_image(path[len('/photos/'):])
+    if not small: return ''
+    q = '?' + q if q else ''
+    from PIL import Image
+    full_w = Image.open(os.path.join(PHOTOS, path[len('/photos/'):])).width
+    return f' srcset="{small}{q} 800w, {path}{q} {full_w}w" sizes="{sizes}"'
+
 def photo(u, w=1500, share=False):
     f = local_photo(u)
     if f: return share_image(f) if share else f'/photos/{f}'
@@ -295,7 +324,8 @@ def day_page(d, n, series, prev, nxt, total=40, variant=''):
     signup, base, home, home_t = KIT_DEVOTION, '/devos/', '/devotion', '40 Days of Devotion'
     pct = max(n, 0) / total * 100
     focus = f' style="object-position:{DAY_FOCUS[n]}"' if n in DAY_FOCUS else ''
-    banner = f'<div class="banner"><img src="{photo(d["photo"])}" alt="" width="1500" height="1071"{focus}></div>' if d['photo'] else ''
+    bsrc = photo(d["photo"]) if d['photo'] else ''
+    banner = f'<div class="banner"><img src="{bsrc}"{srcset(bsrc, 1500, "(max-width: 1020px) 100vw, 956px")} alt="" width="1500" height="1071" fetchpriority="high"{focus}></div>' if d['photo'] else ''
     def link(item, cls, k):
         if not item:
             return f'<a class="{cls}" href="{home}#days"><span class="k">{"← Back" if cls == "prev" else "Finished →"}</span><span class="t">{"All 40 Days" if cls == "prev" else home_t}</span></a>'
@@ -315,6 +345,7 @@ def day_page(d, n, series, prev, nxt, total=40, variant=''):
 <nav class="day-nav" aria-label="Days">{link(prev, "prev", 0)}{link(nxt, "next", 1)}</nav>
 </article>'''
     title = f'{"Day " + str(n) + ": " if n else ""}{plain(name)} · {home_t}'
+    if len(title) > 60: title = title.rsplit(' · ', 1)[0]
     return shell(title, first_sentence(d), base + d['slug'], body, photo(d['photo'], 1200, share=True), signup, script=True, noindex=bool(variant))
 
 def build_series(series, files, numbering):
@@ -386,7 +417,7 @@ def resources():
 {card(CDN + 'd4b62a2c-ca5a-4f28-8d46-4e23169885a1/Face+to+Face+Square.png', 'Teaching Series', 'Face to Face', 'A six-part series on Scripture, worship, prayer, listening, obeying, and abiding in Jesus.', 'https://www.youtube.com/playlist?list=PLoXSy2HiYN4uEu-SuVRHI5QVy5RowVX_E', 'Watch the series')}
 {card(CDN + 'cff63a66-5bf8-4b1c-9498-c259fe20fe99/Untitled+design+%283%29.png', 'Guidebook', 'Alone With God', 'Practical tools and examples for prayer, worship, and Bible study, for a more intimate connection with God through daily devotions.', 'https://antiochwaco.com/alone-with-god-page', 'Get the guidebook')}
 </section>'''
-    write('resources.html', shell('Resources · 40 Days of Devotion', 'The Face to Face teaching series and the Alone With God guidebook.', '/resources', body, '', KIT_DEVOTION))
+    write('resources.html', shell('Resources · 40 Days of Devotion', 'Go deeper after 40 Days of Devotion with the Face to Face teaching series and the Alone With God guidebook for daily time with God.', '/resources', body, '', KIT_DEVOTION))
 
 # ---------- Don't Miss Jesus: seasonal home page (Nov 2026 to Jan 1 2027) ----------
 # Set DMJ_SEASON = False after Jan 1 to put the 40 Days of Devotion landing page back on the home page.
@@ -923,7 +954,7 @@ def dmj_days():
 <article class="day-post">
 <header class="day-head"><p class="day-meta"><span class="red-dot" aria-hidden="true"></span><span>Day {n} of 40</span><span class="sep wk">·</span><span class="wk">{esc(week[0])} week</span><span class="sep">·</span><span>{esc(d['day'])}</span>{tag}</p>
 <h1>{esc(d['title'])}</h1></header>
-<figure class="day-photo"><img src="{dmj_photo(d['photo'])}" alt="" fetchpriority="high" style="object-position:{DMJ_FOCUS.get(n, '50% 50%')}">{f'<figcaption>{esc(d["credit"])}</figcaption>' if d.get('credit') else ''}</figure>
+<figure class="day-photo"><img src="{dmj_photo(d['photo'])}"{srcset(dmj_photo(d['photo']), 1500, "(max-width: 760px) 100vw, 728px")} alt="" fetchpriority="high" style="object-position:{DMJ_FOCUS.get(n, '50% 50%')}">{f'<figcaption>{esc(d["credit"])}</figcaption>' if d.get('credit') else ''}</figure>
 <section class="day-sec word"><h2>Word</h2>
 <blockquote class="day-verse">{esc(d['verse'])}<cite>{esc(d['ref'])}</cite></blockquote>
 {''.join(f'<p>{esc(p)}</p>' for p in d['devo'])}
@@ -976,7 +1007,7 @@ def dmj_days_es():
 <article class="day-post">
 <header class="day-head"><p class="day-meta"><span class="red-dot" aria-hidden="true"></span><span>Día {n} de 40</span><span class="sep wk">·</span><span class="wk">Semana de {esc(DMJ_WEEKS_ES[wi][0])}</span><span class="sep">·</span><span>{esc(d['day'])}</span>{tag}</p>
 <h1>{esc(d['title'])}</h1></header>
-<figure class="day-photo"><img src="{dmj_photo(d['photo'])}" alt="" fetchpriority="high" style="object-position:{DMJ_FOCUS.get(n, '50% 50%')}">{f'<figcaption>{esc(d["credit"])}</figcaption>' if d.get('credit') else ''}</figure>
+<figure class="day-photo"><img src="{dmj_photo(d['photo'])}"{srcset(dmj_photo(d['photo']), 1500, "(max-width: 760px) 100vw, 728px")} alt="" fetchpriority="high" style="object-position:{DMJ_FOCUS.get(n, '50% 50%')}">{f'<figcaption>{esc(d["credit"])}</figcaption>' if d.get('credit') else ''}</figure>
 <section class="day-sec word"><h2>Palabra</h2>
 <blockquote class="day-verse">{esc(d['verse'])}<cite>{esc(d['ref'])}</cite></blockquote>
 {''.join(f'<p>{esc(p)}</p>' for p in d['devo'])}
